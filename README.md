@@ -1,4 +1,4 @@
-![header](https://capsule-render.vercel.app/api?type=waving&color=gradient&text=에배레스트&height=350&fontSize=100&animation=twinkling)
+![header](https://capsule-render.vercel.app/api?type=waving&color=gradient&text=이름&height=350&fontSize=100&animation=twinkling)
 
 # 💻 쓰레기통 위치 조회 웹 애플리케이션
 
