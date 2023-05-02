@@ -1,6 +1,6 @@
 ![header](https://capsule-render.vercel.app/api?type=waving&color=gradient&text=별칭&height=350&fontSize=100&animation=twinkling)
 
-# 💻 쓰레기통 위치 조회 웹 애플리케이션
+# 🗑️ 쓰레기통 위치 조회 웹 애플리케이션
 
 쓰레기통 위치를 알려주는 웹 애플리케이션입니다.<br>
 개발 기간: 23.05.01 - 23.05.30
@@ -11,12 +11,19 @@
 
 ## 👩‍💻 Team
 
-## 👩‍💻 Team
-| 최승원<br>(FE, FE팀장) | 유슬기<br>(FE) | 전형호<br>(FE) | 원영은<br>(FE) | 손정훈<br>(BE, BE팀장) | 백서연<br>(BE) | 김나연<br>(BE) | 이난영<br>(BE) |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| <img alt="최승원" src="https://avatars.githubusercontent.com/u/112051914?v=4" height="100" width="100"> | <img alt="유슬기" src="https://avatars.githubusercontent.com/u/119473025?v=4" height="100" width="100"> | <img alt="전형호" src="https://avatars.githubusercontent.com/u/120395025?v=4" height="100" width="100"> | <img alt="원영은" src="https://avatars.githubusercontent.com/u/119933024?v=4" height="100" width="100"> | <img alt="손정훈" src="https://avatars.githubusercontent.com/u/84003339?v=4" height="100" width="100"> |<img alt="백서연" src="https://avatars.githubusercontent.com/u/97516208?v=4" height="100" width="100"> | <img alt="김나연" src="https://avatars.githubusercontent.com/u/120254001?v=4" height="100" width="100"> | <img alt="이난영" src="https://avatars.githubusercontent.com/u/105438919?s=400&u=4b7fa72a06d36daad6da24e94a6545ab9983e633&v=4" height="100" width="100"> |
-| [@RomaneeChoiti](https://github.com/RomaneeChoiti) |   [@Seulgi-Yoo](https://github.com/Seulgi-Yoo) | [@JHH0906](https://github.com/JHH0906) | [@lulu242](https://github.com/lulu242) | [@sjh4172](https://github.com/sjh4172) |[@yeri134](https://github.com/yeri134) | [@0324skdus](https://github.com/0324skdus) | [@NYinJP](https://github.com/NYinJP) |
-|<p align="left">- Front </p> | <p align="left">- Front </p>| <p align="left">- Front </p> | <p align="left">- Front </p> | <p align="left">- Back </p>| <p align="left">- Back </p>| <p align="left">- Back </p>| <p align="left">- Back </p>|
+### Front
+| 최승원<br>(FE팀장) | 유슬기<br> | 전형호<br> | 원영은<br> |
+| :---: | :---: | :---: | :---: |
+| <img alt="최승원" src="https://avatars.githubusercontent.com/u/112051914?v=4" height="100" width="100"> | <img alt="유슬기" src="https://avatars.githubusercontent.com/u/119473025?v=4" height="100" width="100"> | <img alt="전형호" src="https://avatars.githubusercontent.com/u/120395025?v=4" height="100" width="100"> | <img alt="원영은" src="https://avatars.githubusercontent.com/u/119933024?v=4" height="100" width="100"> |
+| [@RomaneeChoiti](https://github.com/RomaneeChoiti) |   [@Seulgi-Yoo](https://github.com/Seulgi-Yoo) | [@JHH0906](https://github.com/JHH0906) | [@lulu242](https://github.com/lulu242) | 
+|<p align="left">- Front </p> | <p align="left">- Front </p>| <p align="left">- Front </p> | <p align="left">- Front </p> |
+
+### Back
+| 손정훈<br>(BE팀장) | 백서연<br> | 김나연<br> | 이난영<br> |
+| :---: | :---: | :---: | :---: |
+| <img alt="손정훈" src="https://avatars.githubusercontent.com/u/84003339?v=4" height="100" width="100"> |<img alt="백서연" src="https://avatars.githubusercontent.com/u/97516208?v=4" height="100" width="100"> | <img alt="김나연" src="https://avatars.githubusercontent.com/u/120254001?v=4" height="100" width="100"> | <img alt="이난영" src="https://avatars.githubusercontent.com/u/105438919?s=400&u=4b7fa72a06d36daad6da24e94a6545ab9983e633&v=4" height="100" width="100"> |
+| [@sjh4172](https://github.com/sjh4172) |[@yeri134](https://github.com/yeri134) | [@0324skdus](https://github.com/0324skdus) | [@NYinJP](https://github.com/NYinJP) |
+| <p align="left">- Back </p>| <p align="left">- Back </p>| <p align="left">- Back </p>| <p align="left">- Back </p>|
 
 ## 🛠 Skils
 
