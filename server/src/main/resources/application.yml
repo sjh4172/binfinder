@@ -1,0 +1,47 @@
+#spring:
+#  output:
+#    ansi:
+#      enabled: ALWAYS
+#
+#      datasource:
+#        driver-class-name: org.h2.Driver
+#        url: jdbc:h2:mem:test
+#        username: sa
+#        password:
+#
+#      h2:
+#        console:
+#          enabled: true
+#          path: /h2
+#      jpa:
+#        database-platform: org.hibernate.dialect.H2Dialect
+#        hibernate:
+#          ddl-auto: auto
+#  config:
+#    use-legacy-processing: true
+#  jpa:
+#    show-sql: true
+#    hibernate:
+#    properties:
+#      hibernate:
+#        format_sql: false
+#        highlight_sql: false
+#        color-codes: false
+#        use_sql_comments: true
+#
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        SQL: debug
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    url: jdbc:h2:mem:test
+  jpa:
+    hibernate:
+      ddl-auto: create  # (1) ??? ?? ??
+    show-sql: true      # (2) SQL ?? ??
