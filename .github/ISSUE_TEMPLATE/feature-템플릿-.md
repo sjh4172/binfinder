@@ -7,9 +7,9 @@ assignees: ''
 
 ---
 
-## Description(작업내용)
+## 작업내용
 
-> description
+> (간단한 설명)
 
 ## Progress
 
@@ -18,4 +18,4 @@ assignees: ''
 - [ ] todo3
 - [ ] todo4
 
-### Due date(마감일)
+### Due date
