@@ -22,7 +22,7 @@ public class BoardService {
 	}
 
 	public Board updateBoard(Board board) {
-		Board findBoard = findVerifiedMember(board.getB_id());
+		Board findBoard = findVerifiedBoard(board.getB_id());
 		findBoard.setB_title(board.getB_title());
 		findBoard.setB_content(board.getB_content());
 		findBoard.setB_good(board.isB_good());
@@ -47,7 +47,7 @@ public class BoardService {
 		boardRepository.delete(board);
 	}
 
-	public Board findVerifiedMember(long b_id) {
+	public Board findVerifiedBoard(long b_id) {
 		Optional<Board> optionalBoard =
 						boardRepository.findById(b_id);
 		Board findBoard =

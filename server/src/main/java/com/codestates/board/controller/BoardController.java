@@ -4,15 +4,19 @@ import com.codestates.board.dto.BoardDto;
 import com.codestates.board.entity.Board;
 import com.codestates.board.mapper.BoardMapper;
 import com.codestates.board.service.BoardService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/post")
+@Slf4j
+@RequestMapping("/board")
+@CrossOrigin(origins = "*")
 public class BoardController {
 	private BoardService boardService;
 	private BoardMapper mapper;
