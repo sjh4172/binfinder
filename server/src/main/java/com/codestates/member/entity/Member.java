@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,8 +25,12 @@ public class Member extends BaseEntity {
     @Column(length = 100, nullable = false, unique=true)
     private String username;
 
-    @Column(nullable = false)
+    @Column(length = 100, nullable = false)
     private String password;
+
+    // 사용자 권한을 등록하기 위한 권한 테이블 생성
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20, nullable = false)
