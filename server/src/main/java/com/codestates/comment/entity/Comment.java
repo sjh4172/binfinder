@@ -1,5 +1,6 @@
 package com.codestates.comment.entity;
 
+import com.codestates.audit.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class Comment {
+public class Comment extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long c_id;
