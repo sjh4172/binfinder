@@ -26,6 +26,11 @@ const Editor = styled.div`
 		border-radius: 5px;
 		padding: 5px;
 	}
+	@media (max-width: 768px) {
+		input {
+			font-size: var(--sub-title);
+		}
+	}
 `;
 
 function CommunityEditor() {
