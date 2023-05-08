@@ -1,6 +1,5 @@
 import { MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
 import styled from 'styled-components';
-import { useState } from 'react';
 
 const Container = styled.div`
 	display: flex;
@@ -27,33 +26,33 @@ const Button = styled.button`
 	}
 `;
 
-function Pagination() {
-	// 임시 기능 구현 시 page에서 데이터 받아서 내려주기
-	const [currentPage, setCurrentPage] = useState(1);
-	const totalPage = 10;
+function Pagination({ currentPage, setCurrentPage, totalPage }) {
+	const startPage = currentPage - (currentPage % 10);
+	const endPage = startPage + 10 > totalPage ? totalPage % 10 : 10;
+	const pages = Array.from({ length: endPage }, (_, i) => startPage + i);
 
 	return (
 		<Container>
 			<Button
-				disabled={currentPage === 1}
+				disabled={currentPage === 0}
 				onClick={() => setCurrentPage(currentPage - 1)}
 			>
-				{currentPage === 1 ? null : <MdNavigateBefore className="icon" />}
+				{currentPage !== 0 && <MdNavigateBefore className="icon" />}
 			</Button>
-			{Array.from({ length: 10 }, (v, i) => i + 1).map((el) => (
+			{pages.map((el) => (
 				<Button
 					key={el}
 					active={el === currentPage}
 					onClick={() => setCurrentPage(el)}
 				>
-					{el}
+					{el + 1}
 				</Button>
 			))}
 			<Button
-				disabled={currentPage === totalPage}
+				disabled={currentPage === totalPage - 1}
 				onClick={() => setCurrentPage(currentPage + 1)}
 			>
-				{currentPage === totalPage ? null : <MdNavigateNext className="icon" />}
+				{currentPage !== totalPage - 1 && <MdNavigateNext className="icon" />}
 			</Button>
 		</Container>
 	);
