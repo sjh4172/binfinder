@@ -1,4 +1,4 @@
-package com.codestates.comment.entity;
+package com.codestates.board.entity;
 
 import com.codestates.audit.BaseEntity;
 import com.codestates.member.entity.Member;
@@ -9,17 +9,21 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
-public class Comment extends BaseEntity {
+@AllArgsConstructor
+@NoArgsConstructor
+public class Board extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long c_id;
-	@Column(nullable = false)
-	private String c_content;
+	private long b_id;
+	@Column
+	private String b_title;
+	@Column
+	private String b_content;
+	@Column
+	private boolean b_good;
 
 	// N : 1(Member) 양방향 매핑
 	@ManyToOne
