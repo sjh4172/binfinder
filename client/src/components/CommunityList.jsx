@@ -44,11 +44,35 @@ const Table = styled.table`
 	span {
 		color: var(--main-color);
 	}
-	div {
+	.empty {
 		text-align: center;
 		color: #b3b3b3;
 		padding: 70px;
 		border-bottom: 1px solid #d9d9d9;
+	}
+	.bottom {
+		display: none;
+	}
+	@media (max-width: 768px) {
+		.none {
+			display: none;
+		}
+		tr {
+			flex-direction: column;
+		}
+		.title {
+			text-align: left;
+		}
+		.bottom {
+			color: #b3b3b3;
+			margin-top: 5px;
+			display: flex;
+			justify-content: right;
+		}
+		.bottom th {
+			flex: 0 1 auto !important;
+			margin-left: 15px;
+		}
 	}
 `;
 
@@ -59,26 +83,36 @@ function CommunityList() {
 			<thead>
 				<tr>
 					<th>제목</th>
-					<th>작성자</th>
-					<th>작성일</th>
-					<th>좋아요</th>
+					<th className="none">작성자</th>
+					<th className="none">작성일</th>
+					<th className="none">좋아요</th>
 				</tr>
 			</thead>
 			{totlaPage < 1 ? (
-				<div>게시물이 없습니다.</div>
+				<div className="empty">게시물이 없습니다.</div>
 			) : (
 				<tbody>
 					{Array(10)
 						.fill(1)
 						.map((el) => (
 							<tr key={el}>
-								<th title="게시글 목록 제목게시글 목록 제목게시글 목록 제목[5]">
+								<th
+									title="게시글 목록 제목게시글 목록 제목게시글 목록 제목[5]"
+									className="title"
+								>
 									게시글 목록 제목게시글 목록 제목게시글 목록 제목
 									<span>[5]</span>
 								</th>
-								<th>김땡땡</th>
-								<th>2023.05.05</th>
-								<th>1000</th>
+								<th className="none">김땡땡</th>
+								<th className="none">2023.05.05</th>
+								<th className="none">1000</th>
+								<div className="bottom">
+									<th>김땡땡</th>
+									<th>23.05.05</th>
+									<th>
+										<span>♥</span> 1000
+									</th>
+								</div>
 							</tr>
 						))}
 				</tbody>
