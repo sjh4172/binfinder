@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import HorizontalLine from '../components/HorizonLine';
 
-/* 로그인 전체 컨테이너 */
-const LoginContainer = styled.div`
+/* 회원가입 전체 컨테이너 */
+const SignupContainer = styled.div`
 	max-width: 1024px;
 	display: flex;
 	flex-direction: column;
@@ -23,8 +23,8 @@ const LoginContainer = styled.div`
 		font-weight: 700;
 	}
 `;
-/* 로그인 타이틀 */
-const LoginTitle = styled.div`
+/* 회원가입 타이틀 */
+const SignupTitle = styled.div`
 	width: 600px;
 	height: 108px;
 	font-size: 29px;
@@ -38,10 +38,10 @@ const LoginTitle = styled.div`
 		font-weight: 700;
 	}
 `;
-/* 로그인 폼 */
-const LoginForm = styled.div`
+/* 회원가입 폼 */
+const SignupForm = styled.div`
 	width: 600px;
-	height: 600px;
+	height: 660px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -53,10 +53,10 @@ const LoginForm = styled.div`
 	}
 `;
 
-/* 로그인 인풋 전체 컨테이너 */
-const LoginInputContainer = styled.div`
+/* 회원가입 인풋 전체 컨테이너 */
+const SignupInputContainer = styled.div`
 	width: 440px;
-	height: 90px;
+	height: 135px;
 	margin-bottom: 60px;
 	font-size: 17px;
 	font-weight: 700;
@@ -67,8 +67,8 @@ const LoginInputContainer = styled.div`
 		font-weight: 700;
 	}
 `;
-/* 로그인 인풋 */
-const LoginInput = styled.div`
+/* 회원가입 인풋 */
+const SignupInput = styled.div`
 	width: 440px;
 	height: 45px;
 	border-bottom: 2px solid #d9d9d9;
@@ -81,8 +81,8 @@ const LoginInput = styled.div`
 		height: 37.5px;
 	}
 `;
-/* 로그인 버튼 */
-const LoginButton = styled.button`
+/* 회원가입 버튼 */
+const SignupButton = styled.button`
 	width: 440px;
 	height: 50px;
 	background-color: #37a0db;
@@ -103,8 +103,8 @@ const LoginButton = styled.button`
 	}
 `;
 
-/* 로그인 구글 로그인 버튼 */
-const LoginGoogleButton = styled.button`
+/* 회원가입 구글 회원가입 버튼 */
+const SignupGoogleButton = styled.button`
 	width: 440px;
 	height: 50px;
 	background-color: white;
@@ -123,12 +123,12 @@ const LoginGoogleButton = styled.button`
 	@media (max-width: 768px) {
 		width: 220px;
 		height: 40px;
-		font-size: 14px;
+		font-size: 13px;
 		font-weight: 700;
 	}
 `;
 
-/* 로그인 OAuth 로고 */
+/* 회원가입 OAuth 로고 */
 const Logo = styled.div`
 	width: 80px;
 	> img {
@@ -143,15 +143,15 @@ const Logo = styled.div`
 		}
 	}
 `;
-/* 로그인 OAuth 텍스트 */
+/* 회원가입 OAuth 텍스트 */
 const Text = styled.div`
 	width: 240px;
 	text-align: center;
 	display: flex;
 `;
 
-/* 로그인 카카오 로그인 버튼 */
-const LoginKaKaoButton = styled.button`
+/* 회원가입 카카오 회원가입 버튼 */
+const SignupKaKaoButton = styled.button`
 	width: 440px;
 	height: 50px;
 	background-color: #f1d100;
@@ -170,12 +170,12 @@ const LoginKaKaoButton = styled.button`
 	@media (max-width: 768px) {
 		width: 220px;
 		height: 40px;
-		font-size: 14px;
+		font-size: 13px;
 		font-weight: 700;
 	}
 `;
-/* 로그인 텍스트 전체 컨테이너 */
-const LoginTextContainer = styled.div`
+/* 회원가입 텍스트 전체 컨테이너 */
+const SignupTextContainer = styled.div`
 	width: 440px;
 	height: 45px;
 	display: flex;
@@ -186,55 +186,62 @@ const LoginTextContainer = styled.div`
 	}
 `;
 
-/* 로그인 텍스트 */
-const LoginText = styled.div`
+/* 회원가입 텍스트 */
+const SignupText = styled.div`
 	width: 300px;
 	height: 45px;
 	text-align: center;
+	@media (max-width: 768px) {
+		font-size: 14px;
+	}
 `;
 
 /* 로그인 회원가입 링크 */
-const SignupLink = styled(Link)`
+const LoginLink = styled(Link)`
 	width: 140px;
 	height: 45px;
 	color: #37a0db;
+	@media (max-width: 768px) {
+		font-size: 14px;
+	}
 `;
-function Login() {
+function Signup() {
 	return (
-		<LoginContainer>
-			<LoginTitle>로그인</LoginTitle>
-			<LoginForm>
-				<LoginInputContainer>
-					<LoginInput>이메일</LoginInput>
-					<LoginInput>비밀번호</LoginInput>
-				</LoginInputContainer>
-				<LoginButton>로그인</LoginButton>
+		<SignupContainer>
+			<SignupTitle>회원가입</SignupTitle>
+			<SignupForm>
+				<SignupInputContainer>
+					<SignupInput>닉네임</SignupInput>
+					<SignupInput>이메일</SignupInput>
+					<SignupInput>비밀번호</SignupInput>
+				</SignupInputContainer>
+				<SignupButton>회원가입</SignupButton>
 				<HorizontalLine text="또는" />
-				<LoginGoogleButton>
+				<SignupGoogleButton>
 					<Logo>
 						<img
 							src=" https://cdn-icons-png.flaticon.com/512/2991/2991148.png"
 							alt="Googlelogo"
 						/>
 					</Logo>
-					<Text>구글 계정으로 로그인 하기</Text>
-				</LoginGoogleButton>
-				<LoginKaKaoButton>
+					<Text>구글 계정으로 회원가입 하기</Text>
+				</SignupGoogleButton>
+				<SignupKaKaoButton>
 					<Logo>
 						<img
 							src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
 							alt="KaKaologo"
 						/>
 					</Logo>
-					<Text>카카오 계정으로 로그인 하기</Text>
-				</LoginKaKaoButton>
-				<LoginTextContainer>
-					<LoginText>아직 회원이 아니십니까?</LoginText>
-					<SignupLink to="/signup">회원가입</SignupLink>
-				</LoginTextContainer>
-			</LoginForm>
-		</LoginContainer>
+					<Text>카카오 계정으로 회원가입 하기</Text>
+				</SignupKaKaoButton>
+				<SignupTextContainer>
+					<SignupText>이미 회원이십니까? </SignupText>
+					<LoginLink to="/login">로그인</LoginLink>
+				</SignupTextContainer>
+			</SignupForm>
+		</SignupContainer>
 	);
 }
 
-export default Login;
+export default Signup;
