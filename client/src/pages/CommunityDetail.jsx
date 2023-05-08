@@ -31,14 +31,23 @@ const DetailPage = styled.div`
 	.wbt {
 		margin: 10px 0px 20px calc(100% - 100px);
 	}
+	@media (max-width: 768px) {
+		.wbt {
+			margin: 10px 0px 20px calc(100% - 60px);
+		}
+		.list {
+			width: 80px;
+		}
+	}
 `;
+
 function CommunityDetail() {
 	return (
 		<DetailPage>
 			<Title className="title">게시글 상세 제목</Title>
 			<div>프로필</div>
 			<CommunityPost />
-			<Button className="bt">목록 보기</Button>
+			<Button className="bt list">목록 보기</Button>
 			<Button className="bt">♥ 10</Button>
 			<Title className="title">1개의 댓글</Title>
 			<textarea placeholder="댓글을 입력하세요" />

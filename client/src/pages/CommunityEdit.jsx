@@ -13,6 +13,12 @@ const EditPage = styled.div`
 		justify-content: space-between;
 		margin-top: 20px;
 	}
+
+	@media (max-width: 768px) {
+		.bt {
+			width: 80px;
+		}
+	}
 `;
 
 function CommunityEdit() {
@@ -20,8 +26,8 @@ function CommunityEdit() {
 		<EditPage>
 			<CommunityEditor />
 			<div className="flex">
-				<Button>작성 취소</Button>
-				<WarningButton>작성 완료</WarningButton>
+				<Button className="bt">작성 취소</Button>
+				<WarningButton className="bt">작성 완료</WarningButton>
 			</div>
 		</EditPage>
 	);
