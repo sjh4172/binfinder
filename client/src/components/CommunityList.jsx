@@ -76,8 +76,7 @@ const Table = styled.table`
 	}
 `;
 
-function CommunityList() {
-	const [totlaPage, setTotlaPage] = useState(1);
+function CommunityList({ totalPage }) {
 	return (
 		<Table>
 			<thead>
@@ -88,7 +87,7 @@ function CommunityList() {
 					<th className="none">좋아요</th>
 				</tr>
 			</thead>
-			{totlaPage < 1 ? (
+			{totalPage < 0 ? (
 				<div className="empty">게시물이 없습니다.</div>
 			) : (
 				<tbody>

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useState } from 'react';
 import Title from '../styles/Title';
 import { Button } from '../styles/Buttons';
 import CommunityList from '../components/CommunityList';
@@ -21,14 +22,22 @@ const CommunityPage = styled.div`
 `;
 
 function Community() {
+	const [currentPage, setCurrentPage] = useState(0);
+	const [totalPage, setTotalPage] = useState(19);
 	return (
 		<CommunityPage>
 			<div className="flex">
 				<Title>게시판</Title>
 				<Button>글 작성</Button>
 			</div>
-			<CommunityList />
-			<Pagination />
+			<CommunityList totalPage={totalPage} />
+			{totalPage >= 0 ? (
+				<Pagination
+					currentPage={currentPage}
+					setCurrentPage={setCurrentPage}
+					totalPage={totalPage}
+				/>
+			) : null}
 		</CommunityPage>
 	);
 }
