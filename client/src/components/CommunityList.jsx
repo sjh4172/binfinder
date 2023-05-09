@@ -1,16 +1,19 @@
 import styled from 'styled-components';
-import { useState } from 'react';
 
 const Table = styled.table`
 	width: 100%;
 	max-width: 1024px;
 	font-size: var(--base);
 	table-layout: fixed;
+
+	// 테이블 항목
 	thead {
 		border-top: 1px solid black;
 		border-bottom: 1px solid black;
 		font-weight: 800;
 	}
+
+	// 기본뷰 테이블 열 비율
 	tr {
 		display: flex;
 		padding: 8px 0px;
@@ -32,24 +35,31 @@ const Table = styled.table`
 		flex: 1;
 	}
 
+	// 데이블 행 커서 및 밑줄
 	tbody tr {
 		border-bottom: 1px solid #d9d9d9;
 		cursor: pointer;
 	}
 
+	// 테이블 행 hover
 	tbody tr:hover {
 		color: #575757;
 	}
 
+	//하트랑 댓글 색상
 	span {
 		color: var(--main-color);
 	}
+
+	// 게시글 없는 경우
 	.empty {
 		text-align: center;
 		color: #b3b3b3;
 		padding: 70px;
 		border-bottom: 1px solid #d9d9d9;
 	}
+
+	// 반응형
 	.bottom {
 		display: none;
 	}

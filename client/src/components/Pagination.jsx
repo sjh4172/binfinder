@@ -27,8 +27,11 @@ const Button = styled.button`
 `;
 
 function Pagination({ currentPage, setCurrentPage, totalPage }) {
+	// 페이지 표시할 첫 숫자
 	const startPage = currentPage - (currentPage % 10);
+	// 표시할 페이지의 수(기본10개이나 마지막은 남은 페이지만큼만)
 	const endPage = startPage + 10 > totalPage ? totalPage % 10 : 10;
+	// 표시할 페이지들
 	const pages = Array.from({ length: endPage }, (_, i) => startPage + i);
 
 	return (

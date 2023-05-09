@@ -42,6 +42,7 @@ function CommunityComment() {
 	const [edit, setEdit] = useState(false);
 	const ref = useRef(null);
 
+	// 수정 시 ContentInput에 포커스
 	const handleFocus = () => {
 		if (ref.current) {
 			ref.current.focus();
