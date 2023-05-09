@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import useInput from '../hooks/useInput';
 
 const Content = styled.div`
@@ -40,10 +40,29 @@ const Line = styled.div`
 function CommunityComment() {
 	const [bind] = useInput('');
 	const [edit, setEdit] = useState(false);
+	const ref = useRef(null);
+
+	const handleFocus = () => {
+		if (ref.current) {
+			ref.current.focus();
+			ref.current.setSelectionRange(bind.value.length, bind.value.length);
+		}
+	};
+
+	useEffect(() => {
+		if (edit) {
+			handleFocus();
+		}
+	}, [edit]);
+
 	return (
 		<>
 			<div>프로필</div>
-			{edit ? <ContentInput {...bind} /> : <Content>{bind.value}</Content>}
+			{edit ? (
+				<ContentInput {...bind} ref={ref} autofocus />
+			) : (
+				<Content>{bind.value}</Content>
+			)}
 			<Edit>
 				{edit ? (
 					<span onClick={() => setEdit(false)} role="none">
