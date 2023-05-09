@@ -67,10 +67,10 @@ const SidebarContent = styled.div`
 	height: 100%;
 `;
 
-export default function Sidebar({ isOpen, setIsOpen }) {
+export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }) {
 	return (
-		<SidebarWrapper isOpen={isOpen}>
-			<CloseButton onClick={() => setIsOpen(false)}>
+		<SidebarWrapper isOpen={isSidebarOpen}>
+			<CloseButton onClick={() => setIsSidebarOpen(false)}>
 				<CloseIcon />
 			</CloseButton>
 			<SidebarContent>
