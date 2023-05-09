@@ -103,7 +103,6 @@ const Input = styled.div`
 	border-bottom: 1px solid #d9d9d9;
 	display: flex;
 	align-items: center;
-	display: flex;
 	@media (max-width: 768px) {
 		width: 140px;
 		height: 34px;

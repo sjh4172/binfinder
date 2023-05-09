@@ -1,7 +1,7 @@
-import Mypage from './pages/mypage';
+import EditMyPage from './pages/editmypage';
 
 function App() {
-	return <Mypage />;
+	return <EditMyPage />;
 }
 
 export default App;
