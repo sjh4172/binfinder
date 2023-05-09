@@ -1,6 +1,6 @@
 package com.codestates.plogging.entity;
 
-import com.codestates.BaseEntity;
+import com.codestates.audit.BaseEntity;
 import com.codestates.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,5 @@
 package com.codestates.plogging.dto;
 
-import com.codestates.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
