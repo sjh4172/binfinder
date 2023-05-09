@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 
+/* 수정페이지 전체 컨테이너 */
 const EditMyPageContainer = styled.div`
 	max-width: 1024px;
 	display: flex;
@@ -21,6 +22,7 @@ const EditMyPageContainer = styled.div`
 		font-weight: 700;
 	}
 `;
+/* 수정페이지 타이틀 */
 const EditMyPageTitle = styled.div`
 	width: 600px;
 	height: 108px;
@@ -35,6 +37,7 @@ const EditMyPageTitle = styled.div`
 		font-weight: 700;
 	}
 `;
+/* 수정페이지 전체 폼 */
 const EditMyPageForm = styled.div`
 	width: 600px;
 	height: 600px;
@@ -48,6 +51,7 @@ const EditMyPageForm = styled.div`
 		height: 500px;
 	}
 `;
+/* 수정페이지 프로필 이미지 */
 const Logo = styled.div`
 	margin-bottom: 40px;
 	> img {
@@ -61,7 +65,7 @@ const Logo = styled.div`
 		}
 	}
 `;
-
+/* 수정페이지 인풋 타이틀 컨테이너 */
 const InputTitleContainer = styled.div`
 	width: 400px;
 	height: 90px;
@@ -76,6 +80,7 @@ const InputTitleContainer = styled.div`
 		margin-left: 8px;
 	}
 `;
+/* 수정페이지 인풋 컨테이너 */
 const InputContainer = styled.div`
 	width: 440px;
 	height: 45px;
@@ -84,6 +89,7 @@ const InputContainer = styled.div`
 	align-items: center;
 	margin-bottom: 20px;
 `;
+/* 수정페이지 인풋 타이틀 */
 const InputTitle = styled.div`
 	width: 70px;
 	height: 45px;
@@ -98,6 +104,7 @@ const InputTitle = styled.div`
 		margin-right: 0px;
 	}
 `;
+/* 수정페이지 인풋  */
 const Input = styled.div`
 	width: 220px;
 	height: 45px;
@@ -112,6 +119,7 @@ const Input = styled.div`
 		font-size: 14px;
 	}
 `;
+/* 수정페이지 버튼 폼  */
 const ButtonForm = styled.div`
 	width: 240px;
 	height: 140px;
@@ -125,6 +133,7 @@ const ButtonForm = styled.div`
 		font-weight: 700;
 	}
 `;
+/* 수정페이지 회원탈퇴 버튼  */
 const WithdrawalButton = styled.button`
 	width: 240px;
 	height: 50px;
@@ -141,6 +150,7 @@ const WithdrawalButton = styled.button`
 		font-weight: 700;
 	}
 `;
+/* 수정페이지 수정/취소 버튼 컨테이너 */
 const ButtonContainer = styled.div`
 	width: 240px;
 	height: 50px;
@@ -154,6 +164,7 @@ const ButtonContainer = styled.div`
 		font-weight: 700;
 	}
 `;
+/* 수정페이지 수정/취소 버튼  */
 const Button = styled.button`
 	width: 100px;
 	height: 50px;
