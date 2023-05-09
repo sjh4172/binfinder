@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import MOBILE_MAX_WIDTH from '../mediaQuery';
 
 const Button = styled.button`
 	border: none;
@@ -22,7 +23,7 @@ const Button = styled.button`
 			inset 0px 2px 0px rgba(0, 0, 0, 0.25);
 	}
 
-	@media (max-width: 768px) {
+	@media (max-width: ${MOBILE_MAX_WIDTH}px) {
 		width: 60px;
 		height: 30px;
 		font-size: var(--base);
@@ -38,7 +39,7 @@ const WarningButton = styled(Button)`
 `;
 
 const HeaderButton = styled(Button)`
-	@media (max-width: 768px) {
+	@media (max-width: ${MOBILE_MAX_WIDTH}px) {
 		width: 40px;
 		height: 40px;
 	}
