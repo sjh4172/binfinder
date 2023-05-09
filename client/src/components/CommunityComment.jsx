@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { useState } from 'react';
+import useInput from '../hooks/useInput';
 
 const Content = styled.div`
 	font-size: var(--base);
@@ -6,6 +8,15 @@ const Content = styled.div`
 	line-height: 1.5;
 	text-align: justify;
 	word-break: break-all;
+`;
+
+const ContentInput = styled.textarea`
+	font-size: var(--base);
+	padding: 10px 0px;
+	line-height: 1.5;
+	text-align: justify;
+	word-break: break-all;
+	margin-bottom: 10px;
 `;
 
 const Edit = styled.div`
@@ -27,14 +38,22 @@ const Line = styled.div`
 `;
 
 function CommunityComment() {
+	const [bind] = useInput('');
+	const [edit, setEdit] = useState(false);
 	return (
 		<>
 			<div>프로필</div>
-			<Content>
-				댓글 내용내용~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^*
-			</Content>
+			{edit ? <ContentInput {...bind} /> : <Content>{bind.value}</Content>}
 			<Edit>
-				<span>수정</span>
+				{edit ? (
+					<span onClick={() => setEdit(false)} role="none">
+						수정 완료
+					</span>
+				) : (
+					<span onClick={() => setEdit(true)} role="none">
+						수정
+					</span>
+				)}
 				<span>삭제</span>
 			</Edit>
 			<Line />
