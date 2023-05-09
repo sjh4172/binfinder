@@ -6,7 +6,7 @@ function App() {
 			<GlobalStyles />
 			<div>초기 세팅</div>
 		</>
-	);
+	)
 }
 
 export default App;
