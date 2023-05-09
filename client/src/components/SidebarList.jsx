@@ -1,4 +1,13 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import {
+	URL_MAP,
+	URL_MYPAGE,
+	URL_POST,
+	URL_PLOGGING,
+	URL_NOTICE,
+	URL_INTRODUCTION,
+} from '../routesURL';
 
 const List = styled.ul`
 	width: 100%;
@@ -26,16 +35,35 @@ const ListItem = styled.li`
 	}
 `;
 
+const LinkItem = styled(Link)`
+	height: 40px;
+	width: 230px;
+	text-align: center;
+	line-height: 40px;
+`;
+
 export default function SidebarList() {
 	return (
 		<List>
 			{/* 각 메뉴에 페이지 링크 연결 */}
-			<ListItem>Introduction</ListItem>
-			<ListItem>Map</ListItem>
-			<ListItem>Community</ListItem>
-			<ListItem>Plogging</ListItem>
-			<ListItem>Notice</ListItem>
-			<ListItem>My page</ListItem>
+			<ListItem>
+				<LinkItem to={URL_INTRODUCTION}>Introduction</LinkItem>
+			</ListItem>
+			<ListItem>
+				<LinkItem to={URL_MAP}>Map</LinkItem>
+			</ListItem>
+			<ListItem>
+				<LinkItem to={URL_POST}>Community</LinkItem>
+			</ListItem>
+			<ListItem>
+				<LinkItem to={URL_PLOGGING}>Plogging</LinkItem>
+			</ListItem>
+			<ListItem>
+				<LinkItem to={URL_NOTICE}>Notice</LinkItem>
+			</ListItem>
+			<ListItem>
+				<LinkItem to={URL_MYPAGE}>My page</LinkItem>
+			</ListItem>
 		</List>
 	);
 }
