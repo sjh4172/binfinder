@@ -91,6 +91,12 @@ const InputTitle = styled.div`
 	align-items: center;
 	margin-right: 30px;
 	font-size: 17px;
+	@media (max-width: 768px) {
+		width: 60px;
+		height: 34px;
+		font-size: 14px;
+		margin-right: 0px;
+	}
 `;
 const Input = styled.div`
 	width: 220px;
@@ -101,7 +107,7 @@ const Input = styled.div`
 	font-size: 17px;
 	color: #d9d9d9;
 	@media (max-width: 768px) {
-		width: 140px;
+		width: 190px;
 		height: 34px;
 		font-size: 14px;
 	}
@@ -112,6 +118,12 @@ const ButtonForm = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	@media (max-width: 768px) {
+		width: 220px;
+		height: 140px;
+		font-size: 14px;
+		font-weight: 700;
+	}
 `;
 const WithdrawalButton = styled.button`
 	width: 240px;
@@ -122,9 +134,6 @@ const WithdrawalButton = styled.button`
 	border: none;
 	font-size: 17px;
 	font-weight: 700;
-	&:hover {
-		background-color: #d9d9d9;
-	}
 	@media (max-width: 768px) {
 		width: 220px;
 		height: 40px;
@@ -138,6 +147,12 @@ const ButtonContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	@media (max-width: 768px) {
+		width: 220px;
+		height: 40px;
+		font-size: 14px;
+		font-weight: 700;
+	}
 `;
 const Button = styled.button`
 	width: 100px;
@@ -152,7 +167,7 @@ const Button = styled.button`
 		background-color: #d9d9d9;
 	}
 	@media (max-width: 768px) {
-		width: 220px;
+		width: 100px;
 		height: 40px;
 		font-size: 14px;
 		font-weight: 700;
