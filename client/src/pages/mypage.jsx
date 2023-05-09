@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+/* 마이페이지 전체 컨테이너 */
 const MyPageContainer = styled.div`
 	max-width: 1024px;
 	display: flex;
@@ -20,6 +21,7 @@ const MyPageContainer = styled.div`
 		font-weight: 700;
 	}
 `;
+/* 마이페이지 타이틀 */
 const MyPageTitle = styled.div`
 	width: 600px;
 	height: 100px;
@@ -34,6 +36,7 @@ const MyPageTitle = styled.div`
 		font-weight: 700;
 	}
 `;
+/* 마이페이지 폼 */
 const MyPageForm = styled.div`
 	width: 600px;
 	height: 800px;
@@ -48,6 +51,7 @@ const MyPageForm = styled.div`
 		height: 600px;
 	}
 `;
+/* 마이페이지 프로플 전체 컨테이너 */
 const ProfileContainer = styled.div`
 	width: 440px;
 	height: 135px;
@@ -58,6 +62,7 @@ const ProfileContainer = styled.div`
 		height: 108px;
 	}
 `;
+/* 마이페이지 프로플 로고 */
 const Logo = styled.div`
 	> img {
 		width: 120px;
@@ -70,6 +75,7 @@ const Logo = styled.div`
 		}
 	}
 `;
+/* 마이페이지 프로필 수정 아이콘 */
 const Icon = styled.div`
 	> img {
 		width: 24px;
@@ -83,6 +89,7 @@ const Icon = styled.div`
 		}
 	}
 `;
+/* 마이페이지 인풋 전체 컨테이너 */
 const InputContainer = styled.div`
 	width: 220px;
 	height: 135px;
@@ -97,6 +104,7 @@ const InputContainer = styled.div`
 		margin-left: 8px;
 	}
 `;
+/* 마이페이지 인풋  */
 const Input = styled.div`
 	width: 220px;
 	height: 45px;
@@ -109,6 +117,7 @@ const Input = styled.div`
 		font-size: 14px;
 	}
 `;
+/* 마이페이지 인풋2(프로필수정 부분)  */
 const Input2 = styled.div`
 	width: 220px;
 	height: 45px;
@@ -122,6 +131,7 @@ const Input2 = styled.div`
 		font-size: 14px;
 	}
 `;
+/* 마이페이지 리스트 전체 컨테이너  */
 const ListContainer = styled.div`
 	width: 440px;
 	height: 600px;
@@ -134,6 +144,7 @@ const ListContainer = styled.div`
 		height: 400px;
 	}
 `;
+/* 마이페이지 게시글 리스트 */
 const PostList = styled.div`
 	width: 440px;
 	height: 45px;
@@ -145,6 +156,7 @@ const PostList = styled.div`
 		height: 34px;
 	}
 `;
+/* 마이페이지 댓글 리스트 */
 const CommentList = styled.div`
 	width: 440px;
 	height: 45px;
@@ -156,6 +168,7 @@ const CommentList = styled.div`
 		height: 34px;
 	}
 `;
+/* 마이페이지 위치 요청 리스트 */
 const RequestList = styled.div`
 	width: 440px;
 	height: 45px;
@@ -167,6 +180,7 @@ const RequestList = styled.div`
 		height: 34px;
 	}
 `;
+/* 마이페이지 리스트 컨테이너 */
 const List = styled.div`
 	width: 440px;
 	height: 48px;

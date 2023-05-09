@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import HorizontalLine from '../components/HorizonLine';
 
 /* 회원가입 전체 컨테이너 */
@@ -197,7 +196,7 @@ const SignupText = styled.div`
 `;
 
 /* 로그인 회원가입 링크 */
-const LoginLink = styled(Link)`
+const LoginLink = styled.a`
 	width: 140px;
 	height: 45px;
 	color: #37a0db;
@@ -237,7 +236,7 @@ function Signup() {
 				</SignupKaKaoButton>
 				<SignupTextContainer>
 					<SignupText>이미 회원이십니까? </SignupText>
-					<LoginLink to="/login">로그인</LoginLink>
+					<LoginLink>로그인</LoginLink>
 				</SignupTextContainer>
 			</SignupForm>
 		</SignupContainer>
