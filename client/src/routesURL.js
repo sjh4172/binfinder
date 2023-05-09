@@ -6,3 +6,6 @@ export const URL_EDITMYPAGE = '/editmypage';
 export const URL_POST = '/post/read';
 export const URL_POSTDETAIL = '/post/read/:postId';
 export const URL_WRITEPOST = '/post/write';
+export const URL_PLOGGING = '/plogging';
+export const URL_NOTICE = '/notice';
+export const URL_INTRODUCTION = '/introduction';
