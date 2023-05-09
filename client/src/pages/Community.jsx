@@ -12,6 +12,7 @@ const CommunityPage = styled.div`
 	justify-content: center;
 	margin-left: auto;
 	margin-right: auto;
+	margin-top: var(--header-hight);
 	width: 80vw;
 	max-width: 1000px;
 	.flex {

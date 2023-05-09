@@ -12,6 +12,7 @@ const EditMyPageContainer = styled.div`
 	font-weight: 700;
 	margin-left: auto;
 	margin-right: auto;
+	margin-top: var(--header-hight);
 	@media (max-width: 768px) {
 		display: flex;
 		justify-content: center;

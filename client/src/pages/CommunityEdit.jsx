@@ -8,6 +8,7 @@ const EditPage = styled.div`
 	width: 80vw;
 	margin-left: auto;
 	margin-right: auto;
+	margin-top: var(--header-hight);
 
 	.flex {
 		display: flex;
