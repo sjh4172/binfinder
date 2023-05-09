@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Title from '../styles/Title';
 import { Button } from '../styles/Buttons';
 import CommunityList from '../components/CommunityList';
@@ -22,8 +23,10 @@ const CommunityPage = styled.div`
 `;
 
 function Community() {
+	const [searchParams, setSearchParams] = useSearchParams();
 	const [currentPage, setCurrentPage] = useState(0);
 	const [totalPage, setTotalPage] = useState(19);
+
 	return (
 		<CommunityPage>
 			<div className="flex">
@@ -36,6 +39,7 @@ function Community() {
 					currentPage={currentPage}
 					setCurrentPage={setCurrentPage}
 					totalPage={totalPage}
+					setSearchParams={setSearchParams}
 				/>
 			) : null}
 		</CommunityPage>
