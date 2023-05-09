@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Title from '../styles/Title';
 import { Button } from '../styles/Buttons';
 import CommunityList from '../components/CommunityList';
@@ -26,12 +26,12 @@ function Community() {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [currentPage, setCurrentPage] = useState(0);
 	const [totalPage, setTotalPage] = useState(19);
-
+	const navigate = useNavigate();
 	return (
 		<CommunityPage>
 			<div className="flex">
 				<Title>게시판</Title>
-				<Button>글 작성</Button>
+				<Button onClick={() => navigate('/post/write')}>글 작성</Button>
 			</div>
 			<CommunityList totalPage={totalPage} />
 			{totalPage >= 0 ? (

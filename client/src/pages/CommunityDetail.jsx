@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import Title from '../styles/Title';
 import CommunityPost from '../components/CommunityPost';
 import CommunityComment from '../components/CommunityComment';
@@ -42,12 +43,15 @@ const DetailPage = styled.div`
 `;
 
 function CommunityDetail() {
+	const navigate = useNavigate();
 	return (
 		<DetailPage>
 			<Title className="title">게시글 상세 제목</Title>
 			<div>프로필</div>
 			<CommunityPost />
-			<Button className="bt list">목록 보기</Button>
+			<Button className="bt list" onClick={() => navigate('/post/read')}>
+				목록 보기
+			</Button>
 			<Button className="bt">♥ 10</Button>
 			<Title className="title">1개의 댓글</Title>
 			<textarea placeholder="댓글을 입력하세요" />

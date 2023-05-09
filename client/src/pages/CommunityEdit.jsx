@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import CommunityEditor from '../components/CommunityEditor';
 import { Button, WarningButton } from '../styles/Buttons';
 
@@ -22,11 +23,14 @@ const EditPage = styled.div`
 `;
 
 function CommunityEdit() {
+	const navigate = useNavigate();
 	return (
 		<EditPage>
 			<CommunityEditor />
 			<div className="flex">
-				<Button className="bt">작성 취소</Button>
+				<Button className="bt" onClick={() => navigate(-1)}>
+					작성 취소
+				</Button>
 				<WarningButton className="bt">작성 완료</WarningButton>
 			</div>
 		</EditPage>
