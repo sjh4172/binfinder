@@ -9,13 +9,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
-@RequestMapping("/board")
+@RequestMapping("/api/boards")
 @CrossOrigin(origins = "*")
 public class BoardController {
 	private BoardService boardService;
@@ -28,15 +30,19 @@ public class BoardController {
 
 	@PostMapping
 	public ResponseEntity postBoard (@RequestBody BoardDto.Post postDto) {
-		Board board = mapper.boardPostDtoToBoard(postDto);
-		Board response = boardService.createBoard(board);
 
-		return new ResponseEntity<>(mapper.boardToBoardResponseDto(response), HttpStatus.CREATED);
+		// uri 리턴 방식으로 변경
+		Board board = boardService.createBoard(mapper.boardPostDtoToBoard(postDto));
+
+		URI uri = UriComponentsBuilder.newInstance()
+				.path("/api/boards/"+board.getB_id())
+				.build().toUri();
+
+		return ResponseEntity.created(uri).build();
 	}
 
 	@PatchMapping("/{id}")
-	public ResponseEntity patchBoard(@PathVariable("id") long id,
-																	 @RequestBody BoardDto.Patch patchDto) {
+	public ResponseEntity patchBoard(@PathVariable("id") long id, @RequestBody BoardDto.Patch patchDto) {
 		patchDto.setB_id(id);
 		Board board = mapper.boardPatchDtoToBoard(patchDto);
 		Board response = boardService.updateBoard(board);
