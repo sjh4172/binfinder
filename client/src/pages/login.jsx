@@ -213,8 +213,8 @@ function Login() {
 				<LoginGoogleButton>
 					<Logo>
 						<img
-							src=" https://cdn-icons-png.flaticon.com/512/2991/2991148.png"
-							alt="Googlelogo"
+							src={`${process.env.PUBLIC_URL}/assets/google.png`}
+							alt="google.png"
 						/>
 					</Logo>
 					<Text>구글 계정으로 로그인 하기</Text>
@@ -222,8 +222,8 @@ function Login() {
 				<LoginKaKaoButton>
 					<Logo>
 						<img
-							src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
-							alt="KaKaologo"
+							src={`${process.env.PUBLIC_URL}/assets/kakaotalk.png`}
+							alt="KaKao.png"
 						/>
 					</Logo>
 					<Text>카카오 계정으로 로그인 하기</Text>

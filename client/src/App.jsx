@@ -1,5 +1,7 @@
+import Mypage from './pages/mypage';
+
 function App() {
-	return <div>초기 셋팅</div>;
+	return <Mypage />;
 }
 
 export default App;
