@@ -4,6 +4,8 @@ import com.codestates.board.entity.Board;
 import com.codestates.exception.BusinessLogicException;
 import com.codestates.exception.ExceptionCode;
 import com.codestates.board.repository.BoardRepository;
+import com.codestates.member.entity.Member;
+import com.codestates.member.service.MemberService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,12 +14,17 @@ import java.util.Optional;
 @Service
 public class BoardService {
 	private final BoardRepository boardRepository;
+	private final MemberService memberService;
 
-	public BoardService(BoardRepository boardRepository) {
+	public BoardService(BoardRepository boardRepository, MemberService memberService) {
 		this.boardRepository = boardRepository;
+		this.memberService = memberService;
 	}
-	public Board createBoard(Board board) {
 
+	public Board createBoard(Board board) {
+		Member member = verifyExistingMember(board.getMember());
+		board.setMember(member);
+		member.setBoard(board);
 		return boardRepository.save(board);
 	}
 
@@ -54,6 +61,9 @@ public class BoardService {
 						optionalBoard.orElseThrow(() ->
 										new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
 		return findBoard;
+	}
+	private Member verifyExistingMember(Member member){
+		return memberService.findVerifiedMember(member.getMemberId());
 	}
 
 }

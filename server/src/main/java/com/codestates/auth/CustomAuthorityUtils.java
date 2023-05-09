@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 // SpringSecurity member의 권한정보를 생성하거나 알아내는 클래스
 @Component
 public class CustomAuthorityUtils {
-    private List<String> adminMailAddress = List.of("jh@email.com", "ny@email.com", "sy@email.com");
+    private List<String> adminMailAddress = List.of("jh@email.com", "ny@email.com", "sy@email.com","nayeon@email.com");
     private final List<String> ADMIN_ROLES_STRING = List.of("ADMIN","USER");
     private final List<String> USER_ROLES_STRING = List.of("USER");
 
