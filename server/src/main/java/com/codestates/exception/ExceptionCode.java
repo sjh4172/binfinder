@@ -6,8 +6,9 @@ public enum ExceptionCode {
 	COMMENT_NOT_FOUND(404, "Comment not found"),
   	MEMBER_NOT_FOUND(404, "Member not found"),
 	MEMBER_EXISTS(409, "Member exists"),
-	MEMBER_NOT_VALID(403,"Member not valid");
-  
+	MEMBER_NOT_VALID(403,"Member not valid"),
+	TRASH_CAN_NOT_FOUND(404, "Trash can not found"),
+	VOTE_NOT_FOUND(404, "Vote not found");
 	@Getter
 	private int status;
 	@Getter
