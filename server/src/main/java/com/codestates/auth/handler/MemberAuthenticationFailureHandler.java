@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+// 로그인 인증 실패 시 추가 처리를 할 수 있는 핸들러
 @Slf4j
 public class MemberAuthenticationFailureHandler implements AuthenticationFailureHandler {
     @Override
