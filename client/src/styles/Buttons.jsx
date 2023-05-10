@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import MOBILE_MAX_WIDTH from '../mediaQuery';
 
 const Button = styled.button`
 	border: none;
@@ -14,11 +15,19 @@ const Button = styled.button`
 	font-weight: 700;
 	align-items: center;
 	cursor: pointer;
+
 	&:hover {
 		background-color: var(--sub3-color);
 		color: var(--text-black-color);
 		box-shadow: 0px 2px 0px rgba(255, 255, 255, 0.25),
 			inset 0px 2px 0px rgba(0, 0, 0, 0.25);
+	}
+
+	@media (max-width: ${MOBILE_MAX_WIDTH}px) {
+		width: 60px;
+		height: 30px;
+		font-size: var(--base);
+		border-radius: 5px;
 	}
 `;
 
@@ -29,23 +38,11 @@ const WarningButton = styled(Button)`
 	}
 `;
 
-const MButton = styled(Button)`
-	width: 60px;
-	height: 30px;
-	font-size: var(--base);
-	border-radius: 5px;
+const HeaderButton = styled(Button)`
+	@media (max-width: ${MOBILE_MAX_WIDTH}px) {
+		width: 40px;
+		height: 40px;
+	}
 `;
 
-const MWarningButton = styled(WarningButton)`
-	width: 60px;
-	height: 30px;
-	font-size: var(--base);
-	border-radius: 5px;
-`;
-
-const MHeaderButton = styled(MButton)`
-	width: 40px;
-	height: 40px;
-`;
-
-export { Button, MButton, WarningButton, MWarningButton, MHeaderButton };
+export { Button, WarningButton, HeaderButton };
