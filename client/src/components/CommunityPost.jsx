@@ -10,16 +10,25 @@ const Detail = styled.div`
 		margin-right: 15px;
 	}
 	.comment,
-	.edit {
+	.buttonWrapper {
 		color: var(--main-color);
 		cursor: pointer;
 	}
-	.edit :last-child {
+	.buttonWraper :last-child {
 		margin-right: 0px;
+	}
+	button {
+		cursor: pointer;
+		margin-left: 15px;
+		border: 0;
+		outline: 0;
+		background-color: #fffffff0;
+		font-size: var(--small);
+		color: var(--main-color);
 	}
 `;
 
-const Content = styled.div`
+const Content = styled.p`
 	font-size: var(--base);
 	padding: 10px 0px;
 	text-align: justify;
@@ -36,9 +45,9 @@ function CommunityPost() {
 						댓글 <span className="comment">5</span>
 					</span>
 				</div>
-				<div className="edit">
-					<span>수정</span>
-					<span>삭제</span>
+				<div className="buttonWrapper">
+					<button type="button">수정</button>
+					<button type="button">삭제</button>
 				</div>
 			</Detail>
 			<Content>
