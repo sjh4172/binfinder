@@ -7,6 +7,7 @@ import CommunityComment from '../components/CommunityComment';
 import { Button, WarningButton } from '../styles/Buttons';
 import MyProfile from '../components/MyProfile';
 import Modal from '../components/Modal';
+import useModal from '../hooks/useModal';
 
 const DetailPage = styled.div`
 	margin-left: auto;
@@ -52,28 +53,22 @@ const DetailPage = styled.div`
 
 function CommunityDetail() {
 	const navigate = useNavigate();
-	const [isPModalOpen, setIsPModalOpen] = useState(false);
-	const [isCModalOpen, setIsCModalOpen] = useState(true);
+	const [isOpenModalP, openModalP, closeModalP] = useModal(false);
+	const [isOpenModalC, openModalC, closeModalC] = useModal(false);
 
 	const handleConfirmP = () => {
-		setIsPModalOpen(false);
-	};
-	const handleCancelP = () => {
-		setIsPModalOpen(false);
+		closeModalP();
 	};
 
 	const handleConfirmC = () => {
-		setIsCModalOpen(false);
-	};
-	const handleCancelC = () => {
-		setIsCModalOpen(false);
+		closeModalC();
 	};
 
 	return (
 		<DetailPage>
 			<Title className="title">게시글 상세 제목</Title>
 			<MyProfile />
-			<CommunityPost setIsPModalOpen={setIsPModalOpen} />
+			<CommunityPost setIsPModalOpen={openModalP} />
 			<Button className="bt list" onClick={() => navigate('/post/read')}>
 				목록 보기
 			</Button>
@@ -82,20 +77,20 @@ function CommunityDetail() {
 			<textarea placeholder="댓글을 입력하세요" />
 			<WarningButton className="wbt bt">작성</WarningButton>
 			{[1, 1, 1].map((el) => (
-				<CommunityComment key={el} setIsCModalOpen={setIsCModalOpen} />
+				<CommunityComment key={el} setIsCModalOpen={openModalC} />
 			))}
-			{isPModalOpen && (
+			{isOpenModalP && (
 				<Modal
 					message="게시글 및 댓글이 삭제 됩니다.<br>정말 삭제하시겠습니까?"
 					handleConfirm={handleConfirmP}
-					handleCancel={handleCancelP}
+					handleCancel={closeModalP}
 				/>
 			)}
-			{isCModalOpen && (
+			{isOpenModalC && (
 				<Modal
 					message="댓글이 삭제 됩니다.<br>정말 삭제하시겠습니까?"
 					handleConfirm={handleConfirmC}
-					handleCancel={handleCancelC}
+					handleCancel={closeModalC}
 				/>
 			)}
 		</DetailPage>
