@@ -1,6 +1,6 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import HorizontalLine from '../components/HorizonLine';
-
 /* 회원가입 전체 컨테이너 */
 const SignupContainer = styled.div`
 	max-width: 1024px;
@@ -41,7 +41,7 @@ const SignupTitle = styled.div`
 /* 회원가입 폼 */
 const SignupForm = styled.div`
 	width: 600px;
-	height: 660px;
+	height: 600px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -197,7 +197,7 @@ const SignupText = styled.div`
 `;
 
 /* 로그인 회원가입 링크 */
-const LoginLink = styled.a`
+const LoginLink = styled(Link)`
 	width: 140px;
 	height: 45px;
 	color: #37a0db;
@@ -237,7 +237,7 @@ function Signup() {
 				</SignupKaKaoButton>
 				<SignupTextContainer>
 					<SignupText>이미 회원이십니까? </SignupText>
-					<LoginLink>로그인</LoginLink>
+					<LoginLink to="/login">로그인</LoginLink>
 				</SignupTextContainer>
 			</SignupForm>
 		</SignupContainer>
