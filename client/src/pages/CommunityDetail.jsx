@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Title from '../styles/Title';
 import CommunityPost from '../components/CommunityPost';
 import CommunityComment from '../components/CommunityComment';
@@ -8,6 +8,7 @@ import { Button, WarningButton } from '../styles/Buttons';
 import MyProfile from '../components/MyProfile';
 import Modal from '../components/Modal';
 import useModal from '../hooks/useModal';
+import { getPost } from '../api/CommunityAPI';
 
 const DetailPage = styled.div`
 	margin-left: auto;
@@ -55,6 +56,9 @@ function CommunityDetail() {
 	const navigate = useNavigate();
 	const [isOpenModalP, openModalP, closeModalP] = useModal(false);
 	const [isOpenModalC, openModalC, closeModalC] = useModal(false);
+	const [data, setData] = useState(null);
+	const location = useLocation();
+	const postId = location.pathname.split('/')[3];
 
 	const handleConfirmP = () => {
 		closeModalP();
@@ -64,11 +68,15 @@ function CommunityDetail() {
 		closeModalC();
 	};
 
+	useEffect(() => {
+		getPost(postId).then((res) => setData(res));
+	}, []);
+
 	return (
 		<DetailPage>
-			<Title className="title">게시글 상세 제목</Title>
+			<Title className="title">{data && data.p_title}</Title>
 			<MyProfile />
-			<CommunityPost setIsPModalOpen={openModalP} />
+			<CommunityPost setIsPModalOpen={openModalP} data={data} />
 			<Button className="bt list" onClick={() => navigate('/post/read')}>
 				목록 보기
 			</Button>
