@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import useInput from '../hooks/useInput';
 import MyProfile from './MyProfile';
 
-const Content = styled.div`
+const Content = styled.p`
 	font-size: var(--base);
 	padding: 15px 0px;
 	line-height: 1.5;
@@ -11,7 +11,7 @@ const Content = styled.div`
 	word-break: break-all;
 `;
 
-const ContentInput = styled.textarea`
+const ContentTextarea = styled.textarea`
 	font-size: var(--base);
 	padding: 10px 0px;
 	line-height: 1.5;
@@ -20,15 +20,20 @@ const ContentInput = styled.textarea`
 	margin: 15px 0px;
 `;
 
-const Edit = styled.div`
+const ButtonWrapper = styled.div`
 	display: flex;
 	justify-content: right;
 	color: var(--main-color);
 	font-size: var(--small);
 
-	span {
+	button {
 		cursor: pointer;
 		margin-left: 15px;
+		border: 0;
+		outline: 0;
+		background-color: #fffffff0;
+		font-size: var(--small);
+		color: var(--main-color);
 	}
 `;
 
@@ -39,44 +44,47 @@ const Line = styled.div`
 `;
 
 function CommunityComment() {
-	const [bind] = useInput('');
-	const [edit, setEdit] = useState(false);
-	const ref = useRef(null);
+	const [textareaBind] = useInput('');
+	const [isEdit, setIsEdit] = useState(false);
+	const textareaRef = useRef(null);
 
 	// 수정 시 ContentInput에 포커스
 	const handleFocus = () => {
-		if (ref.current) {
-			ref.current.focus();
-			ref.current.setSelectionRange(bind.value.length, bind.value.length);
+		if (textareaRef.current) {
+			textareaRef.current.focus();
+			textareaRef.current.setSelectionRange(
+				textareaBind.value.length,
+				textareaBind.value.length,
+			);
 		}
 	};
 
 	useEffect(() => {
-		if (edit) {
+		if (isEdit) {
 			handleFocus();
 		}
-	}, [edit]);
+	}, [isEdit]);
 
 	return (
 		<>
 			<MyProfile className="porfile" />
-			{edit ? (
-				<ContentInput {...bind} ref={ref} autofocus />
+			{isEdit ? (
+				<ContentTextarea {...textareaBind} ref={textareaRef} autofocus />
 			) : (
-				<Content>{bind.value}</Content>
+				<Content>{textareaBind.value}</Content>
 			)}
-			<Edit>
-				{edit ? (
-					<span onClick={() => setEdit(false)} role="none">
+			<ButtonWrapper>
+				{isEdit ? (
+					<button onClick={() => setIsEdit(false)} type="button">
 						수정 완료
-					</span>
+					</button>
 				) : (
-					<span onClick={() => setEdit(true)} role="none">
+					<button onClick={() => setIsEdit(true)} type="button">
 						수정
-					</span>
+					</button>
 				)}
-				<span>삭제</span>
-			</Edit>
+				<button type="button">삭제</button>
+			</ButtonWrapper>
 			<Line />
 		</>
 	);
