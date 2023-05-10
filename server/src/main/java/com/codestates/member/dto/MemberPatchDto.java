@@ -12,5 +12,7 @@ public class MemberPatchDto {
     private String password;
     private Member.MemberStatus memberStatus;
 
-    public void setMemberId(long memberId){this.memberId = memberId;}
+    public void setMemberId(long memberId){
+        this.memberId = memberId;
+    }
 }

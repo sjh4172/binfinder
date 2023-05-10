@@ -21,15 +21,15 @@ import java.util.Map;
 public class JwtTokenizer {
     @Getter
     @Value("c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQ=")
-    private String secretKey;       // (2)
+    private String secretKey; // JWT 생성 및 검증 시 사용되는 Secret Key 정보
 
     @Getter
     @Value("${jwt.access-token-expiration-minutes}")
-    private int accessTokenExpirationMinutes;        // (3)
+    private int accessTokenExpirationMinutes; // Access Token에 대한 만료 시간 정보
 
     @Getter
     @Value("${jwt.refresh-token-expiration-minutes}")
-    private int refreshTokenExpirationMinutes;          // (4)
+    private int refreshTokenExpirationMinutes; // Refresh Token에 대한 만료 시간 정보
 
     public String encodeBase64SecretKey(String secretKey) {
         return Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
@@ -80,7 +80,7 @@ public class JwtTokenizer {
                 .parseClaimsJws(jws);
     }
 
-    // (5)
+    // JWT의 만료 일시를 지정하기 위한 메서드로 JWT 생성 시 사용
     public Date getTokenExpiration(int expirationMinutes) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, expirationMinutes);
