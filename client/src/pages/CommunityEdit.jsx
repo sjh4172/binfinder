@@ -9,6 +9,7 @@ const EditPage = styled.div`
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: var(--header-hight);
+	padding: 50px 0px 100px 0px;
 
 	.flex {
 		display: flex;
@@ -16,7 +17,13 @@ const EditPage = styled.div`
 		margin-top: 20px;
 	}
 
+	.bt {
+		font-size: var(--base);
+		height: 35px;
+	}
+
 	@media (max-width: 768px) {
+		padding-top: 30px;
 		.bt {
 			width: 80px;
 		}

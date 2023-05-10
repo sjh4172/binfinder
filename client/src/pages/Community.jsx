@@ -13,13 +13,26 @@ const CommunityPage = styled.div`
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: var(--header-hight);
+	padding-top: 50px;
 	width: 80vw;
 	max-width: 1000px;
 	.flex {
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
-		margin-bottom: 10px;
+		margin-bottom: 20px;
+		align-items: end;
+	}
+	@media (max-width: 768px) {
+		padding-top: 30px;
+	}
+`;
+const WriteBt = styled(Button)`
+	height: 30px;
+	font-size: var(--base);
+	display: flex;
+	justify-content: center;
+	@media (max-width: 786px) {
+		width: 80px;
 	}
 `;
 
@@ -32,7 +45,7 @@ function Community() {
 		<CommunityPage>
 			<div className="flex">
 				<Title>게시판</Title>
-				<Button onClick={() => navigate('/post/write')}>글 작성</Button>
+				<WriteBt onClick={() => navigate('/post/write')}>글 작성</WriteBt>
 			</div>
 			<CommunityList totalPage={totalPage} />
 			{totalPage >= 0 ? (

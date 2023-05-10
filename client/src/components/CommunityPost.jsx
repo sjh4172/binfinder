@@ -5,6 +5,7 @@ const Detail = styled.div`
 	justify-content: space-between;
 	color: var(--line-color);
 	font-size: var(--small);
+	margin-top: 15px;
 	span {
 		margin-right: 15px;
 	}

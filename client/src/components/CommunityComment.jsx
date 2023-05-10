@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import { useState, useRef, useEffect } from 'react';
 import useInput from '../hooks/useInput';
+import MyProfile from './MyProfile';
 
 const Content = styled.div`
 	font-size: var(--base);
-	padding: 10px 0px;
+	padding: 15px 0px;
 	line-height: 1.5;
 	text-align: justify;
 	word-break: break-all;
@@ -16,7 +17,7 @@ const ContentInput = styled.textarea`
 	line-height: 1.5;
 	text-align: justify;
 	word-break: break-all;
-	margin-bottom: 10px;
+	margin: 15px 0px;
 `;
 
 const Edit = styled.div`
@@ -34,7 +35,7 @@ const Edit = styled.div`
 const Line = styled.div`
 	height: 1px;
 	background-color: var(--line-color);
-	margin: 10px 0px;
+	margin: 15px 0px;
 `;
 
 function CommunityComment() {
@@ -58,7 +59,7 @@ function CommunityComment() {
 
 	return (
 		<>
-			<div>프로필</div>
+			<MyProfile className="porfile" />
 			{edit ? (
 				<ContentInput {...bind} ref={ref} autofocus />
 			) : (
