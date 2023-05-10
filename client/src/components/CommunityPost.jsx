@@ -35,7 +35,7 @@ const Content = styled.p`
 	line-height: 1.5;
 `;
 
-function CommunityPost() {
+function CommunityPost({ setIsPModalOpen }) {
 	return (
 		<>
 			<Detail>
@@ -47,7 +47,9 @@ function CommunityPost() {
 				</div>
 				<div className="buttonWrapper">
 					<button type="button">수정</button>
-					<button type="button">삭제</button>
+					<button type="button" onClick={() => setIsPModalOpen(true)}>
+						삭제
+					</button>
 				</div>
 			</Detail>
 			<Content>

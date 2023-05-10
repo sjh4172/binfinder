@@ -43,7 +43,7 @@ const Line = styled.div`
 	margin: 15px 0px;
 `;
 
-function CommunityComment() {
+function CommunityComment({ setIsCModalOpen }) {
 	const [textareaBind] = useInput('');
 	const [isEdit, setIsEdit] = useState(false);
 	const textareaRef = useRef(null);
@@ -83,7 +83,9 @@ function CommunityComment() {
 						수정
 					</button>
 				)}
-				<button type="button">삭제</button>
+				<button type="button" onClick={() => setIsCModalOpen(true)}>
+					삭제
+				</button>
 			</ButtonWrapper>
 			<Line />
 		</>
