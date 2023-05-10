@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import CommunityEditor from '../components/CommunityEditor';
 import { Button, WarningButton } from '../styles/Buttons';
+import { postCommunity } from '../api/CommunityAPI';
+import useInput from '../hooks/useInput';
 
 const EditPage = styled.div`
 	max-width: 1024px;
@@ -32,14 +34,41 @@ const EditPage = styled.div`
 
 function CommunityEdit() {
 	const navigate = useNavigate();
+	const [titleBind] = useInput();
+	const [contentBind] = useInput();
+
+	// json서버 테스트용 실제서버는 url이랑 data 변경해야함
+	function writePost(method) {
+		if (method === 'post') {
+			postCommunity('/write', {
+				p_title: titleBind.value,
+				P_content: contentBind.value,
+				m_id: '작성자아이디',
+			});
+		}
+		if (method === 'patch') {
+			postCommunity(
+				'/write/1',
+				{
+					p_title: titleBind.value,
+					P_content: contentBind.value,
+				},
+				method,
+			);
+		}
+		// 작성, 수정한 게시글로 이동
+		// navigate('/post/read/{postid})
+	}
 	return (
 		<EditPage>
-			<CommunityEditor />
+			<CommunityEditor contentBind={contentBind} titleBind={titleBind} />
 			<div className="flex">
 				<Button className="bt" onClick={() => navigate(-1)}>
 					작성 취소
 				</Button>
-				<WarningButton className="bt">작성 완료</WarningButton>
+				<WarningButton className="bt" onClick={() => writePost('patch')}>
+					작성 완료
+				</WarningButton>
 			</div>
 		</EditPage>
 	);

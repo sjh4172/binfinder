@@ -33,11 +33,11 @@ const Editor = styled.div`
 	}
 `;
 
-function CommunityEditor() {
+function CommunityEditor({ contentBind, titleBind }) {
 	return (
 		<Editor>
-			<input placeholder="제목을 입력하세요" type="text" />
-			<textarea placeholder="내용을 입력하세요" />
+			<input placeholder="제목을 입력하세요" type="text" {...titleBind} />
+			<textarea placeholder="내용을 입력하세요" {...contentBind} />
 		</Editor>
 	);
 }
