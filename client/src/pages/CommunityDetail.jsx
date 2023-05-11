@@ -8,7 +8,8 @@ import { Button, WarningButton } from '../styles/Buttons';
 import MyProfile from '../components/MyProfile';
 import Modal from '../components/Modal';
 import useModal from '../hooks/useModal';
-import { getPost } from '../api/CommunityAPI';
+import { getPost, deleteCommunity } from '../api/communityAPI';
+import { URL_POST } from '../routesURL';
 
 const DetailPage = styled.div`
 	margin-left: auto;
@@ -62,10 +63,15 @@ function CommunityDetail() {
 
 	const handleConfirmP = () => {
 		closeModalP();
+		// deleteCommunity(`/post/delete/${data.id}`);
+		deleteCommunity(`/read/${data.id}`); // json server
+		navigate(URL_POST);
 	};
 
 	const handleConfirmC = () => {
 		closeModalC();
+		// deleteCommunity(`/post/delete/${data.id}`);
+		deleteCommunity(`/read/${data.id}`); // json server
 	};
 
 	useEffect(() => {
