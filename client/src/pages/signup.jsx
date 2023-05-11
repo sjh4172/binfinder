@@ -1,4 +1,8 @@
+/* eslint-disable no-console */
 import styled from 'styled-components';
+import { Link, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
 import HorizontalLine from '../components/HorizonLine';
 
 /* 회원가입 전체 컨테이너 */
@@ -22,7 +26,63 @@ const SignupContainer = styled.div`
 		font-size: 14px;
 		font-weight: 700;
 	}
+	/* 회원가입 전체 폼 */
+	.SignupForm {
+		width: 600px;
+		height: 600px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		border: 1px solid #d9d9d9;
+		@media (max-width: 768px) {
+			width: 300px;
+			height: 540px;
+		}
+	}
+	/* 회원가입 인풋 */
+	.SignupInput {
+		width: 440px;
+		height: 45px;
+		border: none;
+		border-bottom: 2px solid #d9d9d9;
+		font-family: 'Inter';
+		display: flex;
+		align-items: center;
+		::placeholder {
+			color: #d9d9d9;
+		}
+		@media (max-width: 768px) {
+			width: 220px;
+			height: 30px;
+			font-size: 14px;
+		}
+	}
+	/* 회원가입 버튼 */
+	.SignupButton {
+		width: 440px;
+		height: 50px;
+		background-color: #37a0db;
+		color: white;
+		border-radius: 10px;
+		border: none;
+		margin-top: 40px;
+		margin-bottom: 20px;
+		font-size: 17px;
+		font-weight: 700;
+		&:hover {
+			background-color: #d9d9d9;
+		}
+		@media (max-width: 768px) {
+			width: 220px;
+			height: 40px;
+			font-size: 14px;
+			font-weight: 700;
+			margin-top: 50px;
+		}
+	}
 `;
+
 /* 회원가입 타이틀 */
 const SignupTitle = styled.div`
 	width: 600px;
@@ -38,20 +98,6 @@ const SignupTitle = styled.div`
 		font-weight: 700;
 	}
 `;
-/* 회원가입 폼 */
-const SignupForm = styled.div`
-	width: 600px;
-	height: 660px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	border: 1px solid #d9d9d9;
-	@media (max-width: 768px) {
-		width: 300px;
-		height: 500px;
-	}
-`;
 
 /* 회원가입 인풋 전체 컨테이너 */
 const SignupInputContainer = styled.div`
@@ -63,41 +109,6 @@ const SignupInputContainer = styled.div`
 	@media (max-width: 768px) {
 		width: 220px;
 		height: 75px;
-		font-size: 14px;
-		font-weight: 700;
-	}
-`;
-/* 회원가입 인풋 */
-const SignupInput = styled.div`
-	width: 440px;
-	height: 45px;
-	border-bottom: 2px solid #d9d9d9;
-	color: #d9d9d9;
-	font-family: 'Inter';
-	display: flex;
-	align-items: center;
-	@media (max-width: 768px) {
-		width: 220px;
-		height: 37.5px;
-	}
-`;
-/* 회원가입 버튼 */
-const SignupButton = styled.button`
-	width: 440px;
-	height: 50px;
-	background-color: #37a0db;
-	color: white;
-	border-radius: 10px;
-	border: none;
-	margin-bottom: 20px;
-	font-size: 17px;
-	font-weight: 700;
-	&:hover {
-		background-color: #d9d9d9;
-	}
-	@media (max-width: 768px) {
-		width: 220px;
-		height: 40px;
 		font-size: 14px;
 		font-weight: 700;
 	}
@@ -195,9 +206,22 @@ const SignupText = styled.div`
 		font-size: 14px;
 	}
 `;
-
+const ErrorMessage = styled.div`
+	width: 440px;
+	height: 10px;
+	font-size: 14px;
+	font-weight: 700;
+	color: red;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	@media (max-width: 768px) {
+		width: 220px;
+		height: 10px;
+		font-size: 10px;
+	}
+`;
 /* 로그인 회원가입 링크 */
-const LoginLink = styled.a`
+const LoginLink = styled(Link)`
 	width: 140px;
 	height: 45px;
 	color: #37a0db;
@@ -205,17 +229,91 @@ const LoginLink = styled.a`
 		font-size: 14px;
 	}
 `;
+
 function Signup() {
+	const navigate = useNavigate();
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm();
+	const onSubmit = (data) => {
+		axios
+			.post(`${process.env.REACT_APP_API_URL}/api/members`, {
+				username: data.username,
+				email: data.email,
+				password: data.password,
+			})
+			.then(() => {
+				navigate('/login');
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	};
 	return (
 		<SignupContainer>
 			<SignupTitle>회원가입</SignupTitle>
-			<SignupForm>
+			<form className="SignupForm" onSubmit={handleSubmit(onSubmit)}>
 				<SignupInputContainer>
-					<SignupInput>닉네임</SignupInput>
-					<SignupInput>이메일</SignupInput>
-					<SignupInput>비밀번호</SignupInput>
+					<input
+						className="SignupInput"
+						name="username"
+						type="text"
+						placeholder="username"
+						{...register('username', {
+							required: true,
+							minLength: {
+								value: 2,
+								message: '2글자 이상 입력해주세요',
+							},
+						})}
+					/>
+					<ErrorMessage>
+						{errors.username?.type === 'required' && '닉네임을 입력해주세요'}
+						{errors.username?.type === 'minLength' && errors.username.message}
+					</ErrorMessage>
+					<input
+						className="SignupInput"
+						name="email"
+						type="text"
+						placeholder="email"
+						{...register('email', {
+							required: true,
+							pattern: {
+								value:
+									/^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/,
+								message: '이메일 양식에 맞춰서 사용하세요 ',
+							},
+						})}
+					/>
+					<ErrorMessage>
+						{errors.email?.type === 'required' && '이메일을 입력해주세요'}
+						{errors.email?.type === 'pattern' && errors.email.message}
+					</ErrorMessage>
+					<input
+						className="SignupInput"
+						name="password"
+						type="password"
+						placeholder="password"
+						{...register('password', {
+							required: true,
+							pattern: {
+								value:
+									/(?=.*\d{1,50})(?=.*[~`!@#$%^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,16}$/,
+								message:
+									'비밀번호를 8~16자로 영문 대소문자, 숫자, 특수기호를 조합해서 사용하세요. ',
+							},
+						})}
+					/>
+					<ErrorMessage>
+						{errors.password?.type === 'required' && '비밀번호를 입력해주세요'}
+						{errors.password?.type === 'pattern' && errors.password.message}
+					</ErrorMessage>
 				</SignupInputContainer>
-				<SignupButton>회원가입</SignupButton>
+				<button className="SignupButton" type="submit">
+					회원가입
+				</button>
 				<HorizontalLine text="또는" />
 				<SignupGoogleButton>
 					<Logo>
@@ -237,9 +335,9 @@ function Signup() {
 				</SignupKaKaoButton>
 				<SignupTextContainer>
 					<SignupText>이미 회원이십니까? </SignupText>
-					<LoginLink>로그인</LoginLink>
+					<LoginLink to="/login">로그인</LoginLink>
 				</SignupTextContainer>
-			</SignupForm>
+			</form>
 		</SignupContainer>
 	);
 }
