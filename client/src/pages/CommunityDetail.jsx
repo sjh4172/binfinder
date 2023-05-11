@@ -8,6 +8,7 @@ import { Button, WarningButton } from '../styles/Buttons';
 const DetailPage = styled.div`
 	margin-left: auto;
 	margin-right: auto;
+	margin-top: var(--header-hight);
 	max-width: 1024px;
 	width: 80vw;
 	.title {

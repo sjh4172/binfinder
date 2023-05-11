@@ -12,6 +12,7 @@ const SignupContainer = styled.div`
 	font-weight: 700;
 	margin-left: auto;
 	margin-right: auto;
+	margin-top: 80px;
 	@media (max-width: 768px) {
 		display: flex;
 		justify-content: center;

@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 import { FiMenu } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import useMediaQuery from '../hooks/useMediaQuery';
 import { HeaderButton } from '../styles/Buttons';
 import { Z_INDEX_STYLED_HEADER } from '../zIndex';
 import MOBILE_MAX_WIDTH from '../mediaQuery';
+import { URL_LOGIN, URL_MAP, URL_SIGNUP } from '../routesURL';
 
 const StyledHeader = styled.header`
 	display: flex;
@@ -87,15 +89,19 @@ const Profile = styled.img`
 	}
 `;
 
-export default function Header({ isLogin, setIsLogin, isOpen, setIsOpen }) {
+export default function Header({
+	isLogin,
+	setIsLogin,
+	isSidebarOpen,
+	setIsSidebarOpen,
+}) {
 	const isMobile = useMediaQuery(`(max-width: ${MOBILE_MAX_WIDTH}px)`);
 
 	const handleLogout = () => {
 		setIsLogin(false);
-		// 지도 페이지로 네비게이트
 	};
 	const toggleSideBar = () => {
-		setIsOpen(!isOpen);
+		setIsSidebarOpen(!isSidebarOpen);
 	};
 	return (
 		<StyledHeader>
@@ -112,17 +118,11 @@ export default function Header({ isLogin, setIsLogin, isOpen, setIsOpen }) {
 				</LogoWrapper>
 				{!isLogin ? (
 					<ButtonWrapper>
-						<HeaderButton
-							type="button"
-							// 회원가입 페이지로 링크
-						>
-							Sign up
+						<HeaderButton type="button">
+							<Link to={URL_SIGNUP}>Sign up</Link>
 						</HeaderButton>
-						<HeaderButton
-							type="button"
-							// 로그인 페이지로 링크
-						>
-							Log in
+						<HeaderButton type="button">
+							<Link to={URL_LOGIN}>Log in</Link>
 						</HeaderButton>
 					</ButtonWrapper>
 				) : (
@@ -133,7 +133,7 @@ export default function Header({ isLogin, setIsLogin, isOpen, setIsOpen }) {
 							alt="프로필"
 						/>
 						<HeaderButton type="button" onClick={handleLogout}>
-							Log out
+							<Link to={URL_MAP}>Log out</Link>
 						</HeaderButton>
 					</ButtonWrapper>
 				)}

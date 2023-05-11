@@ -10,7 +10,7 @@ const GlobalStyles = createGlobalStyle`
     --sub1-color: #2049DA;
     --sub2-color: #79DCF2;
     --sub3-color: #C3EDFF;
-    --line-color: #D9D9D9
+    --line-color: #D9D9D9;
     --bg-color:#F1F2F3;
     --text-white-color: #FFFFFF;
     --text-black-color: #000000;
@@ -21,6 +21,9 @@ const GlobalStyles = createGlobalStyle`
     --large: 17px;
     --base: 15px;
     --small: 13px;
+    /* 헤더 높이 */
+    --header-hight: 80px;
+    --Mheader-hight: 70px;
     }
 
      *{
