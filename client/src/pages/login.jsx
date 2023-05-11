@@ -1,5 +1,10 @@
+/* eslint-disable no-console */
 import styled from 'styled-components';
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
 import HorizontalLine from '../components/HorizonLine';
+import { loginSuccess, loginFailure } from '../store/userSlice';
 
 /* 로그인 전체 컨테이너 */
 const LoginContainer = styled.div`
@@ -22,6 +27,38 @@ const LoginContainer = styled.div`
 		font-size: 14px;
 		font-weight: 700;
 	}
+	.LoginForm {
+		width: 600px;
+		height: 600px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		border: 1px solid #d9d9d9;
+		@media (max-width: 768px) {
+			width: 300px;
+			height: 500px;
+			font-size: 14px;
+		}
+	}
+	.LoginInput {
+		width: 440px;
+		height: 45px;
+		border: none;
+		border-bottom: 2px solid #d9d9d9;
+		color: #d9d9d9;
+		font-family: 'Inter';
+		display: flex;
+		align-items: center;
+		@media (max-width: 768px) {
+			width: 220px;
+			height: 37.5px;
+			font-size: 14px;
+		}
+		::placeholder {
+			color: #d9d9d9;
+		}
+	}
 `;
 /* 로그인 타이틀 */
 const LoginTitle = styled.div`
@@ -36,20 +73,6 @@ const LoginTitle = styled.div`
 		height: 40px;
 		font-size: 26px;
 		font-weight: 700;
-	}
-`;
-/* 로그인 폼 */
-const LoginForm = styled.div`
-	width: 600px;
-	height: 600px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	border: 1px solid #d9d9d9;
-	@media (max-width: 768px) {
-		width: 300px;
-		height: 500px;
 	}
 `;
 
@@ -67,20 +90,7 @@ const LoginInputContainer = styled.div`
 		font-weight: 700;
 	}
 `;
-/* 로그인 인풋 */
-const LoginInput = styled.div`
-	width: 440px;
-	height: 45px;
-	border-bottom: 2px solid #d9d9d9;
-	color: #d9d9d9;
-	font-family: 'Inter';
-	display: flex;
-	align-items: center;
-	@media (max-width: 768px) {
-		width: 220px;
-		height: 37.5px;
-	}
-`;
+
 /* 로그인 버튼 */
 const LoginButton = styled.button`
 	width: 440px;
@@ -89,6 +99,7 @@ const LoginButton = styled.button`
 	color: white;
 	border-radius: 10px;
 	border: none;
+	margin-top: 20px;
 	margin-bottom: 20px;
 	font-size: 17px;
 	font-weight: 700;
@@ -138,7 +149,7 @@ const Logo = styled.div`
 	@media (max-width: 768px) {
 		width: 60px;
 		> img {
-			width: 15px;
+			width: 20px;
 			height: 24px;
 		}
 	}
@@ -192,7 +203,20 @@ const LoginText = styled.div`
 	height: 45px;
 	text-align: center;
 `;
-
+const ErrorMessage = styled.div`
+	width: 440px;
+	height: 10px;
+	font-size: 14px;
+	font-weight: 700;
+	color: red;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	@media (max-width: 768px) {
+		width: 220px;
+		height: 10px;
+		font-size: 10px;
+	}
+`;
 /* 로그인 회원가입 링크 */
 const SignupLink = styled.a`
 	width: 140px;
@@ -200,13 +224,74 @@ const SignupLink = styled.a`
 	color: #37a0db;
 `;
 function Login() {
+	const dispatch = useDispatch();
+
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm();
+	const onSubmit = (data) => {
+		axios
+			.post(`${process.env.REACT_APP_API_URL}/login`, {
+				email: data.email,
+				password: data.password,
+			})
+			.then((res) => {
+				const accessToken = res.data.access_token;
+				const refreshToken = res.data.refresh_token;
+				localStorage.setItem('accessToken', accessToken);
+				localStorage.setItem('refreshToken', refreshToken);
+				axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+				dispatch(loginSuccess({ email: res.data.email }));
+			})
+			.catch((err) => {
+				console.log(err);
+				dispatch(loginFailure());
+			});
+	};
 	return (
 		<LoginContainer>
 			<LoginTitle>로그인</LoginTitle>
-			<LoginForm>
+			<form className="LoginForm" onSubmit={handleSubmit(onSubmit)}>
 				<LoginInputContainer>
-					<LoginInput>이메일</LoginInput>
-					<LoginInput>비밀번호</LoginInput>
+					<input
+						className="LoginInput"
+						name="email"
+						type="text"
+						placeholder="이메일"
+						{...register('email', {
+							required: true,
+							pattern: {
+								value:
+									/^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/,
+								message: '이메일 양식에 맞춰서 사용하세요 ',
+							},
+						})}
+					/>
+					<ErrorMessage>
+						{errors.email?.type === 'required' && '이메일을 입력해주세요'}
+						{errors.email?.type === 'pattern' && errors.email.message}
+					</ErrorMessage>
+					<input
+						className="LoginInput"
+						name="password"
+						type="password"
+						placeholder="비밀번호"
+						{...register('password', {
+							required: true,
+							pattern: {
+								value:
+									/(?=.*\d{1,50})(?=.*[~`!@#$%^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,16}$/,
+								message:
+									'8~16자로 영문 2개, 숫자, 특수기호를 조합해서 사용하세요. ',
+							},
+						})}
+					/>
+					<ErrorMessage>
+						{errors.password?.type === 'required' && '비밀번호를 입력해주세요'}
+						{errors.password?.type === 'pattern' && errors.password.message}
+					</ErrorMessage>
 				</LoginInputContainer>
 				<LoginButton>로그인</LoginButton>
 				<HorizontalLine text="또는" />
@@ -232,7 +317,7 @@ function Login() {
 					<LoginText>아직 회원이 아니십니까?</LoginText>
 					<SignupLink>회원가입</SignupLink>
 				</LoginTextContainer>
-			</LoginForm>
+			</form>
 		</LoginContainer>
 	);
 }
