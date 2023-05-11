@@ -8,8 +8,9 @@ import { Button, WarningButton } from '../styles/Buttons';
 import MyProfile from '../components/MyProfile';
 import Modal from '../components/Modal';
 import useModal from '../hooks/useModal';
-import { getPost, deleteCommunity } from '../api/communityAPI';
+import { getPost, deleteCommunity, postCommunity } from '../api/communityAPI';
 import { URL_POST } from '../routesURL';
+import useInput from '../hooks/useInput';
 
 const DetailPage = styled.div`
 	margin-left: auto;
@@ -60,23 +61,36 @@ function CommunityDetail() {
 	const [data, setData] = useState(null);
 	const location = useLocation();
 	const postId = location.pathname.split('/')[3];
+	const [textareaBind] = useInput();
+	const [isHeart, setIsHeart] = useState(true);
 
+	// 초기 데이터 불러오기
+	useEffect(() => {
+		getPost(postId).then((res) => setData(res));
+		// 하트 여부 표시(setIsHeart)
+	}, []);
+
+	// 게시글 삭제 함수
 	const handleConfirmP = () => {
 		closeModalP();
 		// deleteCommunity(`/post/delete/${data.id}`);
 		deleteCommunity(`/read/${data.id}`); // json server
 		navigate(URL_POST);
 	};
-
+	// 댓글 삭제 함수
 	const handleConfirmC = () => {
 		closeModalC();
 		// deleteCommunity(`/post/delete/${data.id}`);
 		deleteCommunity(`/read/${data.id}`); // json server
 	};
 
-	useEffect(() => {
-		getPost(postId).then((res) => setData(res));
-	}, []);
+	function postComment(value) {
+		postCommunity(`/comment/write`, {
+			p_id: data.id,
+			c_contant: value,
+			m_id: '작성자 아이디',
+		});
+	}
 
 	return (
 		<DetailPage>
@@ -86,10 +100,17 @@ function CommunityDetail() {
 			<Button className="bt list" onClick={() => navigate('/post/read')}>
 				목록 보기
 			</Button>
-			<Button className="bt">♥ 10</Button>
+			<Button className="bt" onClick={() => setIsHeart(!isHeart)}>
+				{isHeart ? '♥ 10' : '♡ 10'}
+			</Button>
 			<Title className="title">1개의 댓글</Title>
-			<textarea placeholder="댓글을 입력하세요" />
-			<WarningButton className="wbt bt">작성</WarningButton>
+			<textarea placeholder="댓글을 입력하세요" {...textareaBind} />
+			<WarningButton
+				className="wbt bt"
+				onClick={() => postComment(textareaBind.value)}
+			>
+				작성
+			</WarningButton>
 			{[1, 1, 1].map((el) => (
 				<CommunityComment key={el} setIsCModalOpen={openModalC} />
 			))}
