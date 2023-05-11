@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CommunityEditor from '../components/CommunityEditor';
 import { Button, WarningButton } from '../styles/Buttons';
-import { postCommunity } from '../api/CommunityAPI';
+import { postCommunity } from '../api/communityAPI';
 import useInput from '../hooks/useInput';
 
 const EditPage = styled.div`
