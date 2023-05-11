@@ -24,7 +24,7 @@ const Horizontal = styled.div`
 	}
 `;
 const Line = styled.div`
-	width: 50px;
+	width: 100px;
 	padding: 0 20px;
 	font-size: 17px;
 	font-weight: 700;
@@ -32,6 +32,9 @@ const Line = styled.div`
 	justify-content: center;
 	align-items: center;
 	color: #d9d9d9;
+	@media (max-width: 768px) {
+		font-size: 14px;
+	}
 `;
 
 function HorizontalLine({ text }) {
