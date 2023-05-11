@@ -16,7 +16,7 @@ const Table = styled.table`
 	// 기본뷰 테이블 열 비율
 	tr {
 		display: flex;
-		padding: 8px 0px;
+		padding: 15px 0px;
 	}
 
 	tr th:nth-child(1) {
@@ -75,7 +75,7 @@ const Table = styled.table`
 		}
 		.bottom {
 			color: #b3b3b3;
-			margin-top: 5px;
+			margin-top: 10px;
 			display: flex;
 			justify-content: right;
 		}
@@ -101,15 +101,15 @@ function CommunityList({ totalPage }) {
 				<div className="empty">게시물이 없습니다.</div>
 			) : (
 				<tbody>
-					{Array(10)
+					{Array(20)
 						.fill(1)
 						.map((el) => (
 							<tr key={el}>
 								<th
-									title="게시글 목록 제목게시글 목록 제목게시글 목록 제목[5]"
+									title="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [5]"
 									className="title"
 								>
-									게시글 목록 제목게시글 목록 제목게시글 목록 제목
+									aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 									<span>[5]</span>
 								</th>
 								<th className="none">김땡땡</th>
