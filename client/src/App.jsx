@@ -31,17 +31,21 @@ import useMediaQuery from './hooks/useMediaQuery';
 function App() {
 	const isMobile = useMediaQuery('(max-width: 768px)');
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+	const [isSidebarOpeFirst, setIsSidebarOpeFirst] = useState(true);
 	return (
 		<>
 			<GlobalStyles />
 			<Header
 				isSidebarOpen={isSidebarOpen}
 				setIsSidebarOpen={setIsSidebarOpen}
+				setIsSidebarOpeFirst={setIsSidebarOpeFirst}
 			/>
-			<Sidebar
-				isSidebarOpen={isSidebarOpen}
-				setIsSidebarOpen={setIsSidebarOpen}
-			/>
+			{!isSidebarOpeFirst && (
+				<Sidebar
+					isSidebarOpen={isSidebarOpen}
+					setIsSidebarOpen={setIsSidebarOpen}
+				/>
+			)}
 			<Routes>
 				<Route path={URL_MAP} element={<MapPage />} />
 				<Route path={URL_LOGIN} element={<Login />} />

@@ -94,6 +94,7 @@ export default function Header({
 	setIsLogin,
 	isSidebarOpen,
 	setIsSidebarOpen,
+	setIsSidebarOpeFirst,
 }) {
 	const isMobile = useMediaQuery(`(max-width: ${MOBILE_MAX_WIDTH}px)`);
 
@@ -102,6 +103,7 @@ export default function Header({
 	};
 	const toggleSideBar = () => {
 		setIsSidebarOpen(!isSidebarOpen);
+		setIsSidebarOpeFirst(false);
 	};
 	return (
 		<StyledHeader>
