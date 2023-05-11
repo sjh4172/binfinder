@@ -44,7 +44,8 @@ const Line = styled.div`
 `;
 
 function CommunityComment({ setIsCModalOpen }) {
-	const [textareaBind] = useInput('');
+	// 초기 값 props로 받으면 useInput에 넣기
+	const [textareaBind] = useInput('555');
 	const [isEdit, setIsEdit] = useState(false);
 	const textareaRef = useRef(null);
 
@@ -65,6 +66,7 @@ function CommunityComment({ setIsCModalOpen }) {
 		}
 	}, [isEdit]);
 
+	// 댓글 수정, 삭제 함수 작성해야함
 	return (
 		<>
 			<MyProfile className="porfile" />
