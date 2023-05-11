@@ -14,7 +14,7 @@ public class VoteDto {
     public static class CreateRequest {
         private Long memberId;
         private Long trashCanId;
-        private VoteType voteType;
+        private VoteTypeEnum voteType;
     }
 
     @Getter
@@ -24,12 +24,12 @@ public class VoteDto {
         private Long id;
         private Long memberId;
         private Long trashCanId;
-        private VoteType voteType;
+        private VoteTypeEnum voteType;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
 
-    public enum VoteType {
+    public enum VoteTypeEnum {
         LIKE, DISLIKE
     }
 }
