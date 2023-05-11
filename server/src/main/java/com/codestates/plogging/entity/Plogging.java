@@ -2,12 +2,15 @@ package com.codestates.plogging.entity;
 
 import com.codestates.audit.BaseEntity;
 import com.codestates.member.entity.Member;
+import com.codestates.plogging.comment.entity.PlogComment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,4 +33,6 @@ public class Plogging extends BaseEntity {
     @NotBlank
     private String content;
     private Integer likeCount;
+    @OneToMany(mappedBy = "plogging",cascade = CascadeType.ALL)
+    private List<PlogComment> comments = new ArrayList<>();
 }

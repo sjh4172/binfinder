@@ -1,12 +1,11 @@
 package com.codestates.plogging.mapper;
 
+import com.codestates.plogging.dto.PlogDetailDto;
 import com.codestates.plogging.dto.PlogPatchDto;
 import com.codestates.plogging.dto.PlogPostDto;
 import com.codestates.plogging.dto.PlogResponseDto;
 import com.codestates.plogging.entity.Plogging;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
@@ -16,9 +15,9 @@ public interface PlogMapper {
     Plogging plogPostDtoToPlogging(PlogPostDto plogPostDto);
     Plogging plogPatchDtoToPlogging(PlogPatchDto plogPatchDto);
     PlogPostDto ploggingToPlogPostDto(Plogging plogging);
-    PlogPatchDto plpoggingToPlogPatchDto(Plogging plogging);
-    List<PlogPostDto> ploggingListToPlogPostDto(List<Plogging> ploggingList);
+    PlogPatchDto ploggingToPlogPatchDto(Plogging plogging);
     PlogResponseDto ploggingToPlogResponseDto(Plogging plogging);
+    PlogDetailDto ploggingToPlogDetailDto(Plogging plogging);
 
 
 }

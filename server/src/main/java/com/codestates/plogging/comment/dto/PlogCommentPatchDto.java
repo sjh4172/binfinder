@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class PlogCommentPatchDto {
-    @NotNull
-    private long plogId;
+    private long plogCommentId;
     private String plogComment;
 }

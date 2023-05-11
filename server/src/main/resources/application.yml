@@ -23,7 +23,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/mydb?createdDatabaseIfNotExist=true&useUnicode=true&characterSetResults=UTF-8&useSSL=true
     username: root
-    password: 1234
+    password: power1450@
   jpa:
     hibernate:
       ddl-auto: create  # (1) 스키마 자동 생성

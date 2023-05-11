@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 public class PlogComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentId;
+    private Long plogCommentId;
     @Column(nullable = false)
     @NotBlank
     private String plogComment;
