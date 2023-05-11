@@ -35,7 +35,7 @@ const ListItem = styled.li`
 	}
 `;
 
-const LinkItem = styled(Link)`
+const LinkItem = styled.a`
 	height: 40px;
 	width: 230px;
 	text-align: center;
@@ -45,24 +45,23 @@ const LinkItem = styled(Link)`
 export default function SidebarList() {
 	return (
 		<List>
-			{/* 각 메뉴에 페이지 링크 연결 */}
 			<ListItem>
-				<LinkItem to={URL_INTRODUCTION}>Introduction</LinkItem>
+				<LinkItem href={URL_INTRODUCTION}>Introduction</LinkItem>
 			</ListItem>
 			<ListItem>
-				<LinkItem to={URL_MAP}>Map</LinkItem>
+				<LinkItem href={URL_MAP}>Map</LinkItem>
 			</ListItem>
 			<ListItem>
-				<LinkItem to={URL_POST}>Community</LinkItem>
+				<LinkItem href={URL_POST}>Community</LinkItem>
 			</ListItem>
 			<ListItem>
-				<LinkItem to={URL_PLOGGING}>Plogging</LinkItem>
+				<LinkItem href={URL_PLOGGING}>Plogging</LinkItem>
 			</ListItem>
 			<ListItem>
-				<LinkItem to={URL_NOTICE}>Notice</LinkItem>
+				<LinkItem href={URL_NOTICE}>Notice</LinkItem>
 			</ListItem>
 			<ListItem>
-				<LinkItem to={URL_MYPAGE}>My page</LinkItem>
+				<LinkItem href={URL_MYPAGE}>My page</LinkItem>
 			</ListItem>
 		</List>
 	);
