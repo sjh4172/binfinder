@@ -42,7 +42,7 @@ const Line = styled.hr`
 export default function Footer() {
 	const { pathname } = useLocation();
 	if (pathname === '/signup') return null;
-
+	if (pathname === '/login') return null;
 	return (
 		<FooterWrapper>
 			<SectionWrapper>
