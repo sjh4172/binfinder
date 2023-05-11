@@ -264,8 +264,8 @@ function Signup() {
 						{...register('username', {
 							required: true,
 							minLength: {
-								value: 5,
-								message: '5글자 이상 입력해주세요',
+								value: 2,
+								message: '2글자 이상 입력해주세요',
 							},
 						})}
 					/>
