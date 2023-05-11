@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PlogCommentResponseDto {
     private long memberId;
-    private long plogCommentId;
     private String plogComment;
     private String memberName;
     private LocalDateTime createdAt;

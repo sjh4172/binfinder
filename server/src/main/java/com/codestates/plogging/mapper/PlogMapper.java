@@ -6,16 +6,15 @@ import com.codestates.plogging.dto.PlogPostDto;
 import com.codestates.plogging.dto.PlogResponseDto;
 import com.codestates.plogging.entity.Plogging;
 import org.mapstruct.Mapper;
-
-import java.util.List;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface PlogMapper {
 
     Plogging plogPostDtoToPlogging(PlogPostDto plogPostDto);
+//    @Mapping(target = "plogId", source = "plogPatchDto.plogId")
+//    @Mapping(target = "member", ignore = true)
     Plogging plogPatchDtoToPlogging(PlogPatchDto plogPatchDto);
-    PlogPostDto ploggingToPlogPostDto(Plogging plogging);
-    PlogPatchDto ploggingToPlogPatchDto(Plogging plogging);
     PlogResponseDto ploggingToPlogResponseDto(Plogging plogging);
     PlogDetailDto ploggingToPlogDetailDto(Plogging plogging);
 

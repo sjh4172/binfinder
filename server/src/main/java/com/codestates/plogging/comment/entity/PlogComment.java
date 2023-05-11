@@ -1,4 +1,5 @@
 package com. codestates.plogging.comment.entity;
+import com.codestates.audit.BaseEntity;
 import com.codestates.member.entity.Member;
 import com.codestates.plogging.entity.Plogging;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @Entity
 @NoArgsConstructor
-public class PlogComment {
+public class PlogComment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long plogCommentId;

@@ -1,5 +1,6 @@
 package com.codestates.plogging.dto;
 
+import com.codestates.plogging.comment.dto.PlogCommentResponseDto;
 import com.codestates.plogging.comment.entity.PlogComment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,5 +21,5 @@ public class PlogDetailDto {
     private Integer likeCount;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private List<PlogComment> plogComments;
+    private List<PlogCommentResponseDto> comments; // 추가된 필드
 }

@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/Pcomments")
+@RequestMapping("api/pcomments")
 public class PlogCommentController {
     private PlogCommentMapper mapper;
     private PlogCommentService plogCommentService;
@@ -27,10 +27,10 @@ public class PlogCommentController {
         this.mapper = mapper;
         this.plogCommentService = plogCommentService;
     }
-    @PostMapping
-    public ResponseEntity postPlogComment(@RequestBody PlogCommentPostDto commentPostDto){
-        PlogComment plogComment = plogCommentService.createPlogComment(mapper.plogCommentPostDtoToPlogComment(commentPostDto));
-        URI uri = UriComponentsBuilder.newInstance().path("/api/Pcomments"+plogComment.getPlogCommentId())
+    @PostMapping("/{plogId}")
+    public ResponseEntity postPlogComment(@PathVariable Long plogId, @RequestBody PlogCommentPostDto commentPostDto){
+        PlogComment plogComment = plogCommentService.createPlogComment(plogId, mapper.plogCommentPostDtoToPlogComment(commentPostDto));
+        URI uri = UriComponentsBuilder.newInstance().path("/api/pcomments"+plogComment.getPlogCommentId())
                 .build().toUri();
         return ResponseEntity.created(uri).build();
     }
@@ -52,7 +52,7 @@ public class PlogCommentController {
                         .collect(Collectors.toList());
         return new ResponseEntity<>(responses,HttpStatus.OK);
     }
-    @DeleteMapping("{/pcId}")
+    @DeleteMapping("/{pcId}")
     public ResponseEntity deletePlogComment(@PathVariable("pcId") long pcId){
         plogCommentService.deletePlogComment(pcId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

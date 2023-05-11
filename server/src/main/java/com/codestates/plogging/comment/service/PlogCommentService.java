@@ -2,21 +2,30 @@ package com.codestates.plogging.comment.service;
 
 import com.codestates.plogging.comment.entity.PlogComment;
 import com.codestates.plogging.comment.repository.PlogCommentRepository;
+import com.codestates.plogging.entity.Plogging;
+import com.codestates.plogging.repository.PlogRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
 public class PlogCommentService {
     public final PlogCommentRepository plogCommentRepository;
+    public final PlogRepository plogRepository;
 
-    public PlogCommentService(PlogCommentRepository plogCommentRepository) {
+    public PlogCommentService(PlogCommentRepository plogCommentRepository, PlogRepository plogRepository) {
         this.plogCommentRepository = plogCommentRepository;
+        this.plogRepository = plogRepository;
     }
-    public PlogComment createPlogComment(PlogComment plogComment){
+
+    public PlogComment createPlogComment(Long postId, PlogComment plogComment){
+        Plogging plogging = plogRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("Cannot find PlogPost with ID: " + postId));
+        plogComment.setPlogging(plogging);
         return plogCommentRepository.save(plogComment);
     }
     public PlogComment updatePlogComment(PlogComment plogComment){

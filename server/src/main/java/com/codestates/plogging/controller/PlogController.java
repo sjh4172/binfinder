@@ -71,6 +71,7 @@ public class PlogController {
     // 게시글 수정
     @PatchMapping("/{plogId}")
     public ResponseEntity patchPlog(@PathVariable("plogId") Long plogId, @RequestBody PlogPatchDto plogPatchDto) {
+        plogPatchDto.setPlogId(plogId);
         Plogging plogging = plogMapper.plogPatchDtoToPlogging(plogPatchDto);
         Plogging updatedPlog = plogService.updatePlog(plogging);
         PlogResponseDto plogResponseDto = plogMapper.ploggingToPlogResponseDto(updatedPlog);

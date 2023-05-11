@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.Optional;
 
-//DB에서 사용자의 크리덴셜을 조회한 후 그것을 AuthenticationManager에게 전달하는 클래스입니다.
+// DB에서 사용자의 크리덴셜을 조회한 후 그것을 AuthenticationManager에게 전달하는 클래스입니다.
 @Component
 public class MemberDetailsService implements UserDetailsService{
     private final MemberRepository memberRepository;
@@ -33,12 +33,13 @@ public class MemberDetailsService implements UserDetailsService{
     }
 
     private final class MemberDetails extends Member implements UserDetails {
-        // (1)
+
         MemberDetails(Member member) {
             setMemberId(member.getMemberId());
             setEmail(member.getEmail());
             setPassword(member.getPassword());
             setRoles(member.getRoles());
+            // 왜 getUsername()이 없는지 확인
         }
 
         @Override

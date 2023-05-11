@@ -11,11 +11,8 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @NoArgsConstructor
 public class PlogCommentPostDto {
-    @NotNull
     private long memberId;
-    @NotNull
     private long plogCommentId;
-    @NotBlank(message = "댓글 내용이 없습니다.")
     private String plogComment;
 
 }
