@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import HorizontalLine from '../components/HorizonLine';
 import { loginSuccess, loginFailure } from '../store/userSlice';
+import login from '../api/authAPI';
 
 /* 로그인 전체 컨테이너 */
 const LoginContainer = styled.div`
@@ -232,11 +233,7 @@ function Login() {
 		formState: { errors },
 	} = useForm();
 	const onSubmit = (data) => {
-		axios
-			.post(`${process.env.REACT_APP_API_URL}/login`, {
-				email: data.email,
-				password: data.password,
-			})
+		login(data.email, data.password)
 			.then((res) => {
 				const accessToken = res.data.access_token;
 				const refreshToken = res.data.refresh_token;
