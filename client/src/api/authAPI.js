@@ -8,5 +8,11 @@ const login = (email, password) => {
 		password,
 	});
 };
-
+export const signup = (username, email, password) => {
+	return axios.post(`${apiUrl}/login`, {
+		username,
+		email,
+		password,
+	});
+};
 export default login;
