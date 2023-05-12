@@ -240,9 +240,12 @@ function Login() {
 			.then((res) => {
 				const accessToken = res.data.access_token;
 				const refreshToken = res.data.refresh_token;
+
 				localStorage.setItem('accessToken', accessToken);
 				localStorage.setItem('refreshToken', refreshToken);
+
 				axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+
 				dispatch(loginSuccess({ email: res.data.email }));
 			})
 			.catch((err) => {
