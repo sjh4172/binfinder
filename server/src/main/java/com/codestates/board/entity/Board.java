@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 public class Board extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,4 +30,16 @@ public class Board extends BaseEntity {
 	@JoinColumn(name="MEMBER_ID")
 	private Member member;
 
+	@Column(nullable = false)
+	private Long likes;
+
+	@ElementCollection
+	private List<Long> likedUserIds;
+
+	@Column
+	private int likedCount;          // 좋아요 개수
+
+	public Board() {
+		this.likes = 0L;
+	}
 }

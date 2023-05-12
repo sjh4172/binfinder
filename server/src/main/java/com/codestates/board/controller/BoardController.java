@@ -80,4 +80,17 @@ public class BoardController {
 
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+
+	@PostMapping("/like/{b_id}/{m_id}")
+	public ResponseEntity postLike(@PathVariable("b_id") long b_id, @PathVariable("m_id") long m_id) {
+		Board response = boardService.addLike(b_id, m_id);
+
+		return new ResponseEntity<>(mapper.boardToBoardResponseDto(response), HttpStatus.OK);
+	}
+	@PostMapping("/unlike/{b_id}/{m_id}")
+	public ResponseEntity deleteLike(@PathVariable("b_id") long b_id, @PathVariable("m_id") long m_id) {
+		Board response = boardService.removeLike(b_id, m_id);
+
+		return new ResponseEntity<>(mapper.boardToBoardResponseDto(response), HttpStatus.OK);
+	}
 }
