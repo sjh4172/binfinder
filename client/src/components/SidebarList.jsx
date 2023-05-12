@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
 	URL_MAP,
 	URL_MYPAGE,
@@ -14,6 +14,11 @@ const List = styled.ul`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	.current {
+		border-radius: 10px;
+		color: var(--text-white-color);
+		background-color: var(--main-color);
+	}
 `;
 
 const ListItem = styled.li`
@@ -35,34 +40,35 @@ const ListItem = styled.li`
 	}
 `;
 
-const LinkItem = styled.a`
+const AItem = styled.a`
 	height: 40px;
 	width: 230px;
 	text-align: center;
 	line-height: 40px;
 `;
 
+const list = [
+	{ url: URL_INTRODUCTION, name: 'Introduction' },
+	{ url: URL_MAP, name: 'Map' },
+	{ url: URL_POST, name: 'Community' },
+	{ url: URL_PLOGGING, name: 'Plogging' },
+	{ url: URL_NOTICE, name: 'Notice' },
+	{ url: URL_MYPAGE, name: 'My page' },
+];
+
 export default function SidebarList() {
+	const location = useLocation();
+	const path = location.pathname.split('/')[1];
 	return (
 		<List>
-			<ListItem>
-				<LinkItem href={URL_INTRODUCTION}>Introduction</LinkItem>
-			</ListItem>
-			<ListItem>
-				<LinkItem href={URL_MAP}>Map</LinkItem>
-			</ListItem>
-			<ListItem>
-				<LinkItem href={URL_POST}>Community</LinkItem>
-			</ListItem>
-			<ListItem>
-				<LinkItem href={URL_PLOGGING}>Plogging</LinkItem>
-			</ListItem>
-			<ListItem>
-				<LinkItem href={URL_NOTICE}>Notice</LinkItem>
-			</ListItem>
-			<ListItem>
-				<LinkItem href={URL_MYPAGE}>My page</LinkItem>
-			</ListItem>
+			{list.map((el) => (
+				<ListItem
+					key={el.name}
+					className={path === el.url.split('/')[1] && 'current'}
+				>
+					<AItem href={el.url}>{el.name}</AItem>
+				</ListItem>
+			))}
 		</List>
 	);
 }
