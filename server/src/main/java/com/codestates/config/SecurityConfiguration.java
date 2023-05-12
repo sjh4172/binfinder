@@ -8,6 +8,7 @@ import com.codestates.auth.handler.MemberAccessDeniedHandler;
 import com.codestates.auth.handler.MemberAuthenticationEntryPoint;
 import com.codestates.auth.handler.MemberAuthenticationFailureHandler;
 import com.codestates.auth.handler.MemberAuthenticationSuccessHandler;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,8 +17,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -35,11 +40,17 @@ import static org.springframework.security.config.Customizer.withDefaults;
 - 세션 정책 설정 추가
 - JwtVerificationFilter 추가
 - Exception 발생시 처리하는 핸들러 추가
+- OAuth 2 인증 설정
 
 */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration{
+    @Value("${spring.security.oauth2.client.registration.google.clientId}")  // application.yml
+    private String clientId;
+
+    @Value("${spring.security.oauth2.client.registration.google.clientSecret}") // application.yml
+    private String clientSecret;
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
 
@@ -90,6 +101,7 @@ public class SecurityConfiguration{
 
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder(){

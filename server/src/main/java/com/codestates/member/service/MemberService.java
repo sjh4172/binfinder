@@ -58,12 +58,10 @@ public class MemberService {
         verifyAuthorizedMember(member.getMemberId());
         Member findMember = findVerifiedMember(member.getMemberId());
 
-        Optional.ofNullable(member.getEmail())
-                .ifPresent(email -> findMember.setEmail(email));
         Optional.ofNullable(member.getUsername())
                 .ifPresent(name -> findMember.setUsername(name));
         Optional.ofNullable(member.getPassword())
-                .ifPresent(password -> findMember.setPassword(password));
+                        .ifPresent(password->findMember.setPassword(passwordEncoder.encode(password)));
         Optional.ofNullable(member.getMemberStatus())
                 .ifPresent(memberStatus -> findMember.setMemberStatus(memberStatus));
 
@@ -135,6 +133,7 @@ public class MemberService {
         List<String> adminMailAddress = List.of("sy@email.com", "ny@email.com","jh@email.com","nayeon@email.com");
         return adminMailAddress.contains(email);
     }
+    // 오버로딩
     private boolean isAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getAuthorities().stream()
