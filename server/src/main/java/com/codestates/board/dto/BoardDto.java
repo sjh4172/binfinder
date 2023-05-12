@@ -1,5 +1,6 @@
 package com.codestates.board.dto;
 
+import com.codestates.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,5 +32,7 @@ public class BoardDto {
 		private String b_title;
 		private String b_content;
 		private boolean b_good;
+		private long likes;
+		private long m_id;
 	}
 }

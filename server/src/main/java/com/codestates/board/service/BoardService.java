@@ -55,5 +55,26 @@ public class BoardService {
 										new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
 		return findBoard;
 	}
+	public Board addLike(long b_id, long m_id) {
+		Board board = boardRepository.findById(b_id).orElseThrow(() -> new RuntimeException("Board not found"));
+		List<Long> likedUserIds = board.getLikedUserIds();
+
+		if (!likedUserIds.contains(m_id)) {
+			likedUserIds.add(m_id);
+			board.setLikedUserIds(likedUserIds);
+			board.setLikes(board.getLikes() + 1);
+		}
+
+		return boardRepository.save(board);
+	}
+	public Board removeLike(long b_id, long m_id) {
+		Board board = boardRepository.findById(b_id).orElseThrow(() -> new RuntimeException("Board not found"));
+		List<Long> likedUserIds = board.getLikedUserIds();
+		if (likedUserIds.remove(m_id)) {
+			board.setLikedUserIds(likedUserIds);
+			board.setLikes(board.getLikes() - 1);
+		}
+		return boardRepository.save(board);
+	}
 
 }
