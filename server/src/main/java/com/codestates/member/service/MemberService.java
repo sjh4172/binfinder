@@ -12,12 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional
 @Slf4j
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder; // SpringSecurity
