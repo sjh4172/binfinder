@@ -4,13 +4,17 @@ import com.codestates.board.dto.BoardDto;
 import com.codestates.board.entity.Board;
 import com.codestates.board.mapper.BoardMapper;
 import com.codestates.board.service.BoardService;
+import com.codestates.exception.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +33,7 @@ public class BoardController {
 	}
 
 	@PostMapping
-	public ResponseEntity postBoard (@RequestBody BoardDto.Post postDto) {
+	public ResponseEntity postBoard (@Valid @RequestBody BoardDto.Post postDto) {
 
 		// uri 리턴 방식으로 변경
 		Board board = boardService.createBoard(mapper.boardPostDtoToBoard(postDto));
@@ -47,7 +51,7 @@ public class BoardController {
 	}
 
 	@PatchMapping("/{id}")
-	public ResponseEntity patchBoard(@PathVariable("id") long id, @RequestBody BoardDto.Patch patchDto) {
+	public ResponseEntity patchBoard(@PathVariable("id") long id, @Valid @RequestBody BoardDto.Patch patchDto) {
 		patchDto.setB_id(id);
 		Board board = mapper.boardPatchDtoToBoard(patchDto);
 		Board response = boardService.updateBoard(board);
@@ -92,5 +96,22 @@ public class BoardController {
 		Board response = boardService.removeLike(b_id, m_id);
 
 		return new ResponseEntity<>(mapper.boardToBoardResponseDto(response), HttpStatus.OK);
+	}
+	@ExceptionHandler
+	public ResponseEntity handleException(MethodArgumentNotValidException e) {
+		// (1)
+		final List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
+
+		// (2)
+		List<ErrorResponse.FieldError> errors =
+						fieldErrors.stream()
+										.map(error -> new ErrorResponse.FieldError(
+														error.getField(),
+														error.getRejectedValue(),
+														error.getDefaultMessage()))
+										.collect(Collectors.toList());
+
+//		return new ResponseEntity<>(new ErrorResponse(errors), HttpStatus.BAD_REQUEST);
+			return ResponseEntity.badRequest().body(ErrorResponse.of(e.getBindingResult()));
 	}
 }

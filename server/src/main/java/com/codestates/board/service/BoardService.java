@@ -25,7 +25,6 @@ public class BoardService {
 		Board findBoard = findVerifiedBoard(board.getB_id());
 		findBoard.setB_title(board.getB_title());
 		findBoard.setB_content(board.getB_content());
-		findBoard.setB_good(board.isB_good());
 
 		return boardRepository.save(findBoard);
 	}

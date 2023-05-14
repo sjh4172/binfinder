@@ -22,8 +22,6 @@ public class Board extends BaseEntity {
 	private String b_title;
 	@Column
 	private String b_content;
-	@Column
-	private boolean b_good;
 
 	// N : 1(Member) 양방향 매핑
 	@ManyToOne
@@ -35,9 +33,6 @@ public class Board extends BaseEntity {
 
 	@ElementCollection
 	private List<Long> likedUserIds;
-
-	@Column
-	private int likedCount;          // 좋아요 개수
 
 	public Board() {
 		this.likes = 0L;
