@@ -1,5 +1,6 @@
 package com.codestates.exception;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -9,8 +10,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+// Error 정보만 담아서 응답으로 전송하기 위한 클래스
 @Getter
+@AllArgsConstructor
 public class ErrorResponse {
+
     List<FieldError> fieldErrors;
     List<ConstraintViolationError> violationErrors;
     private String reason;
@@ -37,6 +41,7 @@ public class ErrorResponse {
     public static ErrorResponse of(String message) {
         return new ErrorResponse(message);
     }
+
     @Getter
     public static class FieldError {
         private String field;
@@ -49,13 +54,16 @@ public class ErrorResponse {
             this.reason = reason;
         }
 
+        public static FieldError of(String field, Object rejectedValue, String reason) {
+            return new FieldError(field, rejectedValue, reason);
+        }
+
         public static List<FieldError> of(BindingResult bindingResult) {
             final List<org.springframework.validation.FieldError> fieldErrors = bindingResult.getFieldErrors();
             return fieldErrors.stream()
-                    .map(error -> new FieldError(error.getField(),error.getRejectedValue(),error.getDefaultMessage()))
+                    .map(error -> FieldError.of(error.getField(), error.getRejectedValue(), error.getDefaultMessage()))
                     .collect(Collectors.toList());
         }
-
     }
 
     @Getter
