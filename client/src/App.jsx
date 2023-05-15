@@ -63,7 +63,5 @@ function App() {
 		</>
 	);
 }
-// 지금 깃상황
-// add, commmit-> push 안됨. Everything up-to-date 계속
 
 export default App;
