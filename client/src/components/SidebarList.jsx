@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import {
 	URL_MAP,
 	URL_MYPAGE,
@@ -9,36 +9,42 @@ import {
 	URL_INTRODUCTION,
 } from '../routesURL';
 
+const navigations = [
+	{ url: URL_INTRODUCTION, name: 'Introduction' },
+	{ url: URL_MAP, name: 'Map' },
+	{ url: URL_POST, name: 'Community' },
+	{ url: URL_PLOGGING, name: 'Plogging' },
+	{ url: URL_NOTICE, name: 'Notice' },
+	{ url: URL_MYPAGE, name: 'My page' },
+];
+
 export default function SidebarList() {
+	const location = useLocation();
+	const path = location.pathname.split('/')[1];
 	return (
 		<List>
-			{/* 각 메뉴에 페이지 링크 연결 */}
-			<ListItem>
-				<LinkItem to={URL_INTRODUCTION}>Introduction</LinkItem>
-			</ListItem>
-			<ListItem>
-				<LinkItem to={URL_MAP}>Map</LinkItem>
-			</ListItem>
-			<ListItem>
-				<LinkItem to={URL_POST}>Community</LinkItem>
-			</ListItem>
-			<ListItem>
-				<LinkItem to={URL_PLOGGING}>Plogging</LinkItem>
-			</ListItem>
-			<ListItem>
-				<LinkItem to={URL_NOTICE}>Notice</LinkItem>
-			</ListItem>
-			<ListItem>
-				<LinkItem to={URL_MYPAGE}>My page</LinkItem>
-			</ListItem>
+			{navigations.map((el) => (
+				<ListItem
+					key={el.name}
+					className={path === el.url.split('/')[1] && 'current'}
+				>
+					<NavigationLink href={el.url}>{el.name}</NavigationLink>
+				</ListItem>
+			))}
 		</List>
 	);
 }
+
 const List = styled.ul`
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	.current {
+		border-radius: 10px;
+		color: var(--text-white-color);
+		background-color: var(--main-color);
+	}
 `;
 
 const ListItem = styled.li`
@@ -60,7 +66,7 @@ const ListItem = styled.li`
 	}
 `;
 
-const LinkItem = styled(Link)`
+const NavigationLink = styled.a`
 	height: 40px;
 	width: 230px;
 	text-align: center;

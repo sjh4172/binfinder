@@ -14,7 +14,7 @@ export default function Header({
 	setIsSidebarOpen,
 	setIsSidebarOpeFirst,
 }) {
-	const isMobile = useMediaQuery(`(max-width: ${MOBILE_MAX_WIDTH}px)`);
+	const isMobile = useMediaQuery();
 
 	const handleLogout = () => {
 		setIsLogin(false);
