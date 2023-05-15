@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
+import { URL_LOGIN, URL_SIGNUP } from '../routesURL';
 
 const FooterWrapper = styled.footer`
 	/* position: fixed;
@@ -41,8 +42,8 @@ const Line = styled.hr`
 
 export default function Footer() {
 	const { pathname } = useLocation();
-	if (pathname === '/signup') return null;
-	if (pathname === '/login') return null;
+	if (pathname === URL_SIGNUP) return null;
+	if (pathname === URL_LOGIN) return null;
 	return (
 		<FooterWrapper>
 			<SectionWrapper>
