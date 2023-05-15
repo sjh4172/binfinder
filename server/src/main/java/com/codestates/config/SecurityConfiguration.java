@@ -86,14 +86,14 @@ public class SecurityConfiguration{
 
                         .antMatchers(HttpMethod.GET, "/boards").permitAll() //전체 게시판 조회는 로그인 없이도 가능
                         .antMatchers(HttpMethod.GET, "/boards/**").hasAnyRole("ADMIN", "USER") // 특정 게시판 조회는 관리자, 회원만 가능
-                        .antMatchers(HttpMethod.POST, "/boards").hasRole("USER") // 게시판 글 작성은 회원만 가능
+                        .antMatchers(HttpMethod.POST, "/boards").hasAnyRole("USER") // 게시판 글 작성은 회원만 가능
                         .antMatchers(HttpMethod.PATCH, "/boards/**").hasAnyRole("ADMIN","USER") // 불량 게시판 글일 경우 관리자가 수정, 회원 본인 글 수정
                         .antMatchers(HttpMethod.DELETE, "/boards/**").hasAnyRole("ADMIN","USER") // 불량 게시판 글일 경우 관리자가 삭제, 회원 본인 글 삭제
 
-                        .antMatchers(HttpMethod.GET, "/comments").hasRole("ADMIN") // 전체 댓글 조회는 관리자만 가능
-                        .antMatchers(HttpMethod.GET, "/comments/").hasRole("ADMIN") // 전체 댓글 조회는 관리자만 가능
+                        .antMatchers(HttpMethod.GET, "/comments").hasAnyRole("ADMIN","USER") // 전체 댓글 조회는 관리자와 회원만 가능
+                        .antMatchers(HttpMethod.GET, "/comments/").hasAnyRole("ADMIN","USER") // 전체 댓글 조회는 관리자와 회원만 가능
                         .antMatchers(HttpMethod.GET, "/comments/**").hasAnyRole("ADMIN", "USER")
-                        .antMatchers(HttpMethod.POST, "/comments").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/comments").hasRole("USER") // 댓글 작성은 회원만 가능
                         .antMatchers(HttpMethod.PATCH, "/comments/**").hasAnyRole("ADMIN","USER") // 불량 댓글일 경우 관리자가 수정, 회원 댓글 수정
                         .antMatchers(HttpMethod.DELETE, "/comments/**").hasAnyRole("ADMIN","USER") // 불량 게시판 댓글일 경우 관리자가 삭제, 회원 댓글 삭제
 
