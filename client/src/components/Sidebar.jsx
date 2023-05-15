@@ -23,6 +23,19 @@ const slideOutLeft = keyframes`
   }
 `;
 
+export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }) {
+	return (
+		<SidebarWrapper isOpen={isSidebarOpen}>
+			<CloseButton onClick={() => setIsSidebarOpen(false)}>
+				<CloseIcon />
+			</CloseButton>
+			<SidebarContent>
+				<MyProfile />
+				<SidebarList />
+			</SidebarContent>
+		</SidebarWrapper>
+	);
+}
 const SidebarWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -66,17 +79,3 @@ const SidebarContent = styled.div`
 	align-items: flex-start;
 	height: 100%;
 `;
-
-export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }) {
-	return (
-		<SidebarWrapper isOpen={isSidebarOpen}>
-			<CloseButton onClick={() => setIsSidebarOpen(false)}>
-				<CloseIcon />
-			</CloseButton>
-			<SidebarContent>
-				<MyProfile />
-				<SidebarList />
-			</SidebarContent>
-		</SidebarWrapper>
-	);
-}

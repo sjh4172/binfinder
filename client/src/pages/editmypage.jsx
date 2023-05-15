@@ -1,6 +1,46 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 
+function EditMyPage() {
+	const [isListHover, setIsListHover] = useState(false);
+	return (
+		<EditMyPageContainer>
+			<EditMyPageTitle>회원정보 수정</EditMyPageTitle>
+			<EditMyPageForm>
+				<Logo
+					onMouseOver={() => setIsListHover(true)}
+					onMouseOut={() => setIsListHover(false)}
+				>
+					<img
+						src={
+							isListHover
+								? `${process.env.PUBLIC_URL}/assets/Ellipse 5.png`
+								: `${process.env.PUBLIC_URL}/assets/Ellipse.png`
+						}
+						alt="Ellipse.png"
+					/>
+				</Logo>
+				<InputTitleContainer>
+					<InputContainer>
+						<InputTitle>닉네임:</InputTitle>
+						<Input>수정할 닉네임을 입력해주세요.</Input>
+					</InputContainer>
+					<InputContainer>
+						<InputTitle>비밀번호:</InputTitle>
+						<Input>수정할 비밀번호를 입력해주세요.</Input>
+					</InputContainer>
+				</InputTitleContainer>
+				<ButtonForm>
+					<WithdrawalButton>회원탈퇴</WithdrawalButton>
+					<ButtonContainer>
+						<Button>수정</Button>
+						<Button>취소</Button>
+					</ButtonContainer>
+				</ButtonForm>
+			</EditMyPageForm>
+		</EditMyPageContainer>
+	);
+}
 /* 수정페이지 전체 컨테이너 */
 const EditMyPageContainer = styled.div`
 	max-width: 1024px;
@@ -185,44 +225,4 @@ const Button = styled.button`
 		font-weight: 700;
 	}
 `;
-function EditMyPage() {
-	const [isListHover, setIsListHover] = useState(false);
-	return (
-		<EditMyPageContainer>
-			<EditMyPageTitle>회원정보 수정</EditMyPageTitle>
-			<EditMyPageForm>
-				<Logo
-					onMouseOver={() => setIsListHover(true)}
-					onMouseOut={() => setIsListHover(false)}
-				>
-					<img
-						src={
-							isListHover
-								? `${process.env.PUBLIC_URL}/assets/Ellipse 5.png`
-								: `${process.env.PUBLIC_URL}/assets/Ellipse.png`
-						}
-						alt="Ellipse.png"
-					/>
-				</Logo>
-				<InputTitleContainer>
-					<InputContainer>
-						<InputTitle>닉네임:</InputTitle>
-						<Input>수정할 닉네임을 입력해주세요.</Input>
-					</InputContainer>
-					<InputContainer>
-						<InputTitle>비밀번호:</InputTitle>
-						<Input>수정할 비밀번호를 입력해주세요.</Input>
-					</InputContainer>
-				</InputTitleContainer>
-				<ButtonForm>
-					<WithdrawalButton>회원탈퇴</WithdrawalButton>
-					<ButtonContainer>
-						<Button>수정</Button>
-						<Button>취소</Button>
-					</ButtonContainer>
-				</ButtonForm>
-			</EditMyPageForm>
-		</EditMyPageContainer>
-	);
-}
 export default EditMyPage;
