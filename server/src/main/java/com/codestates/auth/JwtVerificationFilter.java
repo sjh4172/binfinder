@@ -80,7 +80,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter { // request 당
     }
 
     // JWT로부터 추출한 클레임 정보를 이용해 인증 객체(Authentication)를 생성하고 SecurityContext에 저장하는 메소드
-    // Authentication 객체에 파싱 한 claims에서 email 정보를 얻는다.
+    // Authentication 객체에 파싱한 claims에서 email 정보를 얻는다.
+    // Authentication 객체에 파싱한 claims에서 memberId 정보를 얻는다.
     private void setAuthenticationToContext(Map<String, Object> claims) {
 //        String username = (String) claims.get("username");   // (4-1)
         String email = (String) claims.get("email"); // 수정된 부분
@@ -90,6 +91,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter { // request 당
         // SecurityContextHolder에 생성한 인증 객체를 저장. 다른 부분에서 인증된 사용자의 정보 사용 가능!
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
+
 }
 
 /*
