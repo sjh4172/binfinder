@@ -1,6 +1,30 @@
 import styled from 'styled-components';
 import { Button } from '../styles/Buttons';
 
+function TrashCanModal({ trashCan, onClose }) {
+	const handleBackgroundClick = (event) => {
+		if (event.target.classList.contains('modal-container')) {
+			onClose();
+		}
+	};
+	console.log(trashCan);
+
+	return (
+		<ModalContainer className="modal-container" onClick={handleBackgroundClick}>
+			<Modal>
+				<ModalHeader>
+					<ModalTitle>11</ModalTitle>
+					<DistanceText>100m</DistanceText>
+				</ModalHeader>
+				<BtnContent>
+					<TrashModalButton>로드뷰</TrashModalButton>
+					<TrashModalButton>길찾기</TrashModalButton>
+					<TrashModalButton>여기없어요</TrashModalButton>
+				</BtnContent>
+			</Modal>
+		</ModalContainer>
+	);
+}
 const ModalContainer = styled.div`
 	position: fixed;
 	top: 0;
@@ -60,29 +84,5 @@ const TrashModalButton = styled(Button)`
 		width: 100px;
 	}
 `;
-function TrashCanModal({ trashCan, onClose }) {
-	const handleBackgroundClick = (event) => {
-		if (event.target.classList.contains('modal-container')) {
-			onClose();
-		}
-	};
-	console.log(trashCan);
-
-	return (
-		<ModalContainer className="modal-container" onClick={handleBackgroundClick}>
-			<Modal>
-				<ModalHeader>
-					<ModalTitle>11</ModalTitle>
-					<DistanceText>100m</DistanceText>
-				</ModalHeader>
-				<BtnContent>
-					<TrashModalButton>로드뷰</TrashModalButton>
-					<TrashModalButton>길찾기</TrashModalButton>
-					<TrashModalButton>여기없어요</TrashModalButton>
-				</BtnContent>
-			</Modal>
-		</ModalContainer>
-	);
-}
 
 export default TrashCanModal;
