@@ -3,53 +3,6 @@ import { useState, useRef, useEffect } from 'react';
 import useInput from '../hooks/useInput';
 import MyProfile from './MyProfile';
 
-const Content = styled.p`
-	font-size: var(--base);
-	padding: 15px 0px;
-	line-height: 1.5;
-	text-align: justify;
-	word-break: break-all;
-`;
-
-const ContentTextarea = styled.textarea`
-	font-size: var(--base);
-	padding: 10px 0px;
-	line-height: 1.5;
-	text-align: justify;
-	word-break: break-all;
-	margin: 15px 0px;
-`;
-
-const ButtonWrapper = styled.div`
-	display: flex;
-	justify-content: right;
-	color: var(--main-color);
-	font-size: var(--small);
-
-	button {
-		cursor: pointer;
-		margin-left: 15px;
-		border: 0;
-		outline: 0;
-		background-color: #fffffff0;
-		font-size: var(--small);
-		color: var(--main-color);
-	}
-`;
-
-const Line = styled.div`
-	height: 1px;
-	background-color: var(--line-color);
-	margin: 15px 0px;
-`;
-
-const CommentDitail = styled.div`
-	display: flex;
-	justify-content: space-between;
-	font-size: var(--small);
-	color: var(--line-color);
-`;
-
 function CommunityComment({ setIsCModalOpen }) {
 	// 초기 값 props로 받으면 useInput에 넣기
 	const [textareaBind] = useInput('555');
@@ -103,5 +56,52 @@ function CommunityComment({ setIsCModalOpen }) {
 		</>
 	);
 }
+
+const Content = styled.p`
+	font-size: var(--base);
+	padding: 15px 0px;
+	line-height: 1.5;
+	text-align: justify;
+	word-break: break-all;
+`;
+
+const ContentTextarea = styled.textarea`
+	font-size: var(--base);
+	padding: 10px 0px;
+	line-height: 1.5;
+	text-align: justify;
+	word-break: break-all;
+	margin: 15px 0px;
+`;
+
+const ButtonWrapper = styled.div`
+	display: flex;
+	justify-content: right;
+	color: var(--main-color);
+	font-size: var(--small);
+
+	button {
+		cursor: pointer;
+		margin-left: 15px;
+		border: 0;
+		outline: 0;
+		background-color: #fffffff0;
+		font-size: var(--small);
+		color: var(--main-color);
+	}
+`;
+
+const Line = styled.div`
+	height: 1px;
+	background-color: var(--line-color);
+	margin: 15px 0px;
+`;
+
+const CommentDitail = styled.div`
+	display: flex;
+	justify-content: space-between;
+	font-size: var(--small);
+	color: var(--line-color);
+`;
 
 export default CommunityComment;

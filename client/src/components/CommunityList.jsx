@@ -1,5 +1,49 @@
 import styled from 'styled-components';
 
+function CommunityList({ totalPage }) {
+	return (
+		<Table>
+			<thead>
+				<tr>
+					<th>제목</th>
+					<th className="none">작성자</th>
+					<th className="none">작성일</th>
+					<th className="none">좋아요</th>
+				</tr>
+			</thead>
+			{totalPage < 0 ? (
+				<div className="empty">게시물이 없습니다.</div>
+			) : (
+				<tbody>
+					{Array(20)
+						.fill(1)
+						.map((el) => (
+							<tr key={el}>
+								<th
+									title="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [5]"
+									className="title"
+								>
+									aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+									<span>[5]</span>
+								</th>
+								<th className="none">김땡땡</th>
+								<th className="none">2023.05.05</th>
+								<th className="none">1000</th>
+								<div className="bottom">
+									<th>김땡땡</th>
+									<th>23.05.05</th>
+									<th>
+										<span>♥</span> 1000
+									</th>
+								</div>
+							</tr>
+						))}
+				</tbody>
+			)}
+		</Table>
+	);
+}
+
 const Table = styled.table`
 	width: 100%;
 	max-width: 1024px;
@@ -85,49 +129,5 @@ const Table = styled.table`
 		}
 	}
 `;
-
-function CommunityList({ totalPage }) {
-	return (
-		<Table>
-			<thead>
-				<tr>
-					<th>제목</th>
-					<th className="none">작성자</th>
-					<th className="none">작성일</th>
-					<th className="none">좋아요</th>
-				</tr>
-			</thead>
-			{totalPage < 0 ? (
-				<div className="empty">게시물이 없습니다.</div>
-			) : (
-				<tbody>
-					{Array(20)
-						.fill(1)
-						.map((el) => (
-							<tr key={el}>
-								<th
-									title="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [5]"
-									className="title"
-								>
-									aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-									<span>[5]</span>
-								</th>
-								<th className="none">김땡땡</th>
-								<th className="none">2023.05.05</th>
-								<th className="none">1000</th>
-								<div className="bottom">
-									<th>김땡땡</th>
-									<th>23.05.05</th>
-									<th>
-										<span>♥</span> 1000
-									</th>
-								</div>
-							</tr>
-						))}
-				</tbody>
-			)}
-		</Table>
-	);
-}
 
 export default CommunityList;
