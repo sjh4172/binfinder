@@ -60,19 +60,19 @@ const TrashModalButton = styled(Button)`
 		width: 100px;
 	}
 `;
-
-function TrashCanModal({ onClose }) {
+function TrashCanModal({ trashCan, onClose }) {
 	const handleBackgroundClick = (event) => {
-		if (event.target === event.currentTarget) {
+		if (event.target.classList.contains('modal-container')) {
 			onClose();
 		}
 	};
+	console.log(trashCan);
 
 	return (
-		<ModalContainer onClick={handleBackgroundClick}>
+		<ModalContainer className="modal-container" onClick={handleBackgroundClick}>
 			<Modal>
 				<ModalHeader>
-					<ModalTitle>쓰레기통 위치명</ModalTitle>
+					<ModalTitle>11</ModalTitle>
 					<DistanceText>100m</DistanceText>
 				</ModalHeader>
 				<BtnContent>
