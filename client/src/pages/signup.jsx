@@ -49,7 +49,7 @@ function Signup() {
 						className="SignupInput"
 						name="username"
 						type="text"
-						placeholder="username"
+						placeholder="닉네임"
 						{...register('username', {
 							required: true,
 							minLength: {
@@ -66,7 +66,7 @@ function Signup() {
 						className="SignupInput"
 						name="email"
 						type="text"
-						placeholder="email"
+						placeholder="이메일"
 						{...register('email', {
 							required: true,
 							validate: validateEmail,
@@ -81,7 +81,7 @@ function Signup() {
 						className="SignupInput"
 						name="password"
 						type="password"
-						placeholder="password"
+						placeholder="비밀번호"
 						{...register('password', {
 							required: true,
 							validate: validatePassword,
@@ -268,7 +268,7 @@ const Logo = styled.div`
 	@media (max-width: 768px) {
 		width: 60px;
 		> img {
-			width: 15px;
+			width: 20px;
 			height: 24px;
 		}
 	}

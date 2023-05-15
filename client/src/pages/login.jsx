@@ -246,7 +246,7 @@ const LoginGoogleButton = styled.button`
 	@media (max-width: 768px) {
 		width: 220px;
 		height: 40px;
-		font-size: 14px;
+		font-size: 13px;
 		font-weight: 700;
 	}
 `;
@@ -293,8 +293,9 @@ const LoginKaKaoButton = styled.button`
 	@media (max-width: 768px) {
 		width: 220px;
 		height: 40px;
-		font-size: 14px;
+		font-size: 13px;
 		font-weight: 700;
+		display: flex;
 	}
 `;
 /* 로그인 텍스트 전체 컨테이너 */
@@ -304,6 +305,7 @@ const LoginTextContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
 	@media (max-width: 768px) {
+		font-size: 13px;
 		width: 220px;
 		height: 40px;
 	}
