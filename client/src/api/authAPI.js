@@ -6,6 +6,10 @@ const login = (email, password) => {
 	return axios.post(`${apiUrl}/login`, {
 		email,
 		password,
+		headers: {
+			'Content-Type': 'application/json',
+			withCredentials: true,
+		},
 	});
 };
 export const signup = (username, email, password) => {
@@ -13,6 +17,10 @@ export const signup = (username, email, password) => {
 		username,
 		email,
 		password,
+		headers: {
+			'Content-Type': 'application/json',
+			withCredentials: true,
+		},
 	});
 };
 export default login;
