@@ -1,5 +1,52 @@
 import styled from 'styled-components';
 
+function Mypage() {
+	return (
+		<MyPageContainer>
+			<MyPageTitle>회원정보</MyPageTitle>
+			<MyPageForm>
+				<ProfileContainer>
+					<Logo>
+						<img
+							src={`${process.env.PUBLIC_URL}/assets/Ellipse.png`}
+							alt="Ellipse.png"
+						/>
+					</Logo>
+					<InputContainer>
+						<Input>닉네임: </Input>
+						<Input>이메일: </Input>
+						<Input2>
+							프로필 수정
+							<Icon>
+								<img
+									src={`${process.env.PUBLIC_URL}/assets/mdi_pencil.png`}
+									alt="pencil.png"
+								/>
+							</Icon>
+						</Input2>
+					</InputContainer>
+				</ProfileContainer>
+				<ListContainer>
+					<PostList>내가 작성한 게시글</PostList>
+					<List>
+						내가 작성한 게시글내가 작성한 게시글내가 작성한 게시글내가 작성한
+						게시글
+					</List>
+					<List>sss</List>
+					<List>sss</List>
+					<CommentList>내가 작성한 댓글</CommentList>
+					<List>sss</List>
+					<List>sss</List>
+					<List>sss</List>
+					<RequestList>내가 요청한 위치 요청</RequestList>
+					<List>sss</List>
+					<List>sss</List>
+					<List>sss</List>
+				</ListContainer>
+			</MyPageForm>
+		</MyPageContainer>
+	);
+}
 /* 마이페이지 전체 컨테이너 */
 const MyPageContainer = styled.div`
 	max-width: 1024px;
@@ -191,52 +238,4 @@ const List = styled.div`
 		height: 10px;
 	}
 `;
-
-function Mypage() {
-	return (
-		<MyPageContainer>
-			<MyPageTitle>회원정보</MyPageTitle>
-			<MyPageForm>
-				<ProfileContainer>
-					<Logo>
-						<img
-							src={`${process.env.PUBLIC_URL}/assets/Ellipse.png`}
-							alt="Ellipse.png"
-						/>
-					</Logo>
-					<InputContainer>
-						<Input>닉네임: </Input>
-						<Input>이메일: </Input>
-						<Input2>
-							프로필 수정
-							<Icon>
-								<img
-									src={`${process.env.PUBLIC_URL}/assets/mdi_pencil.png`}
-									alt="pencil.png"
-								/>
-							</Icon>
-						</Input2>
-					</InputContainer>
-				</ProfileContainer>
-				<ListContainer>
-					<PostList>내가 작성한 게시글</PostList>
-					<List>
-						내가 작성한 게시글내가 작성한 게시글내가 작성한 게시글내가 작성한
-						게시글
-					</List>
-					<List>sss</List>
-					<List>sss</List>
-					<CommentList>내가 작성한 댓글</CommentList>
-					<List>sss</List>
-					<List>sss</List>
-					<List>sss</List>
-					<RequestList>내가 요청한 위치 요청</RequestList>
-					<List>sss</List>
-					<List>sss</List>
-					<List>sss</List>
-				</ListContainer>
-			</MyPageForm>
-		</MyPageContainer>
-	);
-}
 export default Mypage;

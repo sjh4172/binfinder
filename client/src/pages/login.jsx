@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import HorizontalLine from '../components/HorizonLine';
 import { loginSuccess, loginFailure } from '../store/userSlice';
 import login from '../api/authAPI';
@@ -110,7 +111,7 @@ function Login() {
 				</LoginKaKaoButton>
 				<LoginTextContainer>
 					<LoginText>아직 회원이 아니십니까?</LoginText>
-					<SignupLink>회원가입</SignupLink>
+					<SignupLink to="/signup">회원가입</SignupLink>
 				</LoginTextContainer>
 			</form>
 		</LoginContainer>
@@ -332,7 +333,7 @@ const ErrorMessage = styled.div`
 	}
 `;
 /* 로그인 회원가입 링크 */
-const SignupLink = styled.a`
+const SignupLink = styled(Link)`
 	width: 140px;
 	height: 45px;
 	color: #37a0db;
