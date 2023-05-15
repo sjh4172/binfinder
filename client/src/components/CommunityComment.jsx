@@ -43,6 +43,13 @@ const Line = styled.div`
 	margin: 15px 0px;
 `;
 
+const CommentDitail = styled.div`
+	display: flex;
+	justify-content: space-between;
+	font-size: var(--small);
+	color: var(--line-color);
+`;
+
 function CommunityComment({ setIsCModalOpen }) {
 	// 초기 값 props로 받으면 useInput에 넣기
 	const [textareaBind] = useInput('555');
@@ -75,20 +82,23 @@ function CommunityComment({ setIsCModalOpen }) {
 			) : (
 				<Content>{textareaBind.value}</Content>
 			)}
-			<ButtonWrapper>
-				{isEdit ? (
-					<button onClick={() => setIsEdit(false)} type="button">
-						수정 완료
+			<CommentDitail>
+				<time dateTime="2023-05-09">2023.05.9</time>
+				<ButtonWrapper>
+					{isEdit ? (
+						<button onClick={() => setIsEdit(false)} type="button">
+							수정 완료
+						</button>
+					) : (
+						<button onClick={() => setIsEdit(true)} type="button">
+							수정
+						</button>
+					)}
+					<button type="button" onClick={() => setIsCModalOpen(true)}>
+						삭제
 					</button>
-				) : (
-					<button onClick={() => setIsEdit(true)} type="button">
-						수정
-					</button>
-				)}
-				<button type="button" onClick={() => setIsCModalOpen(true)}>
-					삭제
-				</button>
-			</ButtonWrapper>
+				</ButtonWrapper>
+			</CommentDitail>
 			<Line />
 		</>
 	);
