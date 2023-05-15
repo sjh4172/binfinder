@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
+import ReactDOM from 'react-dom/client';
 import styled from 'styled-components';
 import KAKAO_MAP_API_KEY from '../api/kakaoMap';
 import Modal from './Modal';
+import TrashCanModal from './TrashCanModal';
 
 // 맵사이즈
 const MapStyle = styled.div`
@@ -24,16 +26,22 @@ const MapStyle = styled.div`
 function Map() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [trashCans, setTrashCans] = useState([]);
+	const [trashMarkers, setTrashMarkers] = useState([]);
 
 	// 쓰레기통 데이터를 가져오는 함수
 	const fetchTrashCans = useCallback(async () => {
 		try {
-			const response = await axios.get('http://example.com/api/v1/trash-cans');
+			const response = await axios.get('http://localhost:4001/trashCan');
 			setTrashCans(response.data);
+			console.log(response.data);
+			setTrashMarkers([]);
 		} catch (error) {
 			console.error(error);
 		}
 	}, []);
+	useEffect(() => {
+		fetchTrashCans();
+	}, [fetchTrashCans]);
 
 	const loadKakaoMap = useCallback(() => {
 		// 카카오맵 스크립트 읽어오기
@@ -66,14 +74,15 @@ function Map() {
 							image: userMarkerImage,
 						});
 						marker.setMap(map);
+
 						// 쓰레기통 마커
 						trashCans.forEach((trashCan) => {
 							const trashMarkerPosition = new kakao.maps.LatLng(
-								trashCan.latitude,
-								trashCan.longitude,
+								trashCan.Latitude,
+								trashCan.Longitude,
 							);
 							const trashCanMarkerImage =
-								trashCan.canType === 'recycle'
+								trashCan.canType === '재활용쓰레기'
 									? new kakao.maps.MarkerImage(
 											`${process.env.PUBLIC_URL}/assets/RecycleIcon.png`,
 											new kakao.maps.Size(30),
@@ -88,7 +97,19 @@ function Map() {
 								position: trashMarkerPosition,
 								image: trashCanMarkerImage,
 							});
+							// 클릭 이벤트 등록
+							kakao.maps.event.addListener(trashMarker, 'click', () => {
+								const root = document.getElementById('modal-root');
+								ReactDOM.createRoot(root).render(
+									<TrashCanModal
+										onClose={() => setTrashCans([])}
+										trashMarker={trashMarker}
+									/>,
+								);
+							});
+
 							trashMarker.setMap(map);
+							setTrashMarkers((prevState) => [...prevState, trashMarker]);
 						});
 					},
 					(error) => {
@@ -100,12 +121,12 @@ function Map() {
 			});
 		};
 		document.head.appendChild(script);
-	}, []);
+	}, [trashCans, setTrashMarkers, setIsModalOpen]);
 
 	useEffect(() => {
 		loadKakaoMap();
 	}, [loadKakaoMap]);
-
+	// GPS OFF 모달창
 	const handleModalConfirm = () => {
 		setIsModalOpen(false);
 	};

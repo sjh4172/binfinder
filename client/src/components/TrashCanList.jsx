@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import axios from 'axios';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import TrashCanModal from './TrashCanModal';
 
@@ -61,40 +62,64 @@ const Distance = styled.div`
 `;
 
 function NearbyTrashCanList() {
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const handleOpenModal = () => {
-		setIsModalOpen(true);
-	};
+	const [trashCans, setTrashCans] = useState([]);
+	const [currentPosition, setCurrentPosition] = useState(null);
+	// 현재 위치 정보 가져오기
+	useEffect(() => {
+		navigator.geolocation.getCurrentPosition(
+			(position) => {
+				setCurrentPosition(position.coords);
+			},
+			(error) => {
+				console.error(error);
+			},
+		);
+	}, []);
 
-	const handleCloseModal = () => {
-		setIsModalOpen(false);
-	};
+	// 쓰레기통 데이터를 가져오는 함수
+	const fetchTrashCans = useCallback(async () => {
+		try {
+			const response = await axios.get('http://localhost:4001/trashCan');
+			const sortedTrashCans = response.data
+				.map((trashCan) => {
+					if (!currentPosition) return { ...trashCan, distance: null };
+					// 현재 위치와 쓰레기통의 거리 계산
+					const distance =
+						Math.sqrt(
+							(currentPosition.latitude - trashCan.Latitude) ** 2 +
+								(currentPosition.longitude - trashCan.Longitude) ** 2,
+						) * 100000;
+					return { ...trashCan, distance };
+				})
+				.sort((a, b) => {
+					// 거리순으로 정렬
+					return a.distance - b.distance;
+				});
+			setTrashCans(sortedTrashCans);
+		} catch (error) {
+			console.error(error);
+		}
+	}, [currentPosition]);
+
+	useEffect(() => {
+		if (currentPosition) {
+			fetchTrashCans();
+		}
+	}, [currentPosition, fetchTrashCans]);
+
 	return (
 		<ListWapper>
-			<div className="distanceText">
-				<button type="button" onClick={handleOpenModal}>
-					ex)쓰레기상세페이지
-				</button>
-				거리순
-			</div>
 			<List>
-				<ListItem>
-					<Rank>1</Rank>
-					<Name>휘경동 쓰레기통</Name>
-					<Distance>100m</Distance>
-				</ListItem>
-				<ListItem>
-					<Rank>2</Rank>
-					<Name>자양동 쓰레기통</Name>
-					<Distance>150m</Distance>
-				</ListItem>
-				<ListItem>
-					<Rank>3</Rank>
-					<Name>용두동 쓰레기통</Name>
-					<Distance>200m</Distance>
-				</ListItem>
+				{trashCans.map((trashCan, index) => (
+					<ListItem key={trashCan.id}>
+						<Rank>{index + 1}</Rank>
+						<Name>{trashCan.설치위치}</Name>
+						<Distance>
+							{trashCan.distance ? `${trashCan.distance.toFixed(0)}m` : '-'}
+						</Distance>
+					</ListItem>
+				))}
 			</List>
-			{isModalOpen && <TrashCanModal onClose={handleCloseModal} />}
 		</ListWapper>
 	);
 }
