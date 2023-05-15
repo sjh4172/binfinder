@@ -1,4 +1,4 @@
-![header](https://capsule-render.vercel.app/api?type=waving&color=gradient&text=별칭&height=350&fontSize=100&animation=twinkling)
+![header](https://capsule-render.vercel.app/api?type=waving&color=gradient&text=어디에🗑️&height=350&fontSize=100&animation=twinkling)
 
 # 🗑️ 쓰레기통 위치 조회 웹 애플리케이션
 
