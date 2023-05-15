@@ -18,8 +18,8 @@ const userSlice = createSlice({
 		},
 		loginFailure: (state) => {
 			state.isAuthenticated = false;
-			state.email = '';
-			state.memberId = '';
+			state.email = null;
+			state.memberId = null;
 		},
 	},
 });
