@@ -1,5 +1,6 @@
 package com.codestates.exception;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -38,16 +39,12 @@ public class ErrorResponse {
         return new ErrorResponse(message);
     }
     @Getter
+    @AllArgsConstructor
     public static class FieldError {
         private String field;
         private Object rejectedValue;
         private String reason;
 
-        private FieldError(String field, Object rejectedValue, String reason) {
-            this.field = field;
-            this.rejectedValue = rejectedValue;
-            this.reason = reason;
-        }
 
         public static List<FieldError> of(BindingResult bindingResult) {
             final List<org.springframework.validation.FieldError> fieldErrors = bindingResult.getFieldErrors();

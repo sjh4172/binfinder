@@ -5,6 +5,7 @@ import com.codestates.member.dto.MemberPostDto;
 import com.codestates.member.entity.Member;
 import com.codestates.member.mapper.MemberMapper;
 import com.codestates.member.service.MemberService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequestMapping("/api/members")
 @Validated
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@Slf4j
 public class MemberController {
     private final MemberService memberService;
     private final MemberMapper mapper;
@@ -37,9 +39,11 @@ public class MemberController {
                 .path("/api/members/" + member.getMemberId())
                 .build().toUri();
 
+        log.info("##uri 주소는 다음과 같습니다:{} ##", uri);
+
         return ResponseEntity.created(uri).build();
     }
-    @PatchMapping("{memberId}")
+    @PatchMapping("/{memberId}")
     public ResponseEntity patchMember(@PathVariable @Positive long memberId,
                                       @Valid @RequestBody MemberPatchDto requestBody) {
         requestBody.setMemberId(memberId);
@@ -48,11 +52,16 @@ public class MemberController {
         return new ResponseEntity(mapper.memberToMemberResponseDto(member), HttpStatus.OK);
 
     }
-    @GetMapping("{memberId}")
+    @GetMapping("/{memberId}")
     public ResponseEntity getMember(@PathVariable @Positive long memberId) {
-        Member member = memberService.findMember(memberId);
+        try {
+            Member member = memberService.findMember(memberId);
 
-        return new ResponseEntity(mapper.memberToMemberResponseDto(member), HttpStatus.OK);
+            return new ResponseEntity(mapper.memberToMemberResponseDto(member), HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity(null,HttpStatus.NO_CONTENT);
+        }
     }
     @GetMapping
     public ResponseEntity getMembers() {
@@ -61,11 +70,9 @@ public class MemberController {
         return new ResponseEntity(mapper.memberToMemberResponseDtos(members), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{member-id}")
-    public ResponseEntity deleteMember(
-            @PathVariable("member-id") @Positive long memberId) {
+    @DeleteMapping("/{memberId}")
+    public ResponseEntity deleteMember(@PathVariable @Positive long memberId) {
         memberService.deleteMember(memberId);
-
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

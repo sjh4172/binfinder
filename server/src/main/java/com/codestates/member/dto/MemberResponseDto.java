@@ -4,8 +4,6 @@ import com.codestates.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Builder
 @Getter
 public class MemberResponseDto {
