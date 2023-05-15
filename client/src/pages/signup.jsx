@@ -2,8 +2,127 @@
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
 import HorizontalLine from '../components/HorizonLine';
+import { signup } from '../api/authAPI';
+import {
+	ERROR_VALIDATION_EMAIL,
+	ERROR_VALIDATION_REQUIRED_EMAIL,
+	ERROR_VALIDATION_PASSWORD,
+	ERROR_VALIDATION_REQUIRED_PASSWORD,
+	ERROR_VALIDATION_REQUIRED_USERNAME,
+	ERROR_VALIDATION_USERNAME,
+} from '../constant';
+
+function Signup() {
+	const navigate = useNavigate();
+
+	const validateEmail = (email) => {
+		return /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/.test(
+			email,
+		);
+	};
+	const validatePassword = (password) => {
+		return /(?=.*\d{1,50})(?=.*[~`!@#$%^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,16}$/.test(
+			password,
+		);
+	};
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm();
+	const onSubmit = (data) => {
+		signup(data.username, data.email, data.password)
+			.then(() => {
+				navigate('/login');
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	};
+	return (
+		<SignupContainer>
+			<SignupTitle>회원가입</SignupTitle>
+			<form className="SignupForm" onSubmit={handleSubmit(onSubmit)}>
+				<SignupInputContainer>
+					<input
+						className="SignupInput"
+						name="username"
+						type="text"
+						placeholder="username"
+						{...register('username', {
+							required: true,
+							minLength: {
+								value: 2,
+							},
+						})}
+					/>
+					<ErrorMessage>
+						{errors.username?.type === 'required' &&
+							ERROR_VALIDATION_REQUIRED_USERNAME}
+						{errors.username?.type === 'minLength' && ERROR_VALIDATION_USERNAME}
+					</ErrorMessage>
+					<input
+						className="SignupInput"
+						name="email"
+						type="text"
+						placeholder="email"
+						{...register('email', {
+							required: true,
+							validate: validateEmail,
+						})}
+					/>
+					<ErrorMessage>
+						{errors.email?.type === 'required' &&
+							ERROR_VALIDATION_REQUIRED_EMAIL}
+						{errors.email?.type === 'validate' && ERROR_VALIDATION_EMAIL}
+					</ErrorMessage>
+					<input
+						className="SignupInput"
+						name="password"
+						type="password"
+						placeholder="password"
+						{...register('password', {
+							required: true,
+							validate: validatePassword,
+						})}
+					/>
+					<ErrorMessage>
+						{errors.password?.type === 'required' &&
+							ERROR_VALIDATION_REQUIRED_PASSWORD}
+						{errors.password?.type === 'validate' && ERROR_VALIDATION_PASSWORD}
+					</ErrorMessage>
+				</SignupInputContainer>
+				<button className="SignupButton" type="submit">
+					회원가입
+				</button>
+				<HorizontalLine text="또는" />
+				<SignupGoogleButton>
+					<Logo>
+						<img
+							src={`${process.env.PUBLIC_URL}/assets/google.png`}
+							alt="google.png"
+						/>
+					</Logo>
+					<Text>구글 계정으로 회원가입 하기</Text>
+				</SignupGoogleButton>
+				<SignupKaKaoButton>
+					<Logo>
+						<img
+							src={`${process.env.PUBLIC_URL}/assets/kakaotalk.png`}
+							alt="KaKao.png"
+						/>
+					</Logo>
+					<Text>카카오 계정으로 회원가입 하기</Text>
+				</SignupKaKaoButton>
+				<SignupTextContainer>
+					<SignupText>이미 회원이십니까? </SignupText>
+					<LoginLink to="/login">로그인</LoginLink>
+				</SignupTextContainer>
+			</form>
+		</SignupContainer>
+	);
+}
 
 /* 회원가입 전체 컨테이너 */
 const SignupContainer = styled.div`
@@ -229,121 +348,4 @@ const LoginLink = styled(Link)`
 		font-size: 14px;
 	}
 `;
-
-function Signup() {
-	const navigate = useNavigate();
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm();
-	const onSubmit = (data) => {
-		axios
-			.post(`${process.env.REACT_APP_API_URL}/api/members`, {
-				username: data.username,
-				email: data.email,
-				password: data.password,
-				headers: {
-					'Content-Type': 'application/json',
-					withCredentials: true,
-				},
-			})
-			.then(() => {
-				navigate('/login');
-			})
-			.catch((err) => {
-				console.error(err);
-			});
-	};
-	return (
-		<SignupContainer>
-			<SignupTitle>회원가입</SignupTitle>
-			<form className="SignupForm" onSubmit={handleSubmit(onSubmit)}>
-				<SignupInputContainer>
-					<input
-						className="SignupInput"
-						name="username"
-						type="text"
-						placeholder="username"
-						{...register('username', {
-							required: true,
-							minLength: {
-								value: 2,
-								message: '2글자 이상 입력해주세요',
-							},
-						})}
-					/>
-					<ErrorMessage>
-						{errors.username?.type === 'required' && '닉네임을 입력해주세요'}
-						{errors.username?.type === 'minLength' && errors.username.message}
-					</ErrorMessage>
-					<input
-						className="SignupInput"
-						name="email"
-						type="text"
-						placeholder="email"
-						{...register('email', {
-							required: true,
-							pattern: {
-								value:
-									/^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/,
-								message: '이메일 양식에 맞춰서 사용하세요 ',
-							},
-						})}
-					/>
-					<ErrorMessage>
-						{errors.email?.type === 'required' && '이메일을 입력해주세요'}
-						{errors.email?.type === 'pattern' && errors.email.message}
-					</ErrorMessage>
-					<input
-						className="SignupInput"
-						name="password"
-						type="password"
-						placeholder="password"
-						{...register('password', {
-							required: true,
-							pattern: {
-								value:
-									/(?=.*\d{1,50})(?=.*[~`!@#$%^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,16}$/,
-								message:
-									'비밀번호를 8~16자로 영문 대소문자, 숫자, 특수기호를 조합해서 사용하세요. ',
-							},
-						})}
-					/>
-					<ErrorMessage>
-						{errors.password?.type === 'required' && '비밀번호를 입력해주세요'}
-						{errors.password?.type === 'pattern' && errors.password.message}
-					</ErrorMessage>
-				</SignupInputContainer>
-				<button className="SignupButton" type="submit">
-					회원가입
-				</button>
-				<HorizontalLine text="또는" />
-				<SignupGoogleButton>
-					<Logo>
-						<img
-							src={`${process.env.PUBLIC_URL}/assets/google.png`}
-							alt="google.png"
-						/>
-					</Logo>
-					<Text>구글 계정으로 회원가입 하기</Text>
-				</SignupGoogleButton>
-				<SignupKaKaoButton>
-					<Logo>
-						<img
-							src={`${process.env.PUBLIC_URL}/assets/kakaotalk.png`}
-							alt="KaKao.png"
-						/>
-					</Logo>
-					<Text>카카오 계정으로 회원가입 하기</Text>
-				</SignupKaKaoButton>
-				<SignupTextContainer>
-					<SignupText>이미 회원이십니까? </SignupText>
-					<LoginLink to="/login">로그인</LoginLink>
-				</SignupTextContainer>
-			</form>
-		</SignupContainer>
-	);
-}
-
 export default Signup;

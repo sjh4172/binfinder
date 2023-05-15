@@ -9,3 +9,7 @@ export const ERROR_VALIDATION_REQUIRED_EMAIL = '이메일을 입력해주세요'
 export const ERROR_VALIDATION_PASSWORD =
 	'8~16자로 영문 2개, 숫자, 특수기호를 조합해서 사용하세요.';
 export const ERROR_VALIDATION_REQUIRED_PASSWORD = '비밀번호를 입력해주세요';
+
+// 유저네임 에러 메시지 상수화
+export const ERROR_VALIDATION_USERNAME = '2글자 이상을 입력해주세요';
+export const ERROR_VALIDATION_REQUIRED_USERNAME = '닉네임을 입력해주세요';
