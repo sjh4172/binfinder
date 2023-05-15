@@ -29,7 +29,7 @@ import {
 import useMediaQuery from './hooks/useMediaQuery';
 
 function App() {
-	const isMobile = useMediaQuery('(max-width: 768px)');
+	const isMobile = useMediaQuery();
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	const [isSidebarOpeFirst, setIsSidebarOpeFirst] = useState(true);
 	return (
