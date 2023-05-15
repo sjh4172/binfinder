@@ -2,10 +2,34 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import Title from '../styles/Title';
-import { Button } from '../styles/Buttons';
 import CommunityList from '../components/CommunityList';
 import Pagination from '../components/Pagination';
 import { URL_WRITEPOST } from '../routesURL';
+
+function Community() {
+	const [searchParams, setSearchParams] = useSearchParams();
+	const [currentPage, setCurrentPage] = useState(0);
+	const [totalPage, setTotalPage] = useState(19);
+	return (
+		<CommunityPage>
+			<div className="flex">
+				<Title>게시판</Title>
+				<Link to={URL_WRITEPOST} className="postWrite">
+					글 작성
+				</Link>
+			</div>
+			<CommunityList totalPage={totalPage} />
+			{totalPage >= 0 ? (
+				<Pagination
+					currentPage={currentPage}
+					setCurrentPage={setCurrentPage}
+					totalPage={totalPage}
+					setSearchParams={setSearchParams}
+				/>
+			) : null}
+		</CommunityPage>
+	);
+}
 
 const CommunityPage = styled.div`
 	display: flex;
@@ -53,30 +77,5 @@ const CommunityPage = styled.div`
 		}
 	}
 `;
-
-function Community() {
-	const [searchParams, setSearchParams] = useSearchParams();
-	const [currentPage, setCurrentPage] = useState(0);
-	const [totalPage, setTotalPage] = useState(19);
-	return (
-		<CommunityPage>
-			<div className="flex">
-				<Title>게시판</Title>
-				<Link to={URL_WRITEPOST} className="postWrite">
-					글 작성
-				</Link>
-			</div>
-			<CommunityList totalPage={totalPage} />
-			{totalPage >= 0 ? (
-				<Pagination
-					currentPage={currentPage}
-					setCurrentPage={setCurrentPage}
-					totalPage={totalPage}
-					setSearchParams={setSearchParams}
-				/>
-			) : null}
-		</CommunityPage>
-	);
-}
 
 export default Community;
