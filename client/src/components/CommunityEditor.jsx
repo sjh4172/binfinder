@@ -1,5 +1,14 @@
 import styled from 'styled-components';
 
+function CommunityEditor({ contentBind, titleBind }) {
+	return (
+		<Editor>
+			<input placeholder="제목을 입력하세요" type="text" {...titleBind} />
+			<textarea placeholder="내용을 입력하세요" {...contentBind} />
+		</Editor>
+	);
+}
+
 const Editor = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -32,14 +41,5 @@ const Editor = styled.div`
 		}
 	}
 `;
-
-function CommunityEditor({ contentBind, titleBind }) {
-	return (
-		<Editor>
-			<input placeholder="제목을 입력하세요" type="text" {...titleBind} />
-			<textarea placeholder="내용을 입력하세요" {...contentBind} />
-		</Editor>
-	);
-}
 
 export default CommunityEditor;

@@ -5,33 +5,6 @@ import { Button, WarningButton } from '../styles/Buttons';
 import { postCommunity } from '../api/communityAPI';
 import useInput from '../hooks/useInput';
 
-const EditPage = styled.div`
-	max-width: 1024px;
-	width: 80vw;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: var(--header-hight);
-	padding: 50px 0px 100px 0px;
-
-	.flex {
-		display: flex;
-		justify-content: space-between;
-		margin-top: 20px;
-	}
-
-	.bt {
-		font-size: var(--base);
-		height: 35px;
-	}
-
-	@media (max-width: 768px) {
-		padding-top: 30px;
-		.bt {
-			width: 80px;
-		}
-	}
-`;
-
 function CommunityEdit() {
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -76,5 +49,32 @@ function CommunityEdit() {
 		</EditPage>
 	);
 }
+
+const EditPage = styled.div`
+	max-width: 1024px;
+	width: 80vw;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: var(--header-hight);
+	padding: 50px 0px 100px 0px;
+
+	.flex {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 20px;
+	}
+
+	.bt {
+		font-size: var(--base);
+		height: 35px;
+	}
+
+	@media (max-width: 768px) {
+		padding-top: 30px;
+		.bt {
+			width: 80px;
+		}
+	}
+`;
 
 export default CommunityEdit;

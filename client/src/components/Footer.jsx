@@ -1,48 +1,11 @@
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
-
-const FooterWrapper = styled.footer`
-	/* position: fixed;
-	bottom: 0;
-	left: 0; */
-	width: 100%;
-	height: 228px;
-	display: flex;
-	justify-content: space-around;
-	gap: 20px;
-	background-color: var(--footer-color);
-	padding: 40px 0;
-`;
-
-const SectionWrapper = styled.section`
-	color: var(--text-white-color);
-`;
-
-const SectionTitle = styled.h4`
-	font-size: var(--small);
-	margin-bottom: 20px;
-`;
-
-const SectionList = styled.ul`
-	padding-left: 0;
-	margin-bottom: 20px;
-
-	> * {
-		font-size: var(--small);
-		margin-bottom: 5px;
-	}
-`;
-
-const Line = styled.hr`
-	border: none;
-	border-top: 0.5px solid #ccc;
-	margin-bottom: 20px;
-`;
+import { URL_LOGIN, URL_SIGNUP } from '../routesURL';
 
 export default function Footer() {
 	const { pathname } = useLocation();
-	if (pathname === '/signup') return null;
-	if (pathname === '/login') return null;
+	if (pathname === URL_SIGNUP) return null;
+	if (pathname === URL_LOGIN) return null;
 	return (
 		<FooterWrapper>
 			<SectionWrapper>
@@ -89,3 +52,40 @@ export default function Footer() {
 		</FooterWrapper>
 	);
 }
+const FooterWrapper = styled.footer`
+	/* position: fixed;
+	bottom: 0;
+	left: 0; */
+	width: 100%;
+	height: 228px;
+	display: flex;
+	justify-content: space-around;
+	gap: 20px;
+	background-color: var(--footer-color);
+	padding: 40px 0;
+`;
+
+const SectionWrapper = styled.section`
+	color: var(--text-white-color);
+`;
+
+const SectionTitle = styled.h4`
+	font-size: var(--small);
+	margin-bottom: 20px;
+`;
+
+const SectionList = styled.ul`
+	padding-left: 0;
+	margin-bottom: 20px;
+
+	> * {
+		font-size: var(--small);
+		margin-bottom: 5px;
+	}
+`;
+
+const Line = styled.hr`
+	border: none;
+	border-top: 0.5px solid #ccc;
+	margin-bottom: 20px;
+`;

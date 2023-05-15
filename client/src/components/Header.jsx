@@ -7,6 +7,60 @@ import { Z_INDEX_STYLED_HEADER } from '../zIndex';
 import MOBILE_MAX_WIDTH from '../mediaQuery';
 import { URL_LOGIN, URL_MAP, URL_SIGNUP } from '../routesURL';
 
+export default function Header({
+	isLogin,
+	setIsLogin,
+	isSidebarOpen,
+	setIsSidebarOpen,
+	setIsSidebarOpeFirst,
+}) {
+	const isMobile = useMediaQuery(`(max-width: ${MOBILE_MAX_WIDTH}px)`);
+
+	const handleLogout = () => {
+		setIsLogin(false);
+	};
+	const toggleSideBar = () => {
+		setIsSidebarOpen(!isSidebarOpen);
+		setIsSidebarOpeFirst(false);
+	};
+	return (
+		<StyledHeader>
+			<HeaderWrapper>
+				<Menu>
+					<MenuIcon onClick={toggleSideBar} />
+				</Menu>
+				<LogoWrapper>
+					<LogoImage
+						src={`${process.env.PUBLIC_URL}/assets/logo.png`}
+						alt="로고 이미지"
+					/>
+					{!isMobile && <LogoText>어디에버려</LogoText>}
+				</LogoWrapper>
+				{!isLogin ? (
+					<ButtonWrapper>
+						<HeaderButton type="button">
+							<Link to={URL_SIGNUP}>Sign up</Link>
+						</HeaderButton>
+						<HeaderButton type="button">
+							<Link to={URL_LOGIN}>Log in</Link>
+						</HeaderButton>
+					</ButtonWrapper>
+				) : (
+					<ButtonWrapper>
+						<Profile
+							// 마이페이지로 링크
+							src={`${process.env.PUBLIC_URL}/assets/exprofile.png`}
+							alt="프로필"
+						/>
+						<HeaderButton type="button" onClick={handleLogout}>
+							<Link to={URL_MAP}>Log out</Link>
+						</HeaderButton>
+					</ButtonWrapper>
+				)}
+			</HeaderWrapper>
+		</StyledHeader>
+	);
+}
 const StyledHeader = styled.header`
 	display: flex;
 	align-items: center;
@@ -88,58 +142,3 @@ const Profile = styled.img`
 		height: 40px;
 	}
 `;
-
-export default function Header({
-	isLogin,
-	setIsLogin,
-	isSidebarOpen,
-	setIsSidebarOpen,
-	setIsSidebarOpeFirst,
-}) {
-	const isMobile = useMediaQuery(`(max-width: ${MOBILE_MAX_WIDTH}px)`);
-
-	const handleLogout = () => {
-		setIsLogin(false);
-	};
-	const toggleSideBar = () => {
-		setIsSidebarOpen(!isSidebarOpen);
-		setIsSidebarOpeFirst(false);
-	};
-	return (
-		<StyledHeader>
-			<HeaderWrapper>
-				<Menu>
-					<MenuIcon onClick={toggleSideBar} />
-				</Menu>
-				<LogoWrapper>
-					<LogoImage
-						src={`${process.env.PUBLIC_URL}/assets/logo.png`}
-						alt="로고 이미지"
-					/>
-					{!isMobile && <LogoText>어디에버려</LogoText>}
-				</LogoWrapper>
-				{!isLogin ? (
-					<ButtonWrapper>
-						<HeaderButton type="button">
-							<Link to={URL_SIGNUP}>Sign up</Link>
-						</HeaderButton>
-						<HeaderButton type="button">
-							<Link to={URL_LOGIN}>Log in</Link>
-						</HeaderButton>
-					</ButtonWrapper>
-				) : (
-					<ButtonWrapper>
-						<Profile
-							// 마이페이지로 링크
-							src={`${process.env.PUBLIC_URL}/assets/exprofile.png`}
-							alt="프로필"
-						/>
-						<HeaderButton type="button" onClick={handleLogout}>
-							<Link to={URL_MAP}>Log out</Link>
-						</HeaderButton>
-					</ButtonWrapper>
-				)}
-			</HeaderWrapper>
-		</StyledHeader>
-	);
-}

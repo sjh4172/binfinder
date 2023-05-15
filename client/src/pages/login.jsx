@@ -3,8 +3,120 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import HorizontalLine from '../components/HorizonLine';
 import { loginSuccess, loginFailure } from '../store/userSlice';
+import login from '../api/authAPI';
+import {
+	KEY_ACCESS_TOKEN,
+	KEY_REFRESH_TOKEN,
+	ERROR_VALIDATION_EMAIL,
+	ERROR_VALIDATION_REQUIRED_EMAIL,
+	ERROR_VALIDATION_PASSWORD,
+	ERROR_VALIDATION_REQUIRED_PASSWORD,
+} from '../constant';
+
+function Login() {
+	const dispatch = useDispatch();
+
+	const validateEmail = (email) => {
+		return /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/.test(
+			email,
+		);
+	};
+	const validatePassword = (password) => {
+		return /(?=.*\d{1,50})(?=.*[~`!@#$%^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,16}$/.test(
+			password,
+		);
+	};
+
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm();
+	const onSubmit = (data) => {
+		login(data.email, data.password)
+			.then((res) => {
+				const accessToken = res.data.access_token;
+				const refreshToken = res.data.refresh_token;
+
+				localStorage.setItem(KEY_ACCESS_TOKEN, accessToken);
+				localStorage.setItem(KEY_REFRESH_TOKEN, refreshToken);
+
+				axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+
+				dispatch(loginSuccess({ email: res.data.email }));
+			})
+			.catch((err) => {
+				console.log(err);
+				dispatch(loginFailure());
+			});
+	};
+	return (
+		<LoginContainer>
+			<LoginTitle>로그인</LoginTitle>
+			<form className="LoginForm" onSubmit={handleSubmit(onSubmit)}>
+				<LoginInputContainer>
+					<input
+						className="LoginInput"
+						name="email"
+						type="text"
+						placeholder="이메일"
+						{...register('email', {
+							required: true,
+							validate: validateEmail,
+						})}
+					/>
+					<ErrorMessage>
+						{errors.email?.type === 'required' &&
+							ERROR_VALIDATION_REQUIRED_EMAIL}
+						{errors.email?.type === 'validate' && ERROR_VALIDATION_EMAIL}
+					</ErrorMessage>
+					<input
+						className="LoginInput"
+						name="password"
+						type="password"
+						placeholder="비밀번호"
+						{...register('password', {
+							required: true,
+							validate: validatePassword,
+						})}
+					/>
+					<ErrorMessage>
+						{errors.password?.type === 'required' &&
+							ERROR_VALIDATION_REQUIRED_PASSWORD}
+						{errors.password?.type === 'validate' && ERROR_VALIDATION_PASSWORD}
+					</ErrorMessage>
+				</LoginInputContainer>
+				<LoginButton>로그인</LoginButton>
+				<HorizontalLine text="또는" />
+				<LoginGoogleButton>
+					<Logo>
+						<img
+							src={`${process.env.PUBLIC_URL}/assets/google.png`}
+							alt="google.png"
+						/>
+					</Logo>
+					<Text>구글 계정으로 로그인 하기</Text>
+				</LoginGoogleButton>
+				<LoginKaKaoButton>
+					<Logo>
+						<img
+							src={`${process.env.PUBLIC_URL}/assets/kakaotalk.png`}
+							alt="KaKao.png"
+						/>
+					</Logo>
+					<Text>카카오 계정으로 로그인 하기</Text>
+				</LoginKaKaoButton>
+				<LoginTextContainer>
+					<LoginText>아직 회원이 아니십니까?</LoginText>
+					<SignupLink to="/signup">회원가입</SignupLink>
+				</LoginTextContainer>
+			</form>
+		</LoginContainer>
+	);
+}
 
 /* 로그인 전체 컨테이너 */
 const LoginContainer = styled.div`
@@ -60,6 +172,7 @@ const LoginContainer = styled.div`
 		}
 	}
 `;
+
 /* 로그인 타이틀 */
 const LoginTitle = styled.div`
 	width: 600px;
@@ -134,7 +247,7 @@ const LoginGoogleButton = styled.button`
 	@media (max-width: 768px) {
 		width: 220px;
 		height: 40px;
-		font-size: 14px;
+		font-size: 13px;
 		font-weight: 700;
 	}
 `;
@@ -181,8 +294,9 @@ const LoginKaKaoButton = styled.button`
 	@media (max-width: 768px) {
 		width: 220px;
 		height: 40px;
-		font-size: 14px;
+		font-size: 13px;
 		font-weight: 700;
+		display: flex;
 	}
 `;
 /* 로그인 텍스트 전체 컨테이너 */
@@ -192,6 +306,7 @@ const LoginTextContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
 	@media (max-width: 768px) {
+		font-size: 13px;
 		width: 220px;
 		height: 40px;
 	}
@@ -218,108 +333,9 @@ const ErrorMessage = styled.div`
 	}
 `;
 /* 로그인 회원가입 링크 */
-const SignupLink = styled.a`
+const SignupLink = styled(Link)`
 	width: 140px;
 	height: 45px;
 	color: #37a0db;
 `;
-function Login() {
-	const dispatch = useDispatch();
-
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm();
-	const onSubmit = (data) => {
-		axios
-			.post(`${process.env.REACT_APP_API_URL}/login`, {
-				email: data.email,
-				password: data.password,
-			})
-			.then((res) => {
-				const accessToken = res.data.access_token;
-				const refreshToken = res.data.refresh_token;
-				localStorage.setItem('accessToken', accessToken);
-				localStorage.setItem('refreshToken', refreshToken);
-				axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-				dispatch(loginSuccess({ email: res.data.email }));
-			})
-			.catch((err) => {
-				console.log(err);
-				dispatch(loginFailure());
-			});
-	};
-	return (
-		<LoginContainer>
-			<LoginTitle>로그인</LoginTitle>
-			<form className="LoginForm" onSubmit={handleSubmit(onSubmit)}>
-				<LoginInputContainer>
-					<input
-						className="LoginInput"
-						name="email"
-						type="text"
-						placeholder="이메일"
-						{...register('email', {
-							required: true,
-							pattern: {
-								value:
-									/^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/,
-								message: '이메일 양식에 맞춰서 사용하세요 ',
-							},
-						})}
-					/>
-					<ErrorMessage>
-						{errors.email?.type === 'required' && '이메일을 입력해주세요'}
-						{errors.email?.type === 'pattern' && errors.email.message}
-					</ErrorMessage>
-					<input
-						className="LoginInput"
-						name="password"
-						type="password"
-						placeholder="비밀번호"
-						{...register('password', {
-							required: true,
-							pattern: {
-								value:
-									/(?=.*\d{1,50})(?=.*[~`!@#$%^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,16}$/,
-								message:
-									'8~16자로 영문 2개, 숫자, 특수기호를 조합해서 사용하세요. ',
-							},
-						})}
-					/>
-					<ErrorMessage>
-						{errors.password?.type === 'required' && '비밀번호를 입력해주세요'}
-						{errors.password?.type === 'pattern' && errors.password.message}
-					</ErrorMessage>
-				</LoginInputContainer>
-				<LoginButton>로그인</LoginButton>
-				<HorizontalLine text="또는" />
-				<LoginGoogleButton>
-					<Logo>
-						<img
-							src={`${process.env.PUBLIC_URL}/assets/google.png`}
-							alt="google.png"
-						/>
-					</Logo>
-					<Text>구글 계정으로 로그인 하기</Text>
-				</LoginGoogleButton>
-				<LoginKaKaoButton>
-					<Logo>
-						<img
-							src={`${process.env.PUBLIC_URL}/assets/kakaotalk.png`}
-							alt="KaKao.png"
-						/>
-					</Logo>
-					<Text>카카오 계정으로 로그인 하기</Text>
-				</LoginKaKaoButton>
-				<LoginTextContainer>
-					<LoginText>아직 회원이 아니십니까?</LoginText>
-					<SignupLink>회원가입</SignupLink>
-				</LoginTextContainer>
-			</form>
-		</LoginContainer>
-	);
-}
-
 export default Login;

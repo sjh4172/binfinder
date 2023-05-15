@@ -12,48 +12,6 @@ import { getPost, deleteCommunity, postCommunity } from '../api/communityAPI';
 import { URL_POST } from '../routesURL';
 import useInput from '../hooks/useInput';
 
-const DetailPage = styled.div`
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: var(--header-hight);
-	max-width: 1024px;
-	padding: 50px 0px 100px 0px;
-	width: 80vw;
-	.title {
-		margin-bottom: 20px;
-	}
-	.bt {
-		margin: 30px 30px 30px 0px;
-		font-size: var(--base);
-		height: 35px;
-	}
-
-	textarea {
-		font-size: var(--base);
-		border-color: var(--line-color);
-		width: 100%;
-		height: 80px;
-		background-color: var(--bg-color);
-		resize: none;
-		outline: none;
-		border-radius: 5px;
-		padding: 5px;
-	}
-
-	.wbt {
-		margin: 10px 0px 20px calc(100% - 100px);
-	}
-	@media (max-width: 768px) {
-		padding-top: 30px;
-		.wbt {
-			margin: 10px 0px 20px calc(100% - 60px);
-		}
-		.list {
-			width: 80px;
-		}
-	}
-`;
-
 function CommunityDetail() {
 	const navigate = useNavigate();
 	const [isOpenModalP, openModalP, closeModalP] = useModal(false);
@@ -131,5 +89,47 @@ function CommunityDetail() {
 		</DetailPage>
 	);
 }
+
+const DetailPage = styled.div`
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: var(--header-hight);
+	max-width: 1024px;
+	padding: 50px 0px 100px 0px;
+	width: 80vw;
+	.title {
+		margin-bottom: 20px;
+	}
+	.bt {
+		margin: 30px 30px 30px 0px;
+		font-size: var(--base);
+		height: 35px;
+	}
+
+	textarea {
+		font-size: var(--base);
+		border-color: var(--line-color);
+		width: 100%;
+		height: 80px;
+		background-color: var(--bg-color);
+		resize: none;
+		outline: none;
+		border-radius: 5px;
+		padding: 5px;
+	}
+
+	.wbt {
+		margin: 10px 0px 20px calc(100% - 100px);
+	}
+	@media (max-width: 768px) {
+		padding-top: 30px;
+		.wbt {
+			margin: 10px 0px 20px calc(100% - 60px);
+		}
+		.list {
+			width: 80px;
+		}
+	}
+`;
 
 export default CommunityDetail;
