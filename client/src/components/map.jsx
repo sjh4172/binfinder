@@ -6,23 +6,6 @@ import KAKAO_MAP_API_KEY from '../api/kakaoMap';
 import Modal from './Modal';
 import TrashCanModal from './TrashCanModal';
 
-// 맵사이즈
-const MapStyle = styled.div`
-	height: 100vh;
-	align-items: center;
-	justify-content: center;
-	margin-top: 5em;
-	margin-left: 18.7em;
-	margin-right: auto;
-	border-width: medium;
-	.map {
-		height: 100%;
-	}
-	@media (max-width: 768px) {
-		width: 100%;
-	}
-`;
-
 function Map() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [trashCans, setTrashCans] = useState([]);
@@ -146,5 +129,21 @@ function Map() {
 		</>
 	);
 }
+// 맵사이즈
+const MapStyle = styled.div`
+	height: 100vh;
+	align-items: center;
+	justify-content: center;
+	margin-top: 5em;
+	margin-left: 18.7em;
+	margin-right: auto;
+	border-width: medium;
+	.map {
+		height: 100%;
+	}
+	@media (max-width: 768px) {
+		width: 100%;
+	}
+`;
 
 export default Map;
