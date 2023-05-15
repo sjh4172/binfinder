@@ -1,5 +1,6 @@
 package com.codestates.plogging.controller;
 
+import com.codestates.board.entity.Board;
 import com.codestates.plogging.dto.PlogDetailDto;
 import com.codestates.plogging.dto.PlogPatchDto;
 import com.codestates.plogging.dto.PlogPostDto;
@@ -9,6 +10,7 @@ import com.codestates.plogging.mapper.PlogMapper;
 import com.codestates.plogging.service.PlogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -82,6 +84,18 @@ public class PlogController {
     public ResponseEntity deletePlog(@PathVariable("plogId") Long plogId) {
         plogService.deletePlog(plogId);
         return ResponseEntity.noContent().build();
+    }
+    @PostMapping("/like/{plogId}/{memberId}")
+    public ResponseEntity postLike(@PathVariable("plogId") long plogId, @PathVariable("memberId") long memberId) {
+        Plogging response = plogService.like(plogId, memberId);
+
+        return new ResponseEntity<>(plogMapper.ploggingToPlogResponseDto(response), HttpStatus.OK);
+    }
+    @PostMapping("/unlike/{plogId}/{memberId}")
+    public ResponseEntity deleteLike(@PathVariable("plogId") long plogId, @PathVariable("memberId") long memberId) {
+        Plogging response = plogService.unLike(plogId, memberId);
+
+        return new ResponseEntity<>(plogMapper.ploggingToPlogResponseDto(response), HttpStatus.OK);
     }
 }
 

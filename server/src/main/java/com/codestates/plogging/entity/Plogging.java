@@ -3,8 +3,8 @@ package com.codestates.plogging.entity;
 import com.codestates.audit.BaseEntity;
 import com.codestates.member.entity.Member;
 import com.codestates.plogging.comment.entity.PlogComment;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@NoArgsConstructor
+@AllArgsConstructor
 public class Plogging extends BaseEntity {
 
     //private Long memberId;
@@ -32,7 +32,13 @@ public class Plogging extends BaseEntity {
     @Column
     @NotBlank
     private String content;
-    private Integer likeCount;
+    @Column(nullable = false)
+    private Integer likes;
     @OneToMany(mappedBy = "plogging",cascade = CascadeType.ALL)
     private List<PlogComment> comments = new ArrayList<>();
+    @ElementCollection
+    private List<Long> likedUserIds;
+    public Plogging(){
+        this.likes = 0;
+    }
 }

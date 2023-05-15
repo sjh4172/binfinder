@@ -3,6 +3,8 @@ package com.codestates.member.entity;
 import com.codestates.audit.BaseEntity;
 import com.codestates.board.entity.Board;
 import com.codestates.comment.entity.Comment;
+import com.codestates.plogging.entity.Plogging;
+import com.codestates.plogging.service.PlogService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -45,6 +47,8 @@ public class Member extends BaseEntity {
 
      @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
      private List<Comment> comments = new ArrayList<>();
+     @OneToMany(mappedBy = "member")
+     private List<Plogging> ploggings;
 
     public void setComments(Comment comment) {
         comments.add(comment);

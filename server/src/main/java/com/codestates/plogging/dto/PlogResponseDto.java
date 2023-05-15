@@ -12,5 +12,5 @@ public class PlogResponseDto {
     private String title;
     private String content;
     private String memberName;
-    private Integer likeCount;
+    private Integer likes;
 }
