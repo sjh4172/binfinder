@@ -73,23 +73,6 @@ public class MemberController {
         memberService.deleteMember(memberId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
-    // 에러 정보 응답을 위한 메서드
-    @ExceptionHandler
-    public ResponseEntity handleException(MethodArgumentNotValidException e) {
-        // (1)
-        final List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
-
-        // (2)
-        List<ErrorResponse.FieldError> errors =
-                fieldErrors.stream()
-                        .map(error -> new ErrorResponse.FieldError(
-                                error.getField(),
-                                error.getRejectedValue(),
-                                error.getDefaultMessage()))
-                        .collect(Collectors.toList());
-
-        return new ResponseEntity<>(new ErrorResponse(errors), HttpStatus.BAD_REQUEST);
-    }
 
 
 }
