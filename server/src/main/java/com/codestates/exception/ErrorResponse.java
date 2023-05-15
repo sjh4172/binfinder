@@ -43,16 +43,12 @@ public class ErrorResponse {
     }
 
     @Getter
+    @AllArgsConstructor
     public static class FieldError {
         private String field;
         private Object rejectedValue;
         private String reason;
 
-        private FieldError(String field, Object rejectedValue, String reason) {
-            this.field = field;
-            this.rejectedValue = rejectedValue;
-            this.reason = reason;
-        }
 
         public static FieldError of(String field, Object rejectedValue, String reason) {
             return new FieldError(field, rejectedValue, reason);

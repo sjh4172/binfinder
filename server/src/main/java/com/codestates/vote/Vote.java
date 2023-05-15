@@ -18,14 +18,15 @@ public class Vote extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "trash_can_id")
+    @JoinColumn(name = "trash_can_id", nullable = false)
     private TrashCan trashCan;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Boolean isLiked;
+    private VoteDto.VoteTypeEnum voteType;
 }
 

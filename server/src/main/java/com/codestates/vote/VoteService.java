@@ -31,12 +31,12 @@ public class VoteService {
         TrashCan trashCan = trashCanRepository.findById(createRequest.getTrashCanId())
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.TRASH_CAN_NOT_FOUND));
 
-        Boolean isLiked = createRequest.getVoteType() == VoteDto.VoteType.LIKE;
+        VoteDto.VoteTypeEnum voteTypeEnum = createRequest.getVoteType();
 
         Vote vote = new Vote();
         vote.setMember(member);
         vote.setTrashCan(trashCan);
-        vote.setIsLiked(isLiked);
+        vote.setVoteType(voteTypeEnum);
         vote = voteRepository.save(vote);
 
         VoteDto.Response response = voteMapper.voteToResponseDto(vote);
@@ -50,12 +50,12 @@ public class VoteService {
         TrashCan trashCan = trashCanRepository.findById(createRequest.getTrashCanId())
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.TRASH_CAN_NOT_FOUND));
 
-        Boolean isLiked = createRequest.getVoteType() == VoteDto.VoteType.LIKE;
+        VoteDto.VoteTypeEnum voteTypeEnum = createRequest.getVoteType();
 
         Vote vote = new Vote();
         vote.setMember(member);
         vote.setTrashCan(trashCan);
-        vote.setIsLiked(isLiked);
+        vote.setVoteType(voteTypeEnum);
         vote = voteRepository.save(vote);
 
         VoteDto.Response response = voteMapper.voteToResponseDto(vote);

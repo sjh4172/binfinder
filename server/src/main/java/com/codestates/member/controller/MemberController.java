@@ -57,9 +57,14 @@ public class MemberController {
     }
     @GetMapping("/{memberId}")
     public ResponseEntity getMember(@PathVariable @Positive long memberId) {
-        Member member = memberService.findMember(memberId);
+        try {
+            Member member = memberService.findMember(memberId);
 
-        return new ResponseEntity(mapper.memberToMemberResponseDto(member), HttpStatus.OK);
+            return new ResponseEntity(mapper.memberToMemberResponseDto(member), HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity(null,HttpStatus.NO_CONTENT);
+        }
     }
     @GetMapping
     public ResponseEntity getMembers() {
