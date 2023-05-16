@@ -17,7 +17,11 @@ function CommunityEdit() {
 
 	// json서버 테스트용 실제서버는 url이랑 data 변경해야함
 	function writePost() {
-		if (location.state) {
+		if (titleBind.value === '') {
+			alert('제목을 작성해주세요.');
+		} else if (contentBind.value === '') {
+			alert('내용을 작성해주세요.');
+		} else if (location.state) {
 			postCommunity(
 				`/boards/${location.state.id}`,
 				{
