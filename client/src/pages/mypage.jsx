@@ -1,6 +1,34 @@
+/* eslint-disable no-console */
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function Mypage() {
+	const [postList, setPostList] = useState([]);
+	const [username, setUsername] = useState('');
+	const [email, setEmail] = useState();
+
+	useEffect(() => {
+		axios
+			.get('http://localhost:4000/members/1')
+			.then((res) => {
+				setUsername(res.data.username);
+				setEmail(res.data.email);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+		axios
+			.get('http://localhost:4000/posts?memberId=1')
+			.then((res) => {
+				setPostList(res.data);
+			})
+			.catch((err) => {
+				// eslint-disable-next-line no-console
+				console.error(err);
+			});
+	}, []);
 	return (
 		<MyPageContainer>
 			<MyPageTitle>회원정보</MyPageTitle>
@@ -13,11 +41,11 @@ function Mypage() {
 						/>
 					</Logo>
 					<InputContainer>
-						<Input>닉네임: </Input>
-						<Input>이메일: </Input>
+						<Input>닉네임: {username}</Input>
+						<Input>이메일: {email}</Input>
 						<Input2>
 							프로필 수정
-							<Icon>
+							<Icon to="/editmypage">
 								<img
 									src={`${process.env.PUBLIC_URL}/assets/mdi_pencil.png`}
 									alt="pencil.png"
@@ -27,21 +55,23 @@ function Mypage() {
 					</InputContainer>
 				</ProfileContainer>
 				<ListContainer>
-					<PostList>내가 작성한 게시글</PostList>
-					<List>
-						내가 작성한 게시글내가 작성한 게시글내가 작성한 게시글내가 작성한
-						게시글
-					</List>
-					<List>sss</List>
-					<List>sss</List>
-					<CommentList>내가 작성한 댓글</CommentList>
-					<List>sss</List>
-					<List>sss</List>
-					<List>sss</List>
-					<RequestList>내가 요청한 위치 요청</RequestList>
-					<List>sss</List>
-					<List>sss</List>
-					<List>sss</List>
+					<PostListContainer>
+						<PostList>내가 작성한 게시글</PostList>
+						{postList.map((post) => (
+							<List key={post.id}>{post.title}</List>
+						))}
+					</PostListContainer>
+					<CommentListContainer>
+						<CommentList>내가 작성한 댓글</CommentList>
+						{postList.map((post) => (
+							<List key={post.id}>{post.comment}</List>
+						))}
+					</CommentListContainer>
+					<RequestContainer>
+						<RequestList>내가 요청한 위치 요청</RequestList>
+						<List>첫 번째</List>
+						<List>두 번째</List>
+					</RequestContainer>
 				</ListContainer>
 			</MyPageForm>
 		</MyPageContainer>
@@ -59,6 +89,7 @@ const MyPageContainer = styled.div`
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: var(--header-hight);
+	margin-bottom: 40px;
 	@media (max-width: 768px) {
 		display: flex;
 		justify-content: center;
@@ -93,13 +124,12 @@ const MyPageForm = styled.div`
 	justify-content: center;
 	align-items: center;
 	border: 1px solid #d9d9d9;
-
 	@media (max-width: 768px) {
 		width: 300px;
-		height: 600px;
+		height: 540px;
 	}
 `;
-/* 마이페이지 프로플 전체 컨테이너 */
+/* 마이페이지 프로필 전체 컨테이너 */
 const ProfileContainer = styled.div`
 	width: 440px;
 	height: 135px;
@@ -124,7 +154,7 @@ const Logo = styled.div`
 	}
 `;
 /* 마이페이지 프로필 수정 아이콘 */
-const Icon = styled.div`
+const Icon = styled(Link)`
 	> img {
 		width: 24px;
 		height: 24px;
@@ -159,10 +189,11 @@ const Input = styled.div`
 	border-bottom: 1px solid #d9d9d9;
 	display: flex;
 	align-items: center;
+	font-size: 14px;
 	@media (max-width: 768px) {
 		width: 140px;
 		height: 34px;
-		font-size: 14px;
+		font-size: 10px;
 	}
 `;
 /* 마이페이지 인풋2(프로필수정 부분)  */
@@ -173,10 +204,11 @@ const Input2 = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	font-size: 14px;
 	@media (max-width: 768px) {
 		width: 140px;
 		height: 34px;
-		font-size: 14px;
+		font-size: 10px;
 	}
 `;
 /* 마이페이지 리스트 전체 컨테이너  */
@@ -185,35 +217,69 @@ const ListContainer = styled.div`
 	height: 600px;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	justify-content: center;
 	align-items: center;
 	@media (max-width: 768px) {
 		width: 220px;
 		height: 400px;
 	}
 `;
+const PostListContainer = styled.div`
+	width: 440px;
+	height: 200px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	@media (max-width: 768px) {
+		width: 220px;
+		height: 200px;
+	}
+`;
 /* 마이페이지 게시글 리스트 */
 const PostList = styled.div`
 	width: 440px;
-	height: 45px;
+	height: 25px;
 	display: flex;
-	align-items: center;
 	border-bottom: 1px solid #d9d9d9;
+
 	@media (max-width: 768px) {
 		width: 220px;
-		height: 34px;
+		height: 20px;
+		font-size: 14px;
+	}
+`;
+const CommentListContainer = styled.div`
+	width: 440px;
+	height: 200px;
+	@media (max-width: 768px) {
+		width: 220px;
+		height: 200px;
 	}
 `;
 /* 마이페이지 댓글 리스트 */
 const CommentList = styled.div`
 	width: 440px;
-	height: 45px;
+	height: 25px;
 	display: flex;
-	align-items: center;
 	border-bottom: 1px solid #d9d9d9;
 	@media (max-width: 768px) {
 		width: 220px;
-		height: 34px;
+		height: 20px;
+		font-size: 14px;
+	}
+`;
+
+const RequestContainer = styled.div`
+	width: 440px;
+	height: 200px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	@media (max-width: 768px) {
+		width: 220px;
+		height: 200px;
 	}
 `;
 /* 마이페이지 위치 요청 리스트 */
@@ -221,21 +287,24 @@ const RequestList = styled.div`
 	width: 440px;
 	height: 45px;
 	display: flex;
-	align-items: center;
 	border-bottom: 1px solid #d9d9d9;
 	@media (max-width: 768px) {
 		width: 220px;
-		height: 34px;
+		height: 20px;
+		font-size: 12px;
 	}
 `;
 /* 마이페이지 리스트 컨테이너 */
 const List = styled.div`
 	width: 440px;
-	height: 48px;
+	height: 30px;
 	word-break: normal;
+	display: flex;
+	margin-top: 8px;
 	@media (max-width: 768px) {
 		width: 220px;
-		height: 10px;
+		height: 20px;
+		font-size: 11px;
 	}
 `;
 export default Mypage;
