@@ -51,6 +51,15 @@ function CommunityDetail() {
 		}
 	}
 
+	function likeUpDown() {
+		if (isHeart) {
+			postCommunity(`boards/unlike/${data.b_id}/${data.memberId}`, null);
+		} else {
+			postCommunity(`boards/like/${data.b_id}/${data.memberId}`, null);
+		}
+		setIsHeart(!isHeart);
+	}
+
 	return (
 		<DetailPage>
 			<Title className="title">{data && data.b_title}</Title>
@@ -59,7 +68,7 @@ function CommunityDetail() {
 			<Button className="bt list" onClick={() => navigate(URL_POST)}>
 				목록 보기
 			</Button>
-			<Button className="bt" onClick={() => setIsHeart(!isHeart)}>
+			<Button className="bt" onClick={() => likeUpDown()}>
 				{data && (isHeart ? `♥ ${data.likes}` : `♡ ${data.likes}`)}
 			</Button>
 			<Title className="title">1개의 댓글</Title>
