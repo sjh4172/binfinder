@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
 public class CommentDto {
 	@Getter
 	public static class Post {
+		@NotBlank(message = "c_content not null")
 		private String c_content;
 		@Positive
 		private long b_id;
@@ -27,6 +29,7 @@ public class CommentDto {
 	@AllArgsConstructor
 	public static class Patch {
 		private long c_id;
+		@NotBlank(message = "c_content not null")
 		private String c_content;
 	}
 

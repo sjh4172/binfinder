@@ -5,10 +5,13 @@ import com.codestates.domain.member.entity.Member;
 import com.codestates.domain.member.mapper.MemberMapper;
 import com.codestates.domain.member.dto.MemberPatchDto;
 import com.codestates.domain.member.service.MemberService;
+import com.codestates.exception.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -16,6 +19,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/members")
@@ -75,5 +79,21 @@ public class MemberController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+    @ExceptionHandler
+    public ResponseEntity handleException(MethodArgumentNotValidException e) {
+        // (1)
+        final List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
 
+        // (2)
+        List<ErrorResponse.FieldError> errors =
+                fieldErrors.stream()
+                        .map(error -> new ErrorResponse.FieldError(
+                                error.getField(),
+                                error.getRejectedValue(),
+                                error.getDefaultMessage()))
+                        .collect(Collectors.toList());
+
+//		return new ResponseEntity<>(new ErrorResponse(errors), HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().body(ErrorResponse.of(e.getBindingResult()));
+    }
 }
