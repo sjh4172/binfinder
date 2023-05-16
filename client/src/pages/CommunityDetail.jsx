@@ -18,7 +18,7 @@ function CommunityDetail() {
 	const [isOpenModalC, openModalC, closeModalC] = useModal(false);
 	const [data, setData] = useState(null);
 	const location = useLocation();
-	const postId = location.pathname.split('/')[3];
+	const postId = location.pathname.split('/')[2];
 	const [textareaBind] = useInput();
 	const [isHeart, setIsHeart] = useState(true);
 
@@ -43,22 +43,24 @@ function CommunityDetail() {
 	};
 
 	function postComment(value) {
-		postCommunity(`/comments`, {
-			b_id: data.id,
-			c_contant: value,
-		});
+		if (value !== '') {
+			postCommunity(`/comments`, {
+				b_id: data.id,
+				c_contant: value,
+			});
+		}
 	}
 
 	return (
 		<DetailPage>
-			<Title className="title">{data && data.p_title}</Title>
+			<Title className="title">{data && data.b_title}</Title>
 			<MyProfile />
 			<CommunityPost setIsPModalOpen={openModalP} data={data} />
-			<Button className="bt list" onClick={() => navigate('/post/read')}>
+			<Button className="bt list" onClick={() => navigate(URL_POST)}>
 				목록 보기
 			</Button>
 			<Button className="bt" onClick={() => setIsHeart(!isHeart)}>
-				{isHeart ? '♥ 10' : '♡ 10'}
+				{data && (isHeart ? `♥ ${data.likes}` : `♡ ${data.likes}`)}
 			</Button>
 			<Title className="title">1개의 댓글</Title>
 			<textarea placeholder="댓글을 입력하세요" {...textareaBind} />

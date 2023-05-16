@@ -15,7 +15,9 @@ function Community() {
 	const [data, setData] = useState(null);
 
 	useEffect(() => {
-		getPostList(location.search, 20).then((res) => setData(res));
+		if (location.search) {
+			getPostList(location.search).then((res) => setData(res));
+		}
 	}, [searchParams]);
 
 	return (

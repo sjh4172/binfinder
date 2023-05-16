@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { URL_POST } from '../routesURL';
+import useDate from '../hooks/useDate';
 
 function CommunityList({ data }) {
 	return (
@@ -23,11 +24,11 @@ function CommunityList({ data }) {
 								</a>
 							</th>
 							<th className="none">{el.username}</th>
-							<th className="none">2023.05.05</th>
+							<th className="none">{useDate(el.createdAt)}</th>
 							<th className="none">{el.likes}</th>
 							<div className="bottom">
 								<th>{el.username}</th>
-								<th>23.05.05</th>
+								<th>{useDate(el.createdAt).slice(2)}</th>
 								<th>
 									<span>♥</span>
 									{el.likes}

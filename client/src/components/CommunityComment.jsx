@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useState, useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import useInput from '../hooks/useInput';
 import MyProfile from './MyProfile';
 import { postCommunity } from '../api/communityAPI';
@@ -9,6 +10,8 @@ function CommunityComment({ setIsCModalOpen }) {
 	const [textareaBind] = useInput('555');
 	const [isEdit, setIsEdit] = useState(false);
 	const textareaRef = useRef(null);
+	const memberId = useSelector((state) => state.auth.memberId);
+	// 댓글 아이디 확인해서 수정.삭제 렌더링하기
 
 	// 수정 시 ContentInput에 포커스
 	const handleFocus = () => {
