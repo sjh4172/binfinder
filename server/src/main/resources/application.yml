@@ -12,7 +12,17 @@ spring:
     properties:
       hibernate:
         format_sql: false
-
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 194536636525-hfnhvhkl3h01dtddcu8fac5te4247616.apps.googleusercontent.com
+            clientSecret: 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
+#            scope:
+#              - email                              // (1)
+#              - profile                            // (2)
+# JWT
 jwt:
   key: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQ=
   access-token-expiration-minutes: 30
