@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 public class VoteDto {
@@ -13,8 +15,11 @@ public class VoteDto {
     @Setter
     @AllArgsConstructor
     public static class CreateRequest {
+        @Positive
         private Long memberId;
+        @Positive
         private Long trashCanId;
+        @NotNull(message = "voteType not null")
         private VoteTypeEnum voteType;
         public void setMember(Member member){this.memberId= member.getMemberId();}
     }

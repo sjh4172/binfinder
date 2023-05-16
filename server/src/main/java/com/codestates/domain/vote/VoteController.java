@@ -1,10 +1,15 @@
 package com.codestates.domain.vote;
 
+import com.codestates.exception.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/trash-cans/{id}/vote")
@@ -16,13 +21,13 @@ public class VoteController {
     }
 
     @PostMapping("")
-    public ResponseEntity<VoteDto.Response> createVote(@RequestBody VoteDto.CreateRequest createRequest) {
+    public ResponseEntity<VoteDto.Response> createVote(@Valid @RequestBody VoteDto.CreateRequest createRequest) {
         VoteDto.Response response = voteService.createVote(createRequest);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping("/{voteId}")
-    public ResponseEntity<VoteDto.Response> updateVote(@PathVariable Long voteId, @RequestBody VoteDto.CreateRequest createRequest) {
+    public ResponseEntity<VoteDto.Response> updateVote(@PathVariable Long voteId, @Valid @RequestBody VoteDto.CreateRequest createRequest) {
         VoteDto.Response response = voteService.updateVote(createRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -63,6 +68,24 @@ public class VoteController {
     public ResponseEntity<List<VoteDto.Response>> getVotesByTrashCan(@PathVariable Long trashCanId) {
         List<VoteDto.Response> responseList = voteService.getVotesByTrashCan(trashCanId);
         return ResponseEntity.ok().body(responseList);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity handleException(MethodArgumentNotValidException e) {
+        // (1)
+        final List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
+
+        // (2)
+        List<ErrorResponse.FieldError> errors =
+                fieldErrors.stream()
+                        .map(error -> new ErrorResponse.FieldError(
+                                error.getField(),
+                                error.getRejectedValue(),
+                                error.getDefaultMessage()))
+                        .collect(Collectors.toList());
+
+//		return new ResponseEntity<>(new ErrorResponse(errors), HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().body(ErrorResponse.of(e.getBindingResult()));
     }
 }
 

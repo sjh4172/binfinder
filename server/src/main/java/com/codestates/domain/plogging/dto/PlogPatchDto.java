@@ -4,11 +4,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class PlogPatchDto {
+    @Positive
     private Long plogId;
+    @NotBlank(message = "title not null")
     private String title;
+    @NotBlank(message = "content not null")
     private String content;
 }
