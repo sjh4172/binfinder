@@ -99,7 +99,7 @@ public class SecurityConfiguration{
 
                         .antMatchers(HttpMethod.GET,"/trash-cans/**").hasAnyRole("ADMIN","USER")
                         .antMatchers(HttpMethod.GET,"/vote/members/**").hasAnyRole("ADMIN","USER")
-                        .antMatchers(HttpMethod.POST,"/vote").hasRole("USER") // 쓰레기통 투표는 유저만 가능
+                        .antMatchers(HttpMethod.POST,"/vote").hasRole("USER") // 쓰레기통 좋아요, 싫어요 투표는 유저만 가능
                         .antMatchers(HttpMethod.PUT,"/vote/**").hasRole("USER") // 투표 수정은 유저만 가능
                         .antMatchers(HttpMethod.DELETE,"/vote/**").hasAnyRole("ADMIN","USER") // 투표 삭제는 관리자, 유저만 가능
 

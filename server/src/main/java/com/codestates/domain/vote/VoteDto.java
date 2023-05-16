@@ -14,10 +14,8 @@ public class VoteDto {
     @Setter
     @AllArgsConstructor
     public static class CreateRequest {
-//        private Long memberId;
         private Long trashCanId;
         private VoteTypeEnum voteType;
-//        public void setMember(Member member){this.memberId= member.getMemberId();}
     }
 
     @Getter

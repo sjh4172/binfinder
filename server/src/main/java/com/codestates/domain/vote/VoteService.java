@@ -29,91 +29,70 @@ public class VoteService {
         this.trashCanRepository = trashCanRepository;
         this.voteMapper = voteMapper;
     }
-
     // 좋아요, 싫어요 투표하기
     public VoteDto.Response createVote(VoteDto.CreateRequest createRequest) {
-        // 사용자 인증 정보 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // 사용자 인증
+        verifyAuthorizedMember();
+        Member member = verifyExistingMember(getAuthentication().getName());
 
-        // 인증된 사용자만 접근 가능하도록 확인
-        if (authentication.isAuthenticated()) {
-            // 인증된 사용자의 아이디 추출
-            String loginEmail = authentication.getName();
+        // 쓰레기통 정보 조회
+        TrashCan trashCan = trashCanRepository.findById(createRequest.getTrashCanId())
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.TRASH_CAN_NOT_FOUND));
 
-            // 로그인한 사용자 정보로 멤버 확인
-            Member member = verifyExistingMember(loginEmail);
+        VoteDto.VoteTypeEnum voteTypeEnum = createRequest.getVoteType();
 
-
-            // 쓰레기통 정보 조회
-            TrashCan trashCan = trashCanRepository.findById(createRequest.getTrashCanId())
-                    .orElseThrow(() -> new BusinessLogicException(ExceptionCode.TRASH_CAN_NOT_FOUND));
-
-            VoteDto.VoteTypeEnum voteTypeEnum = createRequest.getVoteType();
-
-            // 게시글 작성자 설정
-            Vote vote = new Vote();
-            vote.setMember(member);
-            vote.setTrashCan(trashCan);
-            vote.setVoteType(voteTypeEnum);
-            vote = voteRepository.save(vote);
+        // 게시글 작성자 설정
+        Vote vote = new Vote();
+        vote.setMember(member);
+        vote.setTrashCan(trashCan);
+        vote.setVoteType(voteTypeEnum);
+        vote = voteRepository.save(vote);
 
 
-            VoteDto.Response response = voteMapper.voteToResponseDto(vote);
-            return response;
-        } else {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
-        }
+        VoteDto.Response response = voteMapper.voteToResponseDto(vote);
+        return response;
     }
 
     // 투표 수정
     public VoteDto.Response updateVote(VoteDto.CreateRequest createRequest) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        verifyAuthorizedMember();
+        Member member = verifyExistingMember(getAuthentication().getName());
 
-        // 인증된 사용자만 접근 가능하도록 확인
-        if (authentication.isAuthenticated()) {
-            // 인증된 사용자의 아이디 추출
-            String loginEmail = authentication.getName();
+        // 쓰레기통 정보 조회
+        TrashCan trashCan = trashCanRepository.findById(createRequest.getTrashCanId())
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.TRASH_CAN_NOT_FOUND));
 
-            // 로그인한 사용자 정보로 멤버 확인
-            Member member = verifyExistingMember(loginEmail);
+        VoteDto.VoteTypeEnum voteTypeEnum = createRequest.getVoteType();
 
-            // 쓰레기통 정보 조회
-            TrashCan trashCan = trashCanRepository.findById(createRequest.getTrashCanId())
-                    .orElseThrow(() -> new BusinessLogicException(ExceptionCode.TRASH_CAN_NOT_FOUND));
+        // 게시글 작성자 설정
+        Vote vote = new Vote();
+        vote.setMember(member);
+        vote.setTrashCan(trashCan);
+        vote.setVoteType(voteTypeEnum);
+        vote = voteRepository.save(vote);
 
-            VoteDto.VoteTypeEnum voteTypeEnum = createRequest.getVoteType();
-
-            // 게시글 작성자 설정
-            Vote vote = new Vote();
-            vote.setMember(member);
-            vote.setTrashCan(trashCan);
-            vote.setVoteType(voteTypeEnum);
-            vote = voteRepository.save(vote);
-
-            VoteDto.Response response = voteMapper.voteToResponseDto(vote);
-            return response;
-
-        }else{
-            throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
-        }
+        VoteDto.Response response = voteMapper.voteToResponseDto(vote);
+        return response;
     }
 
     // 로그인 한 사람만 삭제!
     public void deleteVote(Long voteId)  {
 
-        Vote vote = voteRepository.findById(voteId)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND));
+//        verifyAuthorizedMember();
+        Vote vote = findVerifiedVote(voteId);
         voteRepository.delete(vote);
     }
 
     public List<VoteDto.Response> getVotesByMember(Long memberId) {
+        verifyAuthorizedMember();
         List<Vote> votes = voteRepository.findByMember_MemberId(memberId);
 
         return voteMapper.voteListToResponseDtoList(votes);
     }
 
     public List<VoteDto.Response> getVotesByTrashCan(Long trashCanId) {
+        verifyAuthorizedMember();
         List<Vote> votes = voteRepository.findByTrashCanId(trashCanId);
 
         return voteMapper.voteListToResponseDtoList(votes);
@@ -137,7 +116,7 @@ public class VoteService {
     }
 
     // 로그인한 사용자가 회원 본인인지 또는 관리자인지 확인하는 메서드이다.
-    private void verifyAuthorizedMember(Long id) {
+    private void verifyAuthorizedMember() {
         // 사용자 인증 정보 Authentication의 인스턴스 auth로 접근
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -154,7 +133,7 @@ public class VoteService {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
         }
         // 관리자나 사용자 회원이 맞다면 메서드 에러 없이 종료
-        else if (isAdmin(loginEmail) || isOwner(loginEmail, id)) {
+        else if (isAdmin(loginEmail) || verifyExistingMember(loginEmail)!=null) {
             return;
         }
         // 그 외의 경우 예외 처리
@@ -168,16 +147,9 @@ public class VoteService {
         return adminMailAddress.contains(email);
     }
 
-    // 오버로딩
-    private boolean isAdmin() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
-    }
-
-    // 사용자 여부를 확인하는 메서드
-    private boolean isOwner(String email, Long id) {
-        Vote vote = findVerifiedVote(id);
-        return email.equals(vote.getMember().getEmail());
+    // 로그인 인증 정보를 가져오는 메서드
+    private Authentication getAuthentication(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth;
     }
 }
