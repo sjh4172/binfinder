@@ -14,9 +14,9 @@ public class BoardDto {
 	@Setter
 	@AllArgsConstructor
 	public static class Post {
-		@NotBlank(message = "제목은 공백이 아니어야 합니다.")
+		@NotBlank(message = "b_title not null")
 		private String b_title;
-		@NotBlank(message = "내용은 공백이 아니어야 합니다.")
+		@NotBlank(message = "b_content not null")
 		private String b_content;
 	}
 
@@ -25,9 +25,9 @@ public class BoardDto {
 	@AllArgsConstructor
 	public static class Patch {
 		private long b_id;
-		@NotBlank(message = "제목은 공백이 아니어야 합니다.")
+		@NotBlank(message = "b_title not null")
 		private String b_title;
-		@NotBlank(message = "내용은 공백이 아니어야 합니다.")
+		@NotBlank(message = "b_content not null")
 		private String b_content;
 	}
 

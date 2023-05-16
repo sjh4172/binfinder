@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -55,6 +56,28 @@ public class PlogService {
                 optionalPlogging.orElseThrow(()->
                         new NoSuchElementException("게시글을 찾을 수 없습니다"));
         return findPlog;
+    }
+    public Plogging like(long plogId, long memberId){
+        Plogging plogging = plogRepository.findById(plogId)
+                .orElseThrow(()-> new NoSuchElementException("게시글을 찾을 수 없습니다"));
+        List<Long> likedMember = plogging.getLikedUserIds();
+        if (!likedMember.contains(memberId)) {
+            likedMember.add(memberId);
+            plogging.setLikedUserIds(likedMember);
+            plogging.setLikes(plogging.getLikes() + 1);
+        }
+        return plogRepository.save(plogging);
+    }
+    public Plogging unLike(long plogId, long memberId){
+        Plogging plogging = plogRepository.findById(plogId)
+                .orElseThrow(()-> new NoSuchElementException("게시글을 찾을 수 없습니다"));
+        List<Long> likedMember = plogging.getLikedUserIds();
+        if (likedMember.remove(memberId)) {
+            likedMember.add(memberId);
+            plogging.setLikedUserIds(likedMember);
+            plogging.setLikes(plogging.getLikes() - 1);
+        }
+        return plogRepository.save(plogging);
     }
 
 }

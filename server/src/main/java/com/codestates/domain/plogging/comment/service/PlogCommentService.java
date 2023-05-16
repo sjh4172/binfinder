@@ -2,8 +2,8 @@ package com.codestates.domain.plogging.comment.service;
 
 import com.codestates.domain.plogging.comment.entity.PlogComment;
 import com.codestates.domain.plogging.comment.repository.PlogCommentRepository;
-import com.codestates.domain.plogging.entity.Plogging;
 import com.codestates.domain.plogging.repository.PlogRepository;
+import com.codestates.domain.plogging.entity.Plogging;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;

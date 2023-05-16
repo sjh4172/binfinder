@@ -17,8 +17,8 @@ public class PlogDetailDto {
     private String content;
     private Long memberId;
     private String memberName;
-    private Integer likeCount;
+    private Integer likes;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private List<PlogCommentResponseDto> comments; // 추가된 필드
+    private List<PlogCommentResponseDto> comments;
 }
