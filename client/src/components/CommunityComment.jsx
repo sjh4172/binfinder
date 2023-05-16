@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useState, useRef, useEffect } from 'react';
 import useInput from '../hooks/useInput';
 import MyProfile from './MyProfile';
+import { postCommunity } from '../api/communityAPI';
 
 function CommunityComment({ setIsCModalOpen }) {
 	// 초기 값 props로 받으면 useInput에 넣기
@@ -26,7 +27,20 @@ function CommunityComment({ setIsCModalOpen }) {
 		}
 	}, [isEdit]);
 
-	// 댓글 수정, 삭제 함수 작성해야함
+	// 댓글 수정 함수 작성해야함
+	function editComment() {
+		postCommunity(
+			`/comments/id`,
+			{
+				p_id: '게시글아이디',
+				c_id: '댓글 아이디',
+				c_content: textareaBind.value,
+				m_id: '작성자아이디',
+			},
+			'patch',
+		);
+		setIsEdit(false);
+	}
 	return (
 		<>
 			<MyProfile className="porfile" />
@@ -39,7 +53,7 @@ function CommunityComment({ setIsCModalOpen }) {
 				<time dateTime="2023-05-09">2023.05.9</time>
 				<ButtonWrapper>
 					{isEdit ? (
-						<button onClick={() => setIsEdit(false)} type="button">
+						<button onClick={() => editComment()} type="button">
 							수정 완료
 						</button>
 					) : (
