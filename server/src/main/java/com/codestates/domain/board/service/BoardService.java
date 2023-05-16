@@ -7,6 +7,8 @@ import com.codestates.exception.ExceptionCode;
 import com.codestates.domain.board.repository.BoardRepository;
 import com.codestates.domain.member.entity.Member;
 import com.codestates.domain.member.service.MemberService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -77,11 +79,8 @@ public class BoardService {
 		return board;
 	}
 
-	public List<Board> findBoards() {
-
-		// 전체 게시판 정보 조회는 모두 가능
-		return boardRepository.findAll();
-
+	public Page<Board> findBoards(Pageable pageable) {
+		return boardRepository.findAll(pageable);
 	}
 
 	public void deleteBoard(long b_id) {

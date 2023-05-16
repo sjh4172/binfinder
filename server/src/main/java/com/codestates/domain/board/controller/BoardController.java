@@ -6,13 +6,15 @@ import com.codestates.domain.board.mapper.BoardMapper;
 import com.codestates.domain.board.service.BoardService;
 import com.codestates.exception.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
+import org.springframework.data.domain.Pageable;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -59,13 +61,17 @@ public class BoardController {
 	}
 
 	@GetMapping
-	public ResponseEntity getBoards() {
-		List<Board> boards = boardService.findBoards();
+	public ResponseEntity getBoards(
+					@RequestParam(defaultValue = "0") int page,
+					@RequestParam(defaultValue = "10") int size
+	) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Board> boardPage = boardService.findBoards(pageable);
 
-		List<BoardDto.Response> response =
-						boards.stream()
-										.map(board -> mapper.boardToBoardResponseDto(board))
-										.collect(Collectors.toList());
+		List<BoardDto.Response> response = boardPage
+						.stream()
+						.map(board -> mapper.boardToBoardResponseDto(board))
+						.collect(Collectors.toList());
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
