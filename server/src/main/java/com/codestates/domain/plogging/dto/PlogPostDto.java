@@ -15,7 +15,7 @@ import java.util.prefs.BackingStoreException;
 @NoArgsConstructor
 public class PlogPostDto {
     @Positive
-    private Long plogId;
+    private long plogId;
     @NotBlank(message = "title not null")
     private String title;
     @NotBlank(message = "content not null")
