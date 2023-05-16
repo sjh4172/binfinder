@@ -1,8 +1,8 @@
 import request from './core';
 
 // get요청
-const getPostList = (page, count) => {
-	return request({ url: `/boards${page}&count=${count}` });
+const getPostList = (page = '?page=0') => {
+	return request({ url: `/boards${page}&count=20` });
 };
 
 const getPost = (postId) => {
