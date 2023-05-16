@@ -16,9 +16,9 @@ public class VoteDto {
     @AllArgsConstructor
     public static class CreateRequest {
         @Positive
-        private Long memberId;
+        private long memberId;
         @Positive
-        private Long trashCanId;
+        private long trashCanId;
         @NotNull(message = "voteType not null")
         private VoteTypeEnum voteType;
         public void setMember(Member member){this.memberId= member.getMemberId();}
