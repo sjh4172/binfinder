@@ -7,6 +7,7 @@
 
 ## 🐣 Intro
 - 안녕하세요. 팀 에배레스트 입니다.
+- API 명세서 : https://documenter.getpostman.com/view/25535504/2s93eZxB7u
 - 배포링크 : 
 
 ## 👩‍💻 Team
