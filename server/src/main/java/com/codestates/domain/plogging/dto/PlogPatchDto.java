@@ -12,7 +12,7 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 public class PlogPatchDto {
     @Positive
-    private Long plogId;
+    private long plogId;
     @NotBlank(message = "title not null")
     private String title;
     @NotBlank(message = "content not null")
