@@ -1,6 +1,7 @@
 package com.codestates.domain.vote;
 
 import com.codestates.domain.member.entity.Member;
+import com.codestates.domain.trashcan.TrashCan;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,10 +14,10 @@ public class VoteDto {
     @Setter
     @AllArgsConstructor
     public static class CreateRequest {
-        private Long memberId;
+//        private Long memberId;
         private Long trashCanId;
         private VoteTypeEnum voteType;
-        public void setMember(Member member){this.memberId= member.getMemberId();}
+//        public void setMember(Member member){this.memberId= member.getMemberId();}
     }
 
     @Getter
@@ -28,11 +29,9 @@ public class VoteDto {
         private Long trashCanId;
         private VoteTypeEnum voteType;
         private LocalDateTime createdAt;
-        private LocalDateTime updatedAt;
+        private LocalDateTime modifiedAt;
 
         public void setMember(Member member){this.memberId= member.getMemberId();}
-
-
     }
 
     public enum VoteTypeEnum {

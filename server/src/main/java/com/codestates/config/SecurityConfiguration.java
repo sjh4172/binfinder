@@ -97,6 +97,15 @@ public class SecurityConfiguration{
                         .antMatchers(HttpMethod.PATCH, "/comments/**").hasAnyRole("ADMIN","USER") // 불량 댓글일 경우 관리자가 수정, 회원 댓글 수정
                         .antMatchers(HttpMethod.DELETE, "/comments/**").hasAnyRole("ADMIN","USER") // 불량 게시판 댓글일 경우 관리자가 삭제, 회원 댓글 삭제
 
+                        .antMatchers(HttpMethod.GET,"/trash-cans/**").hasAnyRole("ADMIN","USER")
+                        .antMatchers(HttpMethod.GET,"/vote/members/**").hasAnyRole("ADMIN","USER")
+                        .antMatchers(HttpMethod.POST,"/vote").hasRole("USER") // 쓰레기통 투표는 유저만 가능
+                        .antMatchers(HttpMethod.PUT,"/vote/**").hasRole("USER") // 투표 수정은 유저만 가능
+                        .antMatchers(HttpMethod.DELETE,"/vote/**").hasAnyRole("ADMIN","USER") // 투표 삭제는 관리자, 유저만 가능
+
+
+
+
                         .anyRequest().permitAll()); // 서버 측으로 들어오는 모든 request 접근 허용
 
         return http.build();
