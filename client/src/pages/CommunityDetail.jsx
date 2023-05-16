@@ -31,22 +31,21 @@ function CommunityDetail() {
 	// 게시글 삭제 함수
 	const handleConfirmP = () => {
 		closeModalP();
-		// deleteCommunity(`/post/delete/${data.id}`);
-		deleteCommunity(`/read/${data.id}`); // json server
+		deleteCommunity(`/boards/${data.id}`);
+		// deleteCommunity(`/read/${data.id}`); // json server
 		navigate(URL_POST);
 	};
 	// 댓글 삭제 함수
 	const handleConfirmC = () => {
 		closeModalC();
-		// deleteCommunity(`/post/delete/${data.id}`);
-		deleteCommunity(`/read/${data.id}`); // json server
+		deleteCommunity(`/comments/${data.id}`);
+		// deleteCommunity(`/read/${data.id}`); // json server
 	};
 
 	function postComment(value) {
-		postCommunity(`/comment/write`, {
-			p_id: data.id,
+		postCommunity(`/comments`, {
+			b_id: data.id,
 			c_contant: value,
-			m_id: '작성자 아이디',
 		});
 	}
 
