@@ -98,7 +98,7 @@ const Table = styled.table`
 	.empty {
 		text-align: center;
 		color: #b3b3b3;
-		padding: 70px;
+		padding: 149px 0px;
 		border-bottom: 1px solid #d9d9d9;
 	}
 
