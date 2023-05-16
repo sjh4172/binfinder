@@ -9,9 +9,9 @@ import { URL_POST } from '../routesURL';
 function CommunityEdit() {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const [titleBind] = useInput(location.state ? location.state.p_title : '');
+	const [titleBind] = useInput(location.state ? location.state.b_title : '');
 	const [contentBind] = useInput(
-		location.state ? location.state.p_content : '',
+		location.state ? location.state.b_content : '',
 	);
 	// 수정 시 기존의 제목, 내용, postid props로 받기
 
