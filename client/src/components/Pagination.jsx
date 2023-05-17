@@ -2,31 +2,6 @@ import { MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
 import styled from 'styled-components';
 import { useEffect } from 'react';
 
-const Container = styled.div`
-	display: flex;
-	margin: 60px 0px;
-	justify-content: center;
-`;
-
-const Button = styled.button`
-	background-color: ${(props) => (props.active ? '#37A0DB' : 'white')};
-	border: none;
-	font-size: var(--base);
-	width: 30px;
-	height: 30px;
-	color: ${(props) => (props.active ? 'white' : 'black')};
-
-	:hover {
-		color: ${(props) => (props.active ? 'white' : '#37A0DB')};
-	}
-
-	.icon {
-		width: 30px;
-		height: 30px;
-		padding: 5px 0px;
-	}
-`;
-
 function Pagination({
 	currentPage,
 	setCurrentPage,
@@ -71,5 +46,30 @@ function Pagination({
 		</Container>
 	);
 }
+
+const Container = styled.div`
+	display: flex;
+	margin: 60px 0px;
+	justify-content: center;
+`;
+
+const Button = styled.button`
+	background-color: ${(props) => (props.active ? '#37A0DB' : 'white')};
+	border: none;
+	font-size: var(--base);
+	width: 30px;
+	height: 30px;
+	color: ${(props) => (props.active ? 'white' : 'black')};
+
+	:hover {
+		color: ${(props) => (props.active ? 'white' : '#37A0DB')};
+	}
+
+	.icon {
+		width: 30px;
+		height: 30px;
+		padding: 5px 0px;
+	}
+`;
 
 export default Pagination;

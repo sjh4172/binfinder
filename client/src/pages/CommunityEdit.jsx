@@ -4,33 +4,37 @@ import CommunityEditor from '../components/CommunityEditor';
 import { Button, WarningButton } from '../styles/Buttons';
 import { postCommunity } from '../api/communityAPI';
 import useInput from '../hooks/useInput';
+import { URL_POST } from '../routesURL';
 
 function CommunityEdit() {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const [titleBind] = useInput(location.state ? location.state.p_title : '');
+	const [titleBind] = useInput(location.state ? location.state.b_title : '');
 	const [contentBind] = useInput(
-		location.state ? location.state.p_content : '',
+		location.state ? location.state.b_content : '',
 	);
 	// 수정 시 기존의 제목, 내용, postid props로 받기
 
 	// json서버 테스트용 실제서버는 url이랑 data 변경해야함
 	function writePost() {
-		if (location.state) {
+		if (titleBind.value === '') {
+			alert('제목을 작성해주세요.');
+		} else if (contentBind.value === '') {
+			alert('내용을 작성해주세요.');
+		} else if (location.state) {
 			postCommunity(
-				'/write/1',
+				`/boards/${location.state.id}`,
 				{
-					p_title: titleBind.value,
-					P_content: contentBind.value,
+					b_title: titleBind.value,
+					b_content: contentBind.value,
 				},
 				'patch',
 			);
-			navigate(`/post/read/${location.state.id}`);
+			navigate(`${URL_POST}/${location.state.id}`);
 		} else {
-			postCommunity('/write', {
-				p_title: titleBind.value,
-				P_content: contentBind.value,
-				m_id: '작성자아이디',
+			postCommunity('/boards', {
+				b_title: titleBind.value,
+				b_content: contentBind.value,
 			});
 			// 응답에서 postid 받으면 navigate연결하기
 		}

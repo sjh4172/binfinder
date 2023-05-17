@@ -1,13 +1,12 @@
 import request from './core';
 
 // get요청
-const getPostList = (page, count) => {
-	return request({ url: `/post/read?page=${page}&count=${count}` });
+const getPostList = (page = '?page=0') => {
+	return request({ url: `/boards${page}&count=20` });
 };
 
 const getPost = (postId) => {
-	// return request({ url: `/post/read/${postId}` });
-	return request({ url: `/read/${postId}` }); // json server
+	return request({ url: `/boards/${postId}` });
 };
 
 const Authorization = localStorage.getItem('accessToken');

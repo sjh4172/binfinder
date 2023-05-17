@@ -1,15 +1,25 @@
 import styled from 'styled-components';
-import { useState } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useSearchParams, Link, useLocation } from 'react-router-dom';
 import Title from '../styles/Title';
 import CommunityList from '../components/CommunityList';
 import Pagination from '../components/Pagination';
 import { URL_WRITEPOST } from '../routesURL';
+import { getPostList } from '../api/communityAPI';
 
 function Community() {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [currentPage, setCurrentPage] = useState(0);
 	const [totalPage, setTotalPage] = useState(19);
+	const location = useLocation();
+	const [data, setData] = useState(null);
+
+	useEffect(() => {
+		if (location.search) {
+			getPostList(location.search).then((res) => setData(res));
+		}
+	}, [searchParams]);
+
 	return (
 		<CommunityPage>
 			<div className="flex">
@@ -18,7 +28,7 @@ function Community() {
 					글 작성
 				</Link>
 			</div>
-			<CommunityList totalPage={totalPage} />
+			<CommunityList data={data} />
 			{totalPage >= 0 ? (
 				<Pagination
 					currentPage={currentPage}

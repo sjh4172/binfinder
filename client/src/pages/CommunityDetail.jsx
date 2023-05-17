@@ -18,7 +18,7 @@ function CommunityDetail() {
 	const [isOpenModalC, openModalC, closeModalC] = useModal(false);
 	const [data, setData] = useState(null);
 	const location = useLocation();
-	const postId = location.pathname.split('/')[3];
+	const postId = location.pathname.split('/')[2];
 	const [textareaBind] = useInput();
 	const [isHeart, setIsHeart] = useState(true);
 
@@ -31,35 +31,45 @@ function CommunityDetail() {
 	// 게시글 삭제 함수
 	const handleConfirmP = () => {
 		closeModalP();
-		// deleteCommunity(`/post/delete/${data.id}`);
-		deleteCommunity(`/read/${data.id}`); // json server
+		deleteCommunity(`/boards/${data.id}`);
+		// deleteCommunity(`/read/${data.id}`); // json server
 		navigate(URL_POST);
 	};
 	// 댓글 삭제 함수
 	const handleConfirmC = () => {
 		closeModalC();
-		// deleteCommunity(`/post/delete/${data.id}`);
-		deleteCommunity(`/read/${data.id}`); // json server
+		deleteCommunity(`/comments/${data.id}`);
+		// deleteCommunity(`/read/${data.id}`); // json server
 	};
 
 	function postComment(value) {
-		postCommunity(`/comment/write`, {
-			p_id: data.id,
-			c_contant: value,
-			m_id: '작성자 아이디',
-		});
+		if (value !== '') {
+			postCommunity(`/comments`, {
+				b_id: data.id,
+				c_contant: value,
+			});
+		}
+	}
+
+	function likeUpDown() {
+		if (isHeart) {
+			postCommunity(`boards/unlike/${data.b_id}/${data.memberId}`, null);
+		} else {
+			postCommunity(`boards/like/${data.b_id}/${data.memberId}`, null);
+		}
+		setIsHeart(!isHeart);
 	}
 
 	return (
 		<DetailPage>
-			<Title className="title">{data && data.p_title}</Title>
+			<Title className="title">{data && data.b_title}</Title>
 			<MyProfile />
 			<CommunityPost setIsPModalOpen={openModalP} data={data} />
-			<Button className="bt list" onClick={() => navigate('/post/read')}>
+			<Button className="bt list" onClick={() => navigate(URL_POST)}>
 				목록 보기
 			</Button>
-			<Button className="bt" onClick={() => setIsHeart(!isHeart)}>
-				{isHeart ? '♥ 10' : '♡ 10'}
+			<Button className="bt" onClick={() => likeUpDown()}>
+				{data && (isHeart ? `♥ ${data.likes}` : `♡ ${data.likes}`)}
 			</Button>
 			<Title className="title">1개의 댓글</Title>
 			<textarea placeholder="댓글을 입력하세요" {...textareaBind} />

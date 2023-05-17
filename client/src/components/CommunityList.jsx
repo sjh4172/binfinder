@@ -1,6 +1,8 @@
 import styled from 'styled-components';
+import { URL_POST } from '../routesURL';
+import useDate from '../hooks/useDate';
 
-function CommunityList({ totalPage }) {
+function CommunityList({ data }) {
 	return (
 		<Table>
 			<thead>
@@ -11,34 +13,32 @@ function CommunityList({ totalPage }) {
 					<th className="none">좋아요</th>
 				</tr>
 			</thead>
-			{totalPage < 0 ? (
-				<div className="empty">게시물이 없습니다.</div>
-			) : (
+			{data ? (
 				<tbody>
-					{Array(20)
-						.fill(1)
-						.map((el) => (
-							<tr key={el}>
-								<th
-									title="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [5]"
-									className="title"
-								>
-									aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+					{data.map((el) => (
+						<tr key={el.b_id}>
+							<th title={`${el.b_title} [5]`} className="title">
+								<a href={`${URL_POST}/${el.b_id}`}>
+									{el.b_title}
 									<span>[5]</span>
+								</a>
+							</th>
+							<th className="none">{el.username}</th>
+							<th className="none">{useDate(el.createdAt)}</th>
+							<th className="none">{el.likes}</th>
+							<div className="bottom">
+								<th>{el.username}</th>
+								<th>{useDate(el.createdAt).slice(2)}</th>
+								<th>
+									<span>♥</span>
+									{el.likes}
 								</th>
-								<th className="none">김땡땡</th>
-								<th className="none">2023.05.05</th>
-								<th className="none">1000</th>
-								<div className="bottom">
-									<th>김땡땡</th>
-									<th>23.05.05</th>
-									<th>
-										<span>♥</span> 1000
-									</th>
-								</div>
-							</tr>
-						))}
+							</div>
+						</tr>
+					))}
 				</tbody>
+			) : (
+				<div className="empty">게시물이 없습니다.</div>
 			)}
 		</Table>
 	);
@@ -82,7 +82,6 @@ const Table = styled.table`
 	// 데이블 행 커서 및 밑줄
 	tbody tr {
 		border-bottom: 1px solid #d9d9d9;
-		cursor: pointer;
 	}
 
 	// 테이블 행 hover
@@ -99,7 +98,7 @@ const Table = styled.table`
 	.empty {
 		text-align: center;
 		color: #b3b3b3;
-		padding: 70px;
+		padding: 149px 0px;
 		border-bottom: 1px solid #d9d9d9;
 	}
 

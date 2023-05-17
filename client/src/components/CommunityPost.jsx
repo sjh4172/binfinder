@@ -1,31 +1,40 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import { URL_WRITEPOST } from '../routesURL';
+import useDate from '../hooks/useDate';
 
 function CommunityPost({ setIsPModalOpen, data }) {
 	const navigate = useNavigate();
+	const memberId = useSelector((state) => state.auth.email);
+
 	return (
 		<>
 			<Detail>
 				<div>
-					<span>2023.05.08</span>
 					<span>
-						댓글 <span className="comment">{data && data.c_id.length}</span>
+						{data &&
+							`${useDate(data.createdAt)} ${data.createdAt.split('T')[1]}`}
+					</span>
+					<span>
+						댓글 <span className="comment">{data && data.length}</span>
 					</span>
 				</div>
-				<div className="buttonWrapper">
-					<button
-						type="button"
-						onClick={() => navigate(URL_WRITEPOST, { state: { ...data } })}
-					>
-						수정
-					</button>
-					<button type="button" onClick={() => setIsPModalOpen(true)}>
-						삭제
-					</button>
-				</div>
+				{memberId === (data && data.memberId) && (
+					<div className="buttonWrapper">
+						<button
+							type="button"
+							onClick={() => navigate(URL_WRITEPOST, { state: { ...data } })}
+						>
+							수정
+						</button>
+						<button type="button" onClick={() => setIsPModalOpen(true)}>
+							삭제
+						</button>
+					</div>
+				)}
 			</Detail>
-			<Content>{data && data.p_content}</Content>
+			<Content>{data && data.b_content}</Content>
 		</>
 	);
 }
