@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
+import java.time.LocalDateTime;
 
 public class BoardDto {
 	@Getter
@@ -17,15 +18,6 @@ public class BoardDto {
 		private String b_title;
 		@NotBlank(message = "b_content not null")
 		private String b_content;
-//		@Positive
-//		private long memberId;
-//
-//		public Member getMember(){
-//			Member member = new Member();
-//			member.setMemberId(memberId);
-//
-//			return member;
-//		}
 	}
 
 	@Getter
@@ -48,6 +40,10 @@ public class BoardDto {
 		private long likes;
 		private long memberId;
 		private String username;
+		private LocalDateTime createdAt;
+		private LocalDateTime modifiedAt;
+
+		private boolean checkLike;
 		public void setMember(Member member){this.memberId= member.getMemberId();}
 	}
 }

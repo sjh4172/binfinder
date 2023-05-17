@@ -20,12 +20,14 @@ public class VoteController {
         this.voteService = voteService;
     }
 
+    // 좋아요, 싫어요 투표하기
     @PostMapping("")
     public ResponseEntity<VoteDto.Response> createVote(@Valid @RequestBody VoteDto.CreateRequest createRequest) {
         VoteDto.Response response = voteService.createVote(createRequest);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    // 투표 수정하기
     @PutMapping("/{voteId}")
     public ResponseEntity<VoteDto.Response> updateVote(@PathVariable Long voteId, @Valid @RequestBody VoteDto.CreateRequest createRequest) {
         VoteDto.Response response = voteService.updateVote(createRequest);
@@ -52,6 +54,7 @@ public class VoteController {
 //        return ResponseEntity.status(status).location(location).body(responseDto);
 //    }
 
+    // 투표 삭제하기
     @DeleteMapping("/{voteId}")
     public ResponseEntity<Void> deleteVote(@PathVariable Long voteId) {
         voteService.deleteVote(voteId);
