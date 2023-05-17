@@ -32,6 +32,24 @@ function TrashCanModal({ trashCan, onClose }) {
 			});
 	};
 
+	const handleIncrementCount2 = (event) => {
+		event.preventDefault(); // 새로고침 방지
+		setCount(count + 1);
+		// POST 요청 보내기
+		const data = {
+			trashCanId: trashCan.id,
+			voteType: 'LIKE',
+		};
+		axios
+			.post('http://localhost:4001/vote', data)
+			.then((response) => {
+				console.log('POST 요청 성공:', response.data);
+			})
+			.catch((error) => {
+				console.error('POST 요청 실패:', error);
+			});
+	};
+
 	// 로드뷰
 	const handleLoadRoadView = (event) => {
 		event.preventDefault(); // 새로고침 방지
@@ -104,7 +122,7 @@ function TrashCanModal({ trashCan, onClose }) {
 					<TrashModalButton onClick={handleIncrementCount}>
 						좋아요 : {count}
 					</TrashModalButton>
-					<TrashModalButton onClick={handleIncrementCount}>
+					<TrashModalButton onClick={handleIncrementCount2}>
 						싫어요 : {count}
 					</TrashModalButton>
 				</BtnContent>

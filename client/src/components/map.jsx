@@ -137,17 +137,16 @@ function Map() {
 // 맵사이즈
 const MapStyle = styled.div`
 	height: 100vh;
+	width: calc(100vw - 18.7em);
 	align-items: center;
 	justify-content: center;
-	margin-top: 5em;
-	margin-left: 18.7em;
-	margin-right: auto;
 	border-width: medium;
 	.map {
 		height: 100%;
 	}
 	@media (max-width: 768px) {
-		width: 100%;
+		width: 100vw;
+		height: 60vh;
 	}
 `;
 
