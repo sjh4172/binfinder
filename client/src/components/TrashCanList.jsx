@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import TrashCanModal from './TrashCanModal';
 
 function NearbyTrashCanList() {
 	const [trashCans, setTrashCans] = useState([]);
@@ -68,10 +67,6 @@ function NearbyTrashCanList() {
 const ListWapper = styled.div`
 	display: flex;
 	flex-direction: column;
-	position: absolute;
-	top: 80px;
-	left: 0;
-	bottom: 0;
 	width: 300px;
 	background-color: #ffffff;
 	.distanceText {
@@ -84,6 +79,7 @@ const ListWapper = styled.div`
 	}
 	@media (max-width: 768px) {
 		top: calc(100% - 300px);
+		width: 100%;
 	}
 `;
 const List = styled.ul`
@@ -103,6 +99,9 @@ const ListItem = styled.li`
 	justify-content: center;
 	align-items: center;
 	border-bottom: 0.5px solid gray;
+	@media (max-width: 768px) {
+		width: 90%;
+	}
 `;
 const Rank = styled.div`
 	width: 30px;
@@ -117,9 +116,15 @@ const Rank = styled.div`
 const Name = styled.div`
 	margin-left: 10px;
 	flex-grow: 2;
+	@media (max-width: 768px) {
+		text-align: center;
+	}
 `;
 const Distance = styled.div`
 	flex-grow: 1;
 	color: skyblue;
+	@media (max-width: 768px) {
+		text-align: center;
+	}
 `;
 export default NearbyTrashCanList;
