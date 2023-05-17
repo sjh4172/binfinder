@@ -1,10 +1,14 @@
 package com.codestates.domain.plogging.service;
 
+import com.codestates.domain.member.repository.MemberRepository;
+import com.codestates.domain.member.service.MemberService;
 import com.codestates.domain.plogging.entity.Plogging;
 import com.codestates.domain.plogging.mapper.PlogMapper;
 import com.codestates.domain.plogging.repository.PlogRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +20,13 @@ import java.util.Optional;
 @Transactional
 public class PlogService {
     private final PlogRepository plogRepository;
-    private final PlogMapper plogMapper;
+    private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
-    public PlogService(PlogRepository plogRepository, PlogMapper plogMapper) {
+    public PlogService(PlogRepository plogRepository, MemberService memberService, MemberRepository memberRepository) {
         this.plogRepository = plogRepository;
-        this.plogMapper = plogMapper;
-
+        this.memberService = memberService;
+        this.memberRepository = memberRepository;
     }
 
     public Plogging createPlog (Plogging plogging){

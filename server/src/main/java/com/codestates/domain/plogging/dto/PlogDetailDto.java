@@ -20,5 +20,6 @@ public class PlogDetailDto {
     private Integer likes;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+    private Integer plogCommentCount;
     private List<PlogCommentResponseDto> comments;
 }

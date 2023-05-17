@@ -41,4 +41,6 @@ public class Plogging extends BaseEntity {
     public Plogging(){
         this.likes = 0;
     }
+    @Column
+    private int plogCommentCount;
 }
