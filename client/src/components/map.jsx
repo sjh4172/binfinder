@@ -10,6 +10,10 @@ function Map() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [trashCans, setTrashCans] = useState([]);
 	const [trashMarkers, setTrashMarkers] = useState([]);
+	const [trashCanModal, setTrashCanModal] = useState(false);
+	const closeModal = () => {
+		setTrashCanModal(false);
+	};
 
 	// 쓰레기통 데이터를 가져오는 함수
 	const fetchTrashCans = useCallback(async () => {
@@ -57,7 +61,7 @@ function Map() {
 							image: userMarkerImage,
 						});
 						marker.setMap(map);
-
+						// 필터링 500m기준으로하기
 						// 쓰레기통 마커
 						trashCans.forEach((trashCan) => {
 							const trashMarkerPosition = new kakao.maps.LatLng(
@@ -65,7 +69,7 @@ function Map() {
 								trashCan.Longitude,
 							);
 							const trashCanMarkerImage =
-								trashCan.canType === '재활용쓰레기'
+								trashCan.canType === '재활용'
 									? new kakao.maps.MarkerImage(
 											`${process.env.PUBLIC_URL}/assets/RecycleIcon.png`,
 											new kakao.maps.Size(30),
@@ -80,13 +84,14 @@ function Map() {
 								position: trashMarkerPosition,
 								image: trashCanMarkerImage,
 							});
+
 							// 클릭 이벤트 등록
 							kakao.maps.event.addListener(trashMarker, 'click', () => {
 								const root = document.getElementById('modal-root');
 								ReactDOM.createRoot(root).render(
 									<TrashCanModal
-										onClose={() => setTrashCans([])}
-										trashMarker={trashMarker}
+										onClose={closeModal}
+										trashCan={trashCan} // 쓰레기통 데이터 전달
 									/>,
 								);
 							});
