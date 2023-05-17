@@ -1,8 +1,60 @@
+/* eslint-disable no-console */
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import useModal from '../hooks/useModal';
 
 function EditMyPage() {
+	const navigate = useNavigate();
 	const [isListHover, setIsListHover] = useState(false);
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
+	const [memberId, setMemberId] = useState('');
+	const [isOpenModal, openModal, closeModal] = useModal(false);
+	const { email: userEmail } = useSelector((state) => state.auth);
+
+	useEffect(() => {
+		axios
+			.get(`${process.env.REACT_APP_API_URL}?email=${userEmail}`)
+			.then((res) => {
+				setUsername(res.data[0].username);
+				setMemberId(res.data[0].id);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	}, [userEmail]);
+
+	const handleEditUser = async () => {
+		try {
+			await axios.patch(
+				`${process.env.REACT_APP_API_URL}/members/${memberId}`,
+				{
+					username,
+					password,
+				},
+			);
+			navigate('/mypage');
+		} catch (err) {
+			console.error(err);
+		}
+	};
+	const handleCancel = async () => {
+		navigate('/mypage');
+	};
+	const handleWithdrawUser = async () => {
+		try {
+			await axios.delete(
+				`${process.env.REACT_APP_API_URL}/members/${memberId}`,
+			);
+			navigate('/');
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	return (
 		<EditMyPageContainer>
 			<EditMyPageTitle>회원정보 수정</EditMyPageTitle>
@@ -23,24 +75,97 @@ function EditMyPage() {
 				<InputTitleContainer>
 					<InputContainer>
 						<InputTitle>닉네임:</InputTitle>
-						<Input>수정할 닉네임을 입력해주세요.</Input>
+						<Input
+							value={username}
+							onChange={(e) => setUsername(e.target.value)}
+							placeholder="수정할 닉네임을 입력해주세요."
+						/>
 					</InputContainer>
 					<InputContainer>
 						<InputTitle>비밀번호:</InputTitle>
-						<Input>수정할 비밀번호를 입력해주세요.</Input>
+						<Input
+							type="password"
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+							placeholder="수정할 비밀번호를 입력해주세요."
+						/>
 					</InputContainer>
 				</InputTitleContainer>
 				<ButtonForm>
-					<WithdrawalButton>회원탈퇴</WithdrawalButton>
+					<WithdrawalButton onClick={openModal}>회원탈퇴</WithdrawalButton>
 					<ButtonContainer>
-						<Button>수정</Button>
-						<Button>취소</Button>
+						<Button onClick={handleEditUser}>수정</Button>
+						<Button onClick={handleCancel}>취소</Button>
 					</ButtonContainer>
 				</ButtonForm>
 			</EditMyPageForm>
+			{isOpenModal && ( // 모달 렌더링
+				<Modal>
+					<ModalContent>
+						<ModalDesc>정말로 회원탈퇴를 하시겠습니까?</ModalDesc>
+						<ModalButtonContainer>
+							<ModalButton onClick={handleWithdrawUser}>확인</ModalButton>
+							<ModalButton2 onClick={closeModal}>취소</ModalButton2>
+						</ModalButtonContainer>
+					</ModalContent>
+				</Modal>
+			)}
 		</EditMyPageContainer>
 	);
 }
+const Modal = styled.div`
+	width: 600px;
+	height: 300px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 24px;
+	background: white;
+`;
+const ModalContent = styled.div`
+	width: 500px;
+	height: 150px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+`;
+const ModalDesc = styled.div`
+	width: 500px;
+	height: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
+const ModalButtonContainer = styled.div`
+	width: 300px;
+	height: 100px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+`;
+const ModalButton = styled.button`
+	width: 100px;
+	height: 50px;
+	border: none;
+	border-radius: 12px;
+	background: #2049da;
+	color: white;
+	font-size: 17px;
+`;
+const ModalButton2 = styled.button`
+	width: 100px;
+	height: 50px;
+	border: none;
+	border-radius: 12px;
+	background: #37a0db;
+	color: white;
+	font-size: 17px;
+`;
 /* 수정페이지 전체 컨테이너 */
 const EditMyPageContainer = styled.div`
 	max-width: 1024px;
@@ -48,7 +173,7 @@ const EditMyPageContainer = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	font-size: 17px;
+	font-size: 14px;
 	font-weight: 700;
 	margin-left: auto;
 	margin-right: auto;
@@ -146,14 +271,17 @@ const InputTitle = styled.div`
 	}
 `;
 /* 수정페이지 인풋  */
-const Input = styled.div`
+const Input = styled.input`
 	width: 220px;
 	height: 45px;
+	border: none;
 	border-bottom: 1px solid #d9d9d9;
 	display: flex;
 	align-items: center;
 	font-size: 17px;
-	color: #d9d9d9;
+	::placeholder {
+		color: #d9d9d9;
+	}
 	@media (max-width: 768px) {
 		width: 190px;
 		height: 34px;
@@ -184,6 +312,9 @@ const WithdrawalButton = styled.button`
 	border: none;
 	font-size: 17px;
 	font-weight: 700;
+	&:hover {
+		background-color: #d9d9d9;
+	}
 	@media (max-width: 768px) {
 		width: 220px;
 		height: 40px;

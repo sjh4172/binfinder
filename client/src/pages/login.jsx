@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import HorizontalLine from '../components/HorizonLine';
 import { loginSuccess, loginFailure } from '../store/userSlice';
 import login from '../api/authAPI';
@@ -18,6 +18,7 @@ import {
 
 function Login() {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const validateEmail = (email) => {
 		return /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/.test(
@@ -47,6 +48,8 @@ function Login() {
 				axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
 				dispatch(loginSuccess({ email: res.data.email }));
+
+				navigate('/');
 			})
 			.catch((err) => {
 				console.log(err);
@@ -158,7 +161,6 @@ const LoginContainer = styled.div`
 		height: 45px;
 		border: none;
 		border-bottom: 2px solid #d9d9d9;
-		color: #d9d9d9;
 		font-family: 'Inter';
 		display: flex;
 		align-items: center;

@@ -3,32 +3,35 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 function Mypage() {
 	const [postList, setPostList] = useState([]);
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState();
 
+	const { email: userEmail } = useSelector((state) => state.auth);
+
 	useEffect(() => {
 		axios
-			.get('http://localhost:4000/members/1')
+			.get(`${process.env.REACT_APP_API_URL}/members?email=${userEmail}`)
 			.then((res) => {
-				setUsername(res.data.username);
-				setEmail(res.data.email);
+				setUsername(res.data[0].username);
+				setEmail(res.data[0].email);
 			})
 			.catch((err) => {
 				console.error(err);
 			});
 		axios
-			.get('http://localhost:4000/posts?memberId=1')
+			.get(`${process.env.REACT_APP_API_URL}/posts?email=${userEmail}`)
 			.then((res) => {
 				setPostList(res.data);
 			})
 			.catch((err) => {
-				// eslint-disable-next-line no-console
 				console.error(err);
 			});
-	}, []);
+	}, [userEmail]);
+
 	return (
 		<MyPageContainer>
 			<MyPageTitle>회원정보</MyPageTitle>
