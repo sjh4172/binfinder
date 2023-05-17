@@ -70,13 +70,28 @@ public class BoardService {
 
 	public Board findBoard(long b_id) {
 
-		// 인증
-		verifyAuthorizedMember(b_id);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-		Board board = boardRepository.findById(b_id)
-				.orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
+		// 인증된 사용자만 접근 가능하도록 확인
+		if (authentication.isAuthenticated()) {
+			// 인증된 사용자의 아이디 추출
+			String loginEmail = authentication.getName();
 
-		return board;
+			// 로그인한 사용자 정보로 멤버 확인
+			Member member = verifyExistingMember(loginEmail);
+
+			Board board = boardRepository.findById(b_id)
+							.orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
+			List<Long> likedUserIds = board.getLikedUserIds();
+			if (!likedUserIds.contains(member.getMemberId())) {
+				board.setCheckLike(false);
+			} else {
+				board.setCheckLike(true);
+			}
+			return board;
+		}else {
+			throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
+		}
 	}
 
 	public Page<Board> findBoards(Pageable pageable) {

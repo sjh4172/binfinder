@@ -42,6 +42,8 @@ public class BoardDto {
 		private String username;
 		private LocalDateTime createdAt;
 		private LocalDateTime modifiedAt;
+
+		private boolean checkLike;
 		public void setMember(Member member){this.memberId= member.getMemberId();}
 	}
 }
