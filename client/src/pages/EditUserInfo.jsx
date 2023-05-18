@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import useModal from '../hooks/useModal';
 
-function EditMyPage() {
+function EditUserInfo() {
 	const navigate = useNavigate();
 	const [isListHover, setIsListHover] = useState(false);
 	const [username, setUsername] = useState('');
@@ -356,4 +356,4 @@ const Button = styled.button`
 		font-weight: 700;
 	}
 `;
-export default EditMyPage;
+export default EditUserInfo;

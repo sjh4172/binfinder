@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
-function Mypage() {
+function UserInfo() {
 	const [postList, setPostList] = useState([]);
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState();
@@ -310,4 +310,4 @@ const List = styled.div`
 		font-size: 11px;
 	}
 `;
-export default Mypage;
+export default UserInfo;
