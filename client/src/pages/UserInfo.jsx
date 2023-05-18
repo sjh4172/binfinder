@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import EditUserInfo from './EditUserInfo';
 
 function UserInfo() {
 	const [postList, setPostList] = useState([]);
