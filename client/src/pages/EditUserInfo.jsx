@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import useModal from '../hooks/useModal';
 
-function EditMyPage() {
+function EditUserInfo() {
 	const navigate = useNavigate();
 	const [isListHover, setIsListHover] = useState(false);
 	const [username, setUsername] = useState('');
@@ -41,9 +41,11 @@ function EditMyPage() {
 			console.error(err);
 		}
 	};
+
 	const handleCancel = async () => {
 		navigate('/mypage');
 	};
+
 	const handleWithdrawUser = async () => {
 		try {
 			await axios.delete(
@@ -63,14 +65,18 @@ function EditMyPage() {
 					onMouseOver={() => setIsListHover(true)}
 					onMouseOut={() => setIsListHover(false)}
 				>
-					<img
-						src={
-							isListHover
-								? `${process.env.PUBLIC_URL}/assets/Ellipse 5.png`
-								: `${process.env.PUBLIC_URL}/assets/Ellipse.png`
-						}
-						alt="Ellipse.png"
-					/>
+					{isListHover && (
+						<img
+							src={`${process.env.PUBLIC_URL}/assets/Ellipse 5.png`}
+							alt="HoverKakaodefaultprofile.png "
+						/>
+					)}
+					{!isListHover && (
+						<img
+							src={`${process.env.PUBLIC_URL}/assets/Ellipse.png`}
+							alt="default profile.png"
+						/>
+					)}
 				</Logo>
 				<InputTitleContainer>
 					<InputContainer>
@@ -99,16 +105,18 @@ function EditMyPage() {
 					</ButtonContainer>
 				</ButtonForm>
 			</EditMyPageForm>
-			{isOpenModal && ( // 모달 렌더링
-				<Modal>
-					<ModalContent>
-						<ModalDesc>정말로 회원탈퇴를 하시겠습니까?</ModalDesc>
-						<ModalButtonContainer>
-							<ModalButton onClick={handleWithdrawUser}>확인</ModalButton>
-							<ModalButton2 onClick={closeModal}>취소</ModalButton2>
-						</ModalButtonContainer>
-					</ModalContent>
-				</Modal>
+			{isOpenModal && (
+				<ModalOverlay>
+					<Modal>
+						<ModalContent>
+							<ModalDesc>정말로 회원탈퇴를 하시겠습니까?</ModalDesc>
+							<ModalButtonContainer>
+								<ModalButton onClick={handleWithdrawUser}>확인</ModalButton>
+								<ModalButton2 onClick={closeModal}>취소</ModalButton2>
+							</ModalButtonContainer>
+						</ModalContent>
+					</Modal>
+				</ModalOverlay>
 			)}
 		</EditMyPageContainer>
 	);
@@ -124,7 +132,17 @@ const Modal = styled.div`
 	left: 50%;
 	transform: translate(-50%, -50%);
 	border-radius: 24px;
-	background: white;
+	background-color: white;
+	z-index: 100;
+`;
+const ModalOverlay = styled.div`
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.4);
+	z-index: 999;
 `;
 const ModalContent = styled.div`
 	width: 500px;
@@ -212,6 +230,7 @@ const EditMyPageForm = styled.div`
 	justify-content: center;
 	align-items: center;
 	border: 1px solid #d9d9d9;
+	margin-bottom: 40px;
 	@media (max-width: 768px) {
 		width: 300px;
 		height: 500px;
@@ -356,4 +375,4 @@ const Button = styled.button`
 		font-weight: 700;
 	}
 `;
-export default EditMyPage;
+export default EditUserInfo;

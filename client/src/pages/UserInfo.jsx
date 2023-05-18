@@ -23,7 +23,7 @@ function Mypage() {
 				console.error(err);
 			});
 		axios
-			.get(`${process.env.REACT_APP_API_URL}/posts?email=${userEmail}`)
+			.get(`${process.env.REACT_APP_API_URL}/boards?email=${userEmail}`)
 			.then((res) => {
 				setPostList(res.data);
 			})
