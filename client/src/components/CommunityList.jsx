@@ -13,7 +13,7 @@ function CommunityList({ data }) {
 					<th className="none">좋아요</th>
 				</tr>
 			</thead>
-			{data ? (
+			{data && (
 				<tbody>
 					{data.map((el) => (
 						<tr key={el.b_id}>
@@ -24,11 +24,15 @@ function CommunityList({ data }) {
 								</a>
 							</th>
 							<th className="none">{el.username}</th>
-							<th className="none">{useDate(el.createdAt)}</th>
+							<th className="none">
+								<time>{useDate(el.createdAt)[0]}</time>
+							</th>
 							<th className="none">{el.likes}</th>
 							<div className="bottom">
 								<th>{el.username}</th>
-								<th>{useDate(el.createdAt).slice(2)}</th>
+								<th>
+									<time>{useDate(el.createdAt)[0].slice(-8)}</time>
+								</th>
 								<th>
 									<span>♥</span>
 									{el.likes}
@@ -37,9 +41,8 @@ function CommunityList({ data }) {
 						</tr>
 					))}
 				</tbody>
-			) : (
-				<div className="empty">게시물이 없습니다.</div>
 			)}
+			{!data && <p className="empty">게시물이 없습니다.</p>}
 		</Table>
 	);
 }

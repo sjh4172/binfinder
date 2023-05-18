@@ -10,12 +10,9 @@ function CommunityPost({ setIsPModalOpen, data }) {
 
 	return (
 		<>
-			<Detail>
+			<PostDetail>
 				<div>
-					<span>
-						{data &&
-							`${useDate(data.createdAt)} ${data.createdAt.split('T')[1]}`}
-					</span>
+					<time>{data && useDate(data.createdAt)[1]}</time>
 					<span>
 						댓글 <span className="comment">{data && data.length}</span>
 					</span>
@@ -33,19 +30,20 @@ function CommunityPost({ setIsPModalOpen, data }) {
 						</button>
 					</div>
 				)}
-			</Detail>
-			<Content>{data && data.b_content}</Content>
+			</PostDetail>
+			<PostContent>{data && data.b_content}</PostContent>
 		</>
 	);
 }
 
-const Detail = styled.div`
+const PostDetail = styled.div`
 	display: flex;
 	justify-content: space-between;
 	color: var(--line-color);
 	font-size: var(--small);
 	margin-top: 15px;
-	span {
+	span,
+	time {
 		margin-right: 15px;
 	}
 	.comment,
@@ -67,7 +65,7 @@ const Detail = styled.div`
 	}
 `;
 
-const Content = styled.p`
+const PostContent = styled.p`
 	font-size: var(--base);
 	padding: 10px 0px;
 	text-align: justify;
