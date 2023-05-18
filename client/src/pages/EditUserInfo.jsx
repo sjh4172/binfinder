@@ -100,19 +100,30 @@ function EditUserInfo() {
 				</ButtonForm>
 			</EditMyPageForm>
 			{isOpenModal && ( // 모달 렌더링
-				<Modal>
-					<ModalContent>
-						<ModalDesc>정말로 회원탈퇴를 하시겠습니까?</ModalDesc>
-						<ModalButtonContainer>
-							<ModalButton onClick={handleWithdrawUser}>확인</ModalButton>
-							<ModalButton2 onClick={closeModal}>취소</ModalButton2>
-						</ModalButtonContainer>
-					</ModalContent>
-				</Modal>
+				<ModalOverlay>
+					<Modal>
+						<ModalContent>
+							<ModalDesc>정말로 회원탈퇴를 하시겠습니까?</ModalDesc>
+							<ModalButtonContainer>
+								<ModalButton onClick={handleWithdrawUser}>확인</ModalButton>
+								<ModalButton2 onClick={closeModal}>취소</ModalButton2>
+							</ModalButtonContainer>
+						</ModalContent>
+					</Modal>
+				</ModalOverlay>
 			)}
 		</EditMyPageContainer>
 	);
 }
+const ModalOverlay = styled.div`
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.4);
+	z-index: 999;
+`;
 const Modal = styled.div`
 	width: 600px;
 	height: 300px;
