@@ -1,15 +1,23 @@
 import axios from 'axios';
 import { apiUrl } from './authAPI';
 
+const Authorization = localStorage.getItem('accessToken');
+
 const getPostList = (page = '?page=0') => {
+	if (Authorization) {
+		return axios(`${apiUrl}/boards${page}&count=20`, {
+			headers: {
+				withCredentials: true,
+				Authorization,
+			},
+		});
+	}
 	return axios(`${apiUrl}/boards${page}&count=20`);
 };
 
 const getPost = (postId) => {
 	return axios(`${apiUrl}/boards/${postId}`);
 };
-
-const Authorization = localStorage.getItem('accessToken');
 
 const postCommunity = (url, data, method = 'post') => {
 	axios[method](`${apiUrl}${url}`, data, {
