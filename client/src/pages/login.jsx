@@ -16,6 +16,7 @@ import {
 	ERROR_VALIDATION_PASSWORD,
 	ERROR_VALIDATION_REQUIRED_PASSWORD,
 } from '../Constant';
+import { URL_MAP, URL_SIGNUP } from '../routesURL';
 
 function Login() {
 	const dispatch = useDispatch();
@@ -50,7 +51,7 @@ function Login() {
 
 				dispatch(loginSuccess({ email: res.data.email }));
 				setIsLogin(true);
-				navigate('/');
+				navigate(URL_MAP);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -116,7 +117,7 @@ function Login() {
 				</LoginKaKaoButton>
 				<LoginTextContainer>
 					<LoginText>아직 회원이 아니십니까?</LoginText>
-					<SignupLink to="/signup">회원가입</SignupLink>
+					<SignupLink to={URL_SIGNUP}>회원가입</SignupLink>
 				</LoginTextContainer>
 			</form>
 		</LoginContainer>
@@ -259,6 +260,8 @@ const LoginGoogleButton = styled.button`
 /* 로그인 OAuth 로고 */
 const Logo = styled.div`
 	width: 80px;
+	display: flex;
+	justify-content: center;
 	> img {
 		width: 30px;
 		height: 30px;

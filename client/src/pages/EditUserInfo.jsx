@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import useModal from '../hooks/useModal';
+import { URL_MAP, URL_MYPAGE } from '../routesURL';
 
 function EditUserInfo() {
 	const navigate = useNavigate();
@@ -36,20 +37,20 @@ function EditUserInfo() {
 					password,
 				},
 			);
-			navigate('/mypage');
+			navigate(URL_MYPAGE);
 		} catch (err) {
 			console.error(err);
 		}
 	};
 	const handleCancel = async () => {
-		navigate('/mypage');
+		navigate(URL_MYPAGE);
 	};
 	const handleWithdrawUser = async () => {
 		try {
 			await axios.delete(
 				`${process.env.REACT_APP_API_URL}/members/${memberId}`,
 			);
-			navigate('/');
+			navigate(URL_MAP);
 		} catch (err) {
 			console.error(err);
 		}
@@ -63,14 +64,18 @@ function EditUserInfo() {
 					onMouseOver={() => setIsListHover(true)}
 					onMouseOut={() => setIsListHover(false)}
 				>
-					<img
-						src={
-							isListHover
-								? `${process.env.PUBLIC_URL}/assets/Ellipse 5.png`
-								: `${process.env.PUBLIC_URL}/assets/Ellipse.png`
-						}
-						alt="Ellipse.png"
-					/>
+					{isListHover && (
+						<img
+							src={`${process.env.PUBLIC_URL}/assets/Ellipse 5.png`}
+							alt="HoverKakaodefaultprofile.png "
+						/>
+					)}
+					{!isListHover && (
+						<img
+							src={`${process.env.PUBLIC_URL}/assets/Ellipse.png`}
+							alt="default profile.png"
+						/>
+					)}
 				</Logo>
 				<InputTitleContainer>
 					<InputContainer>
