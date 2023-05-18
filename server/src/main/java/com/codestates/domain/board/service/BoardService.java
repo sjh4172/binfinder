@@ -2,6 +2,7 @@ package com.codestates.domain.board.service;
 
 import com.codestates.domain.board.entity.Board;
 import com.codestates.domain.member.repository.MemberRepository;
+import com.codestates.domain.plogging.entity.Plogging;
 import com.codestates.exception.BusinessLogicException;
 import com.codestates.exception.ExceptionCode;
 import com.codestates.domain.board.repository.BoardRepository;
@@ -94,6 +95,32 @@ public class BoardService {
 		}
 	}
 
+
+	public Board findBoardWithComment(long b_id) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		// 인증된 사용자만 접근 가능하도록 확인
+		if (!authentication.isAuthenticated()) {
+			throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
+		}
+
+		// 인증된 사용자의 아이디 추출
+		String loginEmail = authentication.getName();
+
+		// 로그인한 사용자 정보로 멤버 확인
+		Member member = verifyExistingMember(loginEmail);
+
+		Optional<Board> optionalBoard = boardRepository.findBoardWithComments(b_id);
+		if (optionalBoard.isPresent()) {
+			Board board = optionalBoard.get();
+			List<Long> likedUserIds = board.getLikedUserIds();
+			board.setCheckLike(likedUserIds.contains(member.getMemberId()));
+			return board;
+		} else {
+			throw new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND);
+		}
+	}
+
 	public Page<Board> findBoards(Pageable pageable) {
 		return boardRepository.findAll(pageable);
 	}
@@ -103,16 +130,16 @@ public class BoardService {
 		verifyAuthorizedMember(b_id);
 
 		Board board = boardRepository.findById(b_id)
-				.orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
+						.orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
 		boardRepository.delete(board);
 	}
 
 
 	public Board findVerifiedBoard(long b_id) {
 		Optional<Board> optionalBoard =
-				boardRepository.findById(b_id);
+						boardRepository.findById(b_id);
 		Board findBoard = optionalBoard.orElseThrow(() ->
-				new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
+						new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
 		return findBoard;
 	}
 
@@ -187,7 +214,7 @@ public class BoardService {
 	private boolean isAdmin() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		return authentication.getAuthorities().stream()
-				.anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+						.anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
 	}
 
 	// 사용자 여부를 확인하는 메서드
