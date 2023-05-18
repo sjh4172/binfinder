@@ -2,10 +2,10 @@ import { Route, Routes } from 'react-router-dom';
 import { useState } from 'react';
 import GlobalStyles from './styles/index';
 import MapPage from './pages/mapPage';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Mypage from './pages/UserInfo';
-import EditUserInfo from './pages/EditUserInfo';
+import Login from './pages/login';
+import Signup from './pages/signup';
+import Mypage from './pages/mypage';
+import EditMyPage from './pages/editmypage';
 import Community from './pages/Community';
 import CommunityDetail from './pages/CommunityDetail';
 import CommunityEdit from './pages/CommunityEdit';
@@ -51,7 +51,7 @@ function App() {
 				<Route path={URL_LOGIN} element={<Login />} />
 				<Route path={URL_SIGNUP} element={<Signup />} />
 				<Route path={URL_MYPAGE} element={<Mypage />} />
-				<Route path={URL_EDITMYPAGE} element={<EditUserInfo />} />
+				<Route path={URL_EDITMYPAGE} element={<EditMyPage />} />
 				<Route path={URL_POST} element={<Community />} />
 				<Route path={URL_POSTDETAIL} element={<CommunityDetail />} />
 				<Route path={URL_WRITEPOST} element={<CommunityEdit />} />

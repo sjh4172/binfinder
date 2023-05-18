@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import HorizontalLine from '../components/HorizonLine';
-import { signup } from '../api/AuthAPI';
+import { signup } from '../api/authAPI';
 import {
 	ERROR_VALIDATION_EMAIL,
 	ERROR_VALIDATION_REQUIRED_EMAIL,
@@ -11,7 +11,7 @@ import {
 	ERROR_VALIDATION_REQUIRED_PASSWORD,
 	ERROR_VALIDATION_REQUIRED_USERNAME,
 	ERROR_VALIDATION_USERNAME,
-} from '../Constant';
+} from '../constant';
 
 function Signup() {
 	const navigate = useNavigate();

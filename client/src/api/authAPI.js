@@ -8,6 +8,7 @@ const login = (email, password) => {
 		password,
 		headers: {
 			'Content-Type': 'application/json',
+			withCredentials: true,
 		},
 	});
 };
@@ -18,6 +19,7 @@ export const signup = (username, email, password) => {
 		password,
 		headers: {
 			'Content-Type': 'application/json',
+			withCredentials: true,
 		},
 	});
 };
