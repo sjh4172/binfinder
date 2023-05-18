@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import EditUserInfo from './EditUserInfo';
 
 function UserInfo() {
 	const [postList, setPostList] = useState([]);
@@ -43,10 +44,10 @@ function UserInfo() {
 							alt="Ellipse.png"
 						/>
 					</Logo>
-					<InputContainer>
-						<Input>닉네임: {username}</Input>
-						<Input>이메일: {email}</Input>
-						<Input2>
+					<DetailContainer>
+						<Detail>닉네임: {username}</Detail>
+						<Detail>이메일: {email}</Detail>
+						<EditUserInfoButton>
 							프로필 수정
 							<Icon to="/editmypage">
 								<img
@@ -54,8 +55,8 @@ function UserInfo() {
 									alt="pencil.png"
 								/>
 							</Icon>
-						</Input2>
-					</InputContainer>
+						</EditUserInfoButton>
+					</DetailContainer>
 				</ProfileContainer>
 				<ListContainer>
 					<PostListContainer>
@@ -171,7 +172,7 @@ const Icon = styled(Link)`
 	}
 `;
 /* 마이페이지 인풋 전체 컨테이너 */
-const InputContainer = styled.div`
+const DetailContainer = styled.div`
 	width: 220px;
 	height: 135px;
 	margin-left: 20px;
@@ -186,7 +187,7 @@ const InputContainer = styled.div`
 	}
 `;
 /* 마이페이지 인풋  */
-const Input = styled.div`
+const Detail = styled.div`
 	width: 220px;
 	height: 45px;
 	border-bottom: 1px solid #d9d9d9;
@@ -200,7 +201,7 @@ const Input = styled.div`
 	}
 `;
 /* 마이페이지 인풋2(프로필수정 부분)  */
-const Input2 = styled.div`
+const EditUserInfoButton = styled.div`
 	width: 220px;
 	height: 45px;
 	border-bottom: 1px solid #d9d9d9;
