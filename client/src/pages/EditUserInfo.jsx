@@ -223,6 +223,7 @@ const EditMyPageForm = styled.div`
 	justify-content: center;
 	align-items: center;
 	border: 1px solid #d9d9d9;
+	margin-bottom: 40px;
 	@media (max-width: 768px) {
 		width: 300px;
 		height: 500px;

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-console */
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
@@ -48,7 +49,7 @@ function Login() {
 				axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
 				dispatch(loginSuccess({ email: res.data.email }));
-
+				setIsLogin(true);
 				navigate('/');
 			})
 			.catch((err) => {
@@ -56,6 +57,7 @@ function Login() {
 				dispatch(loginFailure());
 			});
 	};
+
 	return (
 		<LoginContainer>
 			<LoginTitle>로그인</LoginTitle>
