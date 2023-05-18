@@ -95,12 +95,30 @@ public class BoardService {
 		}
 	}
 
-	public Board findBoardWithComment(long b_id){
-		Optional<Board> board = boardRepository.findBoardWithComments(b_id);
-		if(board.isPresent()) {
-			return board.get();
+
+	public Board findBoardWithComment(long b_id) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		// 인증된 사용자만 접근 가능하도록 확인
+		if (!authentication.isAuthenticated()) {
+			throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
 		}
-		return null;
+
+		// 인증된 사용자의 아이디 추출
+		String loginEmail = authentication.getName();
+
+		// 로그인한 사용자 정보로 멤버 확인
+		Member member = verifyExistingMember(loginEmail);
+
+		Optional<Board> optionalBoard = boardRepository.findBoardWithComments(b_id);
+		if (optionalBoard.isPresent()) {
+			Board board = optionalBoard.get();
+			List<Long> likedUserIds = board.getLikedUserIds();
+			board.setCheckLike(likedUserIds.contains(member.getMemberId()));
+			return board;
+		} else {
+			throw new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND);
+		}
 	}
 
 	public Page<Board> findBoards(Pageable pageable) {
