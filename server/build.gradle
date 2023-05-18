@@ -38,6 +38,10 @@ dependencies {
 	implementation 'org.mapstruct:mapstruct:1.4.2.Final'   // 매퍼 에너테이션 사용을 위해서 필요
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'  // 매퍼 에너테이션 사용을 위해서 필요
 
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'    // (1) SSR을 위해 추가(메인에선 사용x)
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'  // (2) OAuth 2 사용을 위한 의존성 추가
+
+
 }
 
 tasks.named('test') {
