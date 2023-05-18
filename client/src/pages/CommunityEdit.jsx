@@ -9,17 +9,13 @@ import { URL_POST } from '../routesURL';
 function CommunityEdit() {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const [titleBind] = useInput(location.state ? location.state.b_title : '');
-	const [contentBind] = useInput(
-		location.state ? location.state.b_content : '',
-	);
-	// 수정 시 기존의 제목, 내용, postid props로 받기
-
-	// json서버 테스트용 실제서버는 url이랑 data 변경해야함
-	function writePost() {
-		if (titleBind.value === '') {
+	const [titleBind] = useInput(location.state && location.state.b_title);
+	const [contentBind] = useInput(location.state && location.state.b_content);
+	console.log(titleBind.value);
+	const writePost = () => {
+		if (!titleBind.value) {
 			alert('제목을 작성해주세요.');
-		} else if (contentBind.value === '') {
+		} else if (!contentBind.value) {
 			alert('내용을 작성해주세요.');
 		} else if (location.state) {
 			postCommunity(
@@ -36,25 +32,25 @@ function CommunityEdit() {
 				b_title: titleBind.value,
 				b_content: contentBind.value,
 			});
-			// 응답에서 postid 받으면 navigate연결하기
+			// TODO: 응답에서 postid 받으면 navigate로 작성글, 아니라면 전체목록 연결하기
 		}
-	}
+	};
 	return (
-		<EditPage>
+		<EditPageContainer>
 			<CommunityEditor contentBind={contentBind} titleBind={titleBind} />
 			<div className="flex">
-				<Button className="bt" onClick={() => navigate(-1)}>
+				<Button type="button" className="bt" onClick={() => navigate(-1)}>
 					작성 취소
 				</Button>
 				<WarningButton className="bt" onClick={() => writePost()}>
 					작성 완료
 				</WarningButton>
 			</div>
-		</EditPage>
+		</EditPageContainer>
 	);
 }
 
-const EditPage = styled.div`
+const EditPageContainer = styled.section`
 	max-width: 1024px;
 	width: 80vw;
 	margin-left: auto;
