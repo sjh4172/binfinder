@@ -4,10 +4,10 @@ import { useSelector } from 'react-redux';
 import useInput from '../hooks/useInput';
 import MyProfile from './MyProfile';
 import { postCommunity } from '../api/communityAPI';
+import useDate from '../hooks/useDate';
 
-function CommunityComment({ setIsCModalOpen }) {
-	// TODO: CommunityDetail 페이지에서 초기 값 props로 주고 textareaBind 초기값 설정하기
-	const [textareaBind] = useInput('555');
+function CommunityComment({ setIsCModalOpen, commentData }) {
+	const [textareaBind] = useInput(commentData.c_content);
 	const [isEdit, setIsEdit] = useState(false);
 	const textareaRef = useRef(null);
 	const memberId = useSelector((state) => state.auth.memberId);
@@ -32,12 +32,9 @@ function CommunityComment({ setIsCModalOpen }) {
 
 	const editComment = () => {
 		postCommunity(
-			`/comments/id`,
+			`/comments/${commentData.c_id}`,
 			{
-				p_id: '게시글아이디',
-				c_id: '댓글 아이디',
 				c_content: textareaBind.value,
-				m_id: '작성자아이디',
 			},
 			'patch',
 		);
@@ -45,29 +42,36 @@ function CommunityComment({ setIsCModalOpen }) {
 	};
 	return (
 		<>
-			<MyProfile className="porfile" />
+			<MyProfile
+				className="porfile"
+				username={commentData.username}
+				marginNone
+			/>
 			{isEdit && (
-				<ContentTextarea {...textareaBind} ref={textareaRef} autofocus />
+				<ContentTextarea {...textareaBind} ref={textareaRef} autoFocus />
 			)}
 			{isEdit || <Content>{textareaBind.value}</Content>}
 			<CommentDitail>
-				<time dateTime="2023-05-09">2023.05.9</time>
-				{/* TODO: 데이터 연결하면 useDate로 날짜 형식 수정해서 넣기 */}
-				<ButtonWrapper>
-					{isEdit && (
-						<button onClick={() => editComment()} type="button">
-							수정 완료
+				<time dateTime={commentData.createdAt}>
+					{useDate(commentData.createdAt)[1]}
+				</time>
+				{memberId === commentData.memberId && (
+					<ButtonWrapper>
+						{isEdit && (
+							<button onClick={() => editComment()} type="button">
+								수정 완료
+							</button>
+						)}
+						{isEdit || (
+							<button onClick={() => setIsEdit(true)} type="button">
+								수정
+							</button>
+						)}
+						<button type="button" onClick={() => setIsCModalOpen(true)}>
+							삭제
 						</button>
-					)}
-					{isEdit || (
-						<button onClick={() => setIsEdit(true)} type="button">
-							수정
-						</button>
-					)}
-					<button type="button" onClick={() => setIsCModalOpen(true)}>
-						삭제
-					</button>
-				</ButtonWrapper>
+					</ButtonWrapper>
+				)}
 			</CommentDitail>
 			<Line />
 		</>
