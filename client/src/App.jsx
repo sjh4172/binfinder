@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import { useState } from 'react';
 import GlobalStyles from './styles/index';
-import MapPage from './pages/mapPage';
+import MapPage from './pages/Mappage';
 import Login from './pages/login';
 import Signup from './pages/signup';
 import Mypage from './pages/mypage';
