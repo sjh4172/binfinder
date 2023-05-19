@@ -10,7 +10,7 @@ import { getPostList } from '../api/communityAPI';
 function Community() {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [currentPage, setCurrentPage] = useState(0);
-	const [totalPage, setTotalPage] = useState(19);
+	const [totalPage] = useState(19);
 	const location = useLocation();
 	const [data, setData] = useState(null);
 
@@ -48,10 +48,10 @@ const CommunityPageContainer = styled.section`
 	justify-content: center;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: var(--header-hight);
-	padding-top: 50px;
+	padding-top: calc(var(--header-hight) + 50px);
 	width: 80vw;
 	max-width: 1000px;
+	height: calc(100vh - 228px);
 	.flex {
 		display: flex;
 		justify-content: space-between;
