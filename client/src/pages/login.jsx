@@ -6,8 +6,8 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import HorizontalLine from '../components/HorizonLine';
-import { loginSuccess, loginFailure } from '../store/UserSlice';
-import login from '../api/AuthAPI';
+import { loginSuccess, loginFailure } from '../store/userSlice';
+import login from '../api/authAPI';
 import {
 	KEY_ACCESS_TOKEN,
 	KEY_REFRESH_TOKEN,
@@ -15,7 +15,7 @@ import {
 	ERROR_VALIDATION_REQUIRED_EMAIL,
 	ERROR_VALIDATION_PASSWORD,
 	ERROR_VALIDATION_REQUIRED_PASSWORD,
-} from '../Constant';
+} from '../constant';
 import { URL_MAP, URL_SIGNUP } from '../routesURL';
 
 function Login() {
