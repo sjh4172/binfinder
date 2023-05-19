@@ -12,13 +12,125 @@ import { getPost, deleteCommunity, postCommunity } from '../api/communityAPI';
 import { URL_POST } from '../routesURL';
 import useInput from '../hooks/useInput';
 
-const DetailPage = styled.div`
+function CommunityDetail() {
+	const navigate = useNavigate();
+	const [isOpenModalPost, openModalPost, closeModalPost] = useModal(false);
+	const [isOpenModalComment, openModalComment, closeModalComment] =
+		useModal(false);
+	const [data, setData] = useState(null);
+	const location = useLocation();
+	const postId = location.pathname.split('/')[2];
+	const [textareaBind] = useInput();
+	const [isLike, setIsLike] = useState(true);
+
+	useEffect(() => {
+		getPost(postId).then((res) => setData(res.data));
+		// TODO: 사용자가 '좋아요'했는지가 데이터에 포함된다면 setIsLike로 초기 상태 설정하기
+		// 최종적으로 데이터 구현 안되면 isLike, setIsLike는 삭제하기
+	}, []);
+
+	const handleDelecteConfirmPost = () => {
+		closeModalPost();
+		deleteCommunity(`/boards/${data.id}`);
+		navigate(URL_POST);
+	};
+
+	const handleDelecteConfirmComment = () => {
+		closeModalComment();
+		deleteCommunity(`/comments/${data.id}`);
+	};
+
+	const postComment = (value) => {
+		if (value !== '') {
+			postCommunity(`/comments`, {
+				b_id: data.id,
+				c_contant: value,
+			});
+		}
+	};
+
+	const likeUpDown = () => {
+		if (isLike) {
+			postCommunity(`boards/unlike/${data.b_id}/${data.memberId}`, null);
+		} else {
+			postCommunity(`boards/like/${data.b_id}/${data.memberId}`, null);
+		}
+		setIsLike(!isLike);
+	};
+
+	return (
+		<DetailPageContainer>
+			<section>
+				<Title className="title">{data && data.b_title}</Title>
+				<MyProfile />
+				<CommunityPost setIsPModalOpen={openModalPost} data={data} />
+				<Button
+					type="button"
+					className="bt list"
+					onClick={() => navigate(URL_POST)}
+				>
+					목록 보기
+				</Button>
+				<Button type="button" className="bt" onClick={() => likeUpDown()}>
+					{data && isLike && `♥ ${data.likes}`}
+					{data && (isLike || `♡ ${data.likes}`)}
+				</Button>
+			</section>
+			<section>
+				<h1 className="visually-hidden">댓글</h1>
+				{/* TODO: 댓글 구현되면 수정하기 */}
+				<TotalComment>1개의 댓글</TotalComment>
+				<label htmlFor="comment">
+					댓글을 입력하세요
+					<textarea
+						name="comment"
+						placeholder="댓글을 입력하세요"
+						{...textareaBind}
+					/>
+				</label>
+				<WarningButton
+					className="wbt bt"
+					onClick={() => postComment(textareaBind.value)}
+				>
+					작성
+				</WarningButton>
+				<ul>
+					{/* TODO: 댓글 데이터 구현되면 Array대신 데이터 넣기, key도 id로 변경하기 */}
+					{Array(Math.floor(Math.random() * 10))
+						.fill()
+						.map((el) => (
+							<li key={el}>
+								<CommunityComment setIsCModalOpen={openModalComment} />
+							</li>
+						))}
+				</ul>
+			</section>
+			{isOpenModalPost && (
+				<Modal
+					message="게시글 및 댓글이 삭제 됩니다.<br>정말 삭제하시겠습니까?"
+					handleConfirm={handleDelecteConfirmPost}
+					handleCancel={closeModalPost}
+				/>
+			)}
+			{isOpenModalComment && (
+				<Modal
+					message="댓글이 삭제 됩니다.<br>정말 삭제하시겠습니까?"
+					handleConfirm={handleDelecteConfirmComment}
+					handleCancel={closeModalComment}
+				/>
+			)}
+		</DetailPageContainer>
+	);
+}
+
+const DetailPageContainer = styled.section`
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: var(--header-hight);
 	max-width: 1024px;
 	padding: 50px 0px 100px 0px;
 	width: 80vw;
+
 	.title {
 		margin-bottom: 20px;
 	}
@@ -28,6 +140,9 @@ const DetailPage = styled.div`
 		height: 35px;
 	}
 
+	label {
+		font-size: 0px;
+	}
 	textarea {
 		font-size: var(--base);
 		border-color: var(--line-color);
@@ -53,83 +168,13 @@ const DetailPage = styled.div`
 		}
 	}
 `;
-
-function CommunityDetail() {
-	const navigate = useNavigate();
-	const [isOpenModalP, openModalP, closeModalP] = useModal(false);
-	const [isOpenModalC, openModalC, closeModalC] = useModal(false);
-	const [data, setData] = useState(null);
-	const location = useLocation();
-	const postId = location.pathname.split('/')[3];
-	const [textareaBind] = useInput();
-	const [isHeart, setIsHeart] = useState(true);
-
-	// 초기 데이터 불러오기
-	useEffect(() => {
-		getPost(postId).then((res) => setData(res));
-		// 하트 여부 표시(setIsHeart)
-	}, []);
-
-	// 게시글 삭제 함수
-	const handleConfirmP = () => {
-		closeModalP();
-		// deleteCommunity(`/post/delete/${data.id}`);
-		deleteCommunity(`/read/${data.id}`); // json server
-		navigate(URL_POST);
-	};
-	// 댓글 삭제 함수
-	const handleConfirmC = () => {
-		closeModalC();
-		// deleteCommunity(`/post/delete/${data.id}`);
-		deleteCommunity(`/read/${data.id}`); // json server
-	};
-
-	function postComment(value) {
-		postCommunity(`/comment/write`, {
-			p_id: data.id,
-			c_contant: value,
-			m_id: '작성자 아이디',
-		});
+const TotalComment = styled.p`
+	margin-bottom: 20px;
+	font-size: var(--title);
+	color: var(--main-color);
+	font-weight: 800;
+	@media (max-width: 768px) {
+		font-size: var(--sub-title);
 	}
-
-	return (
-		<DetailPage>
-			<Title className="title">{data && data.p_title}</Title>
-			<MyProfile />
-			<CommunityPost setIsPModalOpen={openModalP} data={data} />
-			<Button className="bt list" onClick={() => navigate('/post/read')}>
-				목록 보기
-			</Button>
-			<Button className="bt" onClick={() => setIsHeart(!isHeart)}>
-				{isHeart ? '♥ 10' : '♡ 10'}
-			</Button>
-			<Title className="title">1개의 댓글</Title>
-			<textarea placeholder="댓글을 입력하세요" {...textareaBind} />
-			<WarningButton
-				className="wbt bt"
-				onClick={() => postComment(textareaBind.value)}
-			>
-				작성
-			</WarningButton>
-			{[1, 1, 1].map((el) => (
-				<CommunityComment key={el} setIsCModalOpen={openModalC} />
-			))}
-			{isOpenModalP && (
-				<Modal
-					message="게시글 및 댓글이 삭제 됩니다.<br>정말 삭제하시겠습니까?"
-					handleConfirm={handleConfirmP}
-					handleCancel={closeModalP}
-				/>
-			)}
-			{isOpenModalC && (
-				<Modal
-					message="댓글이 삭제 됩니다.<br>정말 삭제하시겠습니까?"
-					handleConfirm={handleConfirmC}
-					handleCancel={closeModalC}
-				/>
-			)}
-		</DetailPage>
-	);
-}
-
+`;
 export default CommunityDetail;

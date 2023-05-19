@@ -1,6 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 
+function HorizontalLine({ text }) {
+	return (
+		<HorizonLineContainer>
+			<Horizontal />
+			<Line>{text}</Line>
+			<Horizontal />
+		</HorizonLineContainer>
+	);
+}
+
 const HorizonLineContainer = styled.div`
 	width: 440px;
 	display: flex;
@@ -36,15 +46,4 @@ const Line = styled.div`
 		font-size: 14px;
 	}
 `;
-
-function HorizontalLine({ text }) {
-	return (
-		<HorizonLineContainer>
-			<Horizontal />
-			<Line>{text}</Line>
-			<Horizontal />
-		</HorizonLineContainer>
-	);
-}
-
 export default HorizontalLine;

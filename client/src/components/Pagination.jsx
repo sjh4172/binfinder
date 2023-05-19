@@ -2,7 +2,52 @@ import { MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
 import styled from 'styled-components';
 import { useEffect } from 'react';
 
-const Container = styled.div`
+function Pagination({
+	currentPage,
+	setCurrentPage,
+	totalPage,
+	setSearchParams,
+}) {
+	// 페이지 표시할 첫 숫자
+	const startPage = currentPage - (currentPage % 10);
+	// 표시할 페이지의 수(기본10개이나 마지막은 남은 페이지만큼만)
+	const endPage = startPage + 10 > totalPage ? totalPage % 10 : 10;
+	// 표시할 페이지들
+	const pages = Array.from({ length: endPage }, (_, i) => startPage + i);
+
+	// 현재페이지 쿼리 변경
+	useEffect(() => {
+		setSearchParams({ page: currentPage });
+	}, [currentPage]);
+
+	return (
+		<PagesContainer>
+			<Button
+				disabled={currentPage === 0}
+				onClick={() => setCurrentPage(currentPage - 1)}
+			>
+				{currentPage !== 0 && <MdNavigateBefore className="icon" />}
+			</Button>
+			{pages.map((el) => (
+				<Button
+					key={el}
+					active={el === currentPage}
+					onClick={() => setCurrentPage(el)}
+				>
+					{el + 1}
+				</Button>
+			))}
+			<Button
+				disabled={currentPage === totalPage - 1}
+				onClick={() => setCurrentPage(currentPage + 1)}
+			>
+				{currentPage !== totalPage - 1 && <MdNavigateNext className="icon" />}
+			</Button>
+		</PagesContainer>
+	);
+}
+
+const PagesContainer = styled.div`
 	display: flex;
 	margin: 60px 0px;
 	justify-content: center;
@@ -26,50 +71,5 @@ const Button = styled.button`
 		padding: 5px 0px;
 	}
 `;
-
-function Pagination({
-	currentPage,
-	setCurrentPage,
-	totalPage,
-	setSearchParams,
-}) {
-	// 페이지 표시할 첫 숫자
-	const startPage = currentPage - (currentPage % 10);
-	// 표시할 페이지의 수(기본10개이나 마지막은 남은 페이지만큼만)
-	const endPage = startPage + 10 > totalPage ? totalPage % 10 : 10;
-	// 표시할 페이지들
-	const pages = Array.from({ length: endPage }, (_, i) => startPage + i);
-
-	// 현재페이지 쿼리 변경
-	useEffect(() => {
-		setSearchParams({ page: currentPage });
-	}, [currentPage]);
-
-	return (
-		<Container>
-			<Button
-				disabled={currentPage === 0}
-				onClick={() => setCurrentPage(currentPage - 1)}
-			>
-				{currentPage !== 0 && <MdNavigateBefore className="icon" />}
-			</Button>
-			{pages.map((el) => (
-				<Button
-					key={el}
-					active={el === currentPage}
-					onClick={() => setCurrentPage(el)}
-				>
-					{el + 1}
-				</Button>
-			))}
-			<Button
-				disabled={currentPage === totalPage - 1}
-				onClick={() => setCurrentPage(currentPage + 1)}
-			>
-				{currentPage !== totalPage - 1 && <MdNavigateNext className="icon" />}
-			</Button>
-		</Container>
-	);
-}
 
 export default Pagination;
