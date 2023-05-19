@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 import { FiMenu } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useEffect } from 'react';
 import useMediaQuery from '../hooks/useMediaQuery';
 import { HeaderButton } from '../styles/Buttons';
 import { Z_INDEX_STYLED_HEADER } from '../zIndex';
 import MOBILE_MAX_WIDTH from '../mediaQuery';
 import { URL_LOGIN, URL_MAP, URL_SIGNUP } from '../routesURL';
+import { KEY_ACCESS_TOKEN, KEY_REFRESH_TOKEN } from '../Constant';
 
 export default function Header({
 	isLogin,
@@ -17,12 +20,24 @@ export default function Header({
 	const isMobile = useMediaQuery();
 
 	const handleLogout = () => {
+		localStorage.removeItem(KEY_ACCESS_TOKEN);
+		localStorage.removeItem(KEY_REFRESH_TOKEN);
+		axios.defaults.headers.common.Authorization = null;
 		setIsLogin(false);
 	};
 	const toggleSideBar = () => {
 		setIsSidebarOpen(!isSidebarOpen);
 		setIsSidebarOpeFirst(false);
 	};
+	useEffect(() => {
+		const accessToken = localStorage.getItem(KEY_ACCESS_TOKEN);
+		const refreshToken = localStorage.getItem(KEY_REFRESH_TOKEN);
+
+		if (accessToken && refreshToken) {
+			axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+			setIsLogin(true); // 로그인 상태 변경
+		}
+	}, [setIsLogin]);
 	return (
 		<StyledHeader>
 			<HeaderWrapper>

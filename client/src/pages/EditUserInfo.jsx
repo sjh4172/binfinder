@@ -5,54 +5,70 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import useModal from '../hooks/useModal';
+import { URL_MAP, URL_MYPAGE } from '../routesURL';
 
-function EditMyPage() {
+function EditUserInfo() {
 	const navigate = useNavigate();
-	const [isListHover, setIsListHover] = useState(false);
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	const [memberId, setMemberId] = useState('');
+	const [isListHover, setIsListHover] = useState(false);
 	const [isOpenModal, openModal, closeModal] = useModal(false);
-	const { email: userEmail } = useSelector((state) => state.auth);
+	const { memberId } = useSelector((state) => state.auth);
 
 	useEffect(() => {
-		axios
-			.get(`${process.env.REACT_APP_API_URL}?email=${userEmail}`)
-			.then((res) => {
-				setUsername(res.data[0].username);
-				setMemberId(res.data[0].id);
-			})
-			.catch((err) => {
-				console.error(err);
-			});
-	}, [userEmail]);
+		const fetchUserData = async () => {
+			try {
+				const response = await axios.get(
+					`${process.env.REACT_APP_API_URL}/members/${memberId}`,
+				);
+				const userData = response.data;
+				setUsername(userData.username);
+			} catch (error) {
+				console.error(error);
+			}
+		};
+
+		fetchUserData();
+	}, [memberId]);
 
 	const handleEditUser = async () => {
 		try {
-			await axios.patch(
+			const response = await axios.patch(
 				`${process.env.REACT_APP_API_URL}/members/${memberId}`,
 				{
 					username,
 					password,
 				},
 			);
-			navigate('/mypage');
-		} catch (err) {
-			console.error(err);
+			if (response.status === 200) {
+				navigate(URL_MYPAGE);
+			} else {
+				console.error('Failed to edit user');
+			}
+		} catch (error) {
+			console.error(error);
 		}
 	};
-	const handleCancel = async () => {
-		navigate('/mypage');
-	};
+
 	const handleWithdrawUser = async () => {
 		try {
-			await axios.delete(
+			const response = await axios.delete(
 				`${process.env.REACT_APP_API_URL}/members/${memberId}`,
 			);
-			navigate('/');
-		} catch (err) {
-			console.error(err);
+			if (response.status === 200) {
+				// 회원탈퇴 성공한 경우
+				navigate(URL_MAP);
+			} else {
+				// 회원탈퇴 실패한 경우
+				console.error('Failed to withdraw user');
+			}
+		} catch (error) {
+			console.error(error);
 		}
+	};
+
+	const handleCancel = () => {
+		navigate(URL_MYPAGE);
 	};
 
 	return (
@@ -63,14 +79,18 @@ function EditMyPage() {
 					onMouseOver={() => setIsListHover(true)}
 					onMouseOut={() => setIsListHover(false)}
 				>
-					<img
-						src={
-							isListHover
-								? `${process.env.PUBLIC_URL}/assets/Ellipse 5.png`
-								: `${process.env.PUBLIC_URL}/assets/Ellipse.png`
-						}
-						alt="Ellipse.png"
-					/>
+					{isListHover && (
+						<img
+							src={`${process.env.PUBLIC_URL}/assets/Ellipse 5.png`}
+							alt="HoverKakaodefaultprofile.png "
+						/>
+					)}
+					{!isListHover && (
+						<img
+							src={`${process.env.PUBLIC_URL}/assets/Ellipse.png`}
+							alt="default profile.png"
+						/>
+					)}
 				</Logo>
 				<InputTitleContainer>
 					<InputContainer>
@@ -100,19 +120,30 @@ function EditMyPage() {
 				</ButtonForm>
 			</EditMyPageForm>
 			{isOpenModal && ( // 모달 렌더링
-				<Modal>
-					<ModalContent>
-						<ModalDesc>정말로 회원탈퇴를 하시겠습니까?</ModalDesc>
-						<ModalButtonContainer>
-							<ModalButton onClick={handleWithdrawUser}>확인</ModalButton>
-							<ModalButton2 onClick={closeModal}>취소</ModalButton2>
-						</ModalButtonContainer>
-					</ModalContent>
-				</Modal>
+				<ModalOverlay>
+					<Modal>
+						<ModalContent>
+							<ModalDesc>정말로 회원탈퇴를 하시겠습니까?</ModalDesc>
+							<ModalButtonContainer>
+								<ModalButton onClick={handleWithdrawUser}>확인</ModalButton>
+								<ModalButton2 onClick={closeModal}>취소</ModalButton2>
+							</ModalButtonContainer>
+						</ModalContent>
+					</Modal>
+				</ModalOverlay>
 			)}
 		</EditMyPageContainer>
 	);
 }
+const ModalOverlay = styled.div`
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.4);
+	z-index: 999;
+`;
 const Modal = styled.div`
 	width: 600px;
 	height: 300px;
@@ -212,6 +243,7 @@ const EditMyPageForm = styled.div`
 	justify-content: center;
 	align-items: center;
 	border: 1px solid #d9d9d9;
+	margin-bottom: 40px;
 	@media (max-width: 768px) {
 		width: 300px;
 		height: 500px;
@@ -356,4 +388,4 @@ const Button = styled.button`
 		font-weight: 700;
 	}
 `;
-export default EditMyPage;
+export default EditUserInfo;
