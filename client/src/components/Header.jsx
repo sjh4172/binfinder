@@ -8,7 +8,7 @@ import { HeaderButton } from '../styles/Buttons';
 import { Z_INDEX_STYLED_HEADER } from '../zIndex';
 import MOBILE_MAX_WIDTH from '../mediaQuery';
 import { URL_LOGIN, URL_MAP, URL_SIGNUP } from '../routesURL';
-import { KEY_ACCESS_TOKEN, KEY_REFRESH_TOKEN } from '../constant';
+import { KEY_ACCESS_TOKEN, KEY_REFRESH_TOKEN } from '../Constant';
 
 export default function Header({
 	isLogin,
