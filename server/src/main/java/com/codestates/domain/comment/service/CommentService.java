@@ -12,6 +12,9 @@ import com.codestates.domain.member.service.MemberService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,19 +33,8 @@ public class CommentService {
 		this.memberRepository = memberRepository;
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
 	public Comment createComment(Comment comment) {
-
-
-//		Board board = verifyExistingBoard(comment.getBoard());
-//		Member member = verifyExistingMember(comment.getMember());
-//
-//		comment.setBoard(board);
-//		comment.setMember(member);
-//
-//		member.addComment(comment);
-//		board.addComment(comment);
-//
-//		return commentRepository.save(comment);
 
 		// 사용자 인증 정보 Authentication의 인스턴스 auth로 접근
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -74,6 +66,7 @@ public class CommentService {
 
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
 	public Comment updateComment(Comment comment) {
 		verifyAuthorizedMember(comment.getC_id());
 		Comment findComment = findVerifiedComment(comment.getC_id());
@@ -121,6 +114,7 @@ public class CommentService {
 		}
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
 	public void deleteComment(long c_id) {
 
 		verifyAuthorizedMember(c_id);
@@ -140,9 +134,6 @@ public class CommentService {
 	private Board verifyExistingBoard(Board board){
 		return boardService.findVerifiedBoard(board.getB_id());
 	}
-	private Member verifyExistingMember(Member member) {
-		return memberService.findVerifiedMember(member.getMemberId());
-	}
 	public Member verifyExistingMember(String loginEmail) {
 		// 사용자 관리 서비스를 통해 로그인한 사용자의 이메일을 검사하고, 사용자 정보를 가져오는 로직을 구현합니다.
 		Optional<Member> OptionalMember = memberRepository.findByEmail(loginEmail);
@@ -154,8 +145,6 @@ public class CommentService {
 		Member member = verifyExistingMember(email);
 		return member != null;
 	}
-
-
 
 	// 로그인한 사용자가 회원 본인인지 또는 관리자인지 확인하는 메서드이다.
 	private void verifyAuthorizedMember(Long c_id) {
