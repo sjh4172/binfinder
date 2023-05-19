@@ -16,12 +16,13 @@ function Community() {
 
 	useEffect(() => {
 		if (location.search) {
-			getPostList(location.search).then((res) => setData(res));
+			getPostList(location.search).then((res) => setData(res.data));
+			// TODO: data의 총 페이지수로 setTotalPage(총 페이지수) 추가하기(아직 데이터 구현x)
 		}
 	}, [searchParams]);
 
 	return (
-		<CommunityPage>
+		<CommunityPageContainer>
 			<div className="flex">
 				<Title>게시판</Title>
 				<Link to={URL_WRITEPOST} className="postWrite">
@@ -29,19 +30,19 @@ function Community() {
 				</Link>
 			</div>
 			<CommunityList data={data} />
-			{totalPage >= 0 ? (
+			{totalPage >= 0 && (
 				<Pagination
 					currentPage={currentPage}
 					setCurrentPage={setCurrentPage}
 					totalPage={totalPage}
 					setSearchParams={setSearchParams}
 				/>
-			) : null}
-		</CommunityPage>
+			)}
+		</CommunityPageContainer>
 	);
 }
 
-const CommunityPage = styled.div`
+const CommunityPageContainer = styled.section`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

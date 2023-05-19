@@ -5,32 +5,41 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
-function Mypage() {
+function UserInfo() {
 	const [postList, setPostList] = useState([]);
+	const [commentList, setCommentList] = useState([]);
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState();
 
-	const { email: userEmail } = useSelector((state) => state.auth);
+	const { memberId } = useSelector((state) => state.auth);
 
 	useEffect(() => {
-		axios
-			.get(`${process.env.REACT_APP_API_URL}/members?email=${userEmail}`)
-			.then((res) => {
-				setUsername(res.data[0].username);
-				setEmail(res.data[0].email);
-			})
-			.catch((err) => {
-				console.error(err);
-			});
-		axios
-			.get(`${process.env.REACT_APP_API_URL}/posts?email=${userEmail}`)
-			.then((res) => {
-				setPostList(res.data);
-			})
-			.catch((err) => {
-				console.error(err);
-			});
-	}, [userEmail]);
+		const fetchUserData = async () => {
+			try {
+				// 사용자 정보 가져오기
+				const userResponse = await axios.get(
+					`${process.env.REACT_APP_API_URL}/members/${memberId}`,
+				);
+				setUsername(userResponse.data.username);
+				setEmail(userResponse.data.email);
+
+				// 사용자가 작성한 게시글 가져오기
+				const postResponse = await axios.get(
+					`${process.env.REACT_APP_API_URL}/boards?userId=${memberId}`,
+				);
+				setPostList(postResponse.data);
+
+				const commentResponse = await axios.get(
+					`${process.env.REACT_APP_API_URL}/comments`,
+				);
+				setCommentList(commentResponse.data);
+			} catch (error) {
+				console.error(error);
+			}
+		};
+
+		fetchUserData();
+	}, [memberId]);
 
 	return (
 		<MyPageContainer>
@@ -43,10 +52,10 @@ function Mypage() {
 							alt="Ellipse.png"
 						/>
 					</Logo>
-					<InputContainer>
-						<Input>닉네임: {username}</Input>
-						<Input>이메일: {email}</Input>
-						<Input2>
+					<DetailContainer>
+						<Detail>닉네임: {username}</Detail>
+						<Detail>이메일: {email}</Detail>
+						<EditUserInfoButton>
 							프로필 수정
 							<Icon to="/editmypage">
 								<img
@@ -54,20 +63,20 @@ function Mypage() {
 									alt="pencil.png"
 								/>
 							</Icon>
-						</Input2>
-					</InputContainer>
+						</EditUserInfoButton>
+					</DetailContainer>
 				</ProfileContainer>
 				<ListContainer>
 					<PostListContainer>
 						<PostList>내가 작성한 게시글</PostList>
 						{postList.map((post) => (
-							<List key={post.id}>{post.title}</List>
+							<List key={post.b_id}>{post.b_title}</List>
 						))}
 					</PostListContainer>
 					<CommentListContainer>
 						<CommentList>내가 작성한 댓글</CommentList>
-						{postList.map((post) => (
-							<List key={post.id}>{post.comment}</List>
+						{commentList.map((comment) => (
+							<List key={comment.c_id}>{comment.c_content}</List>
 						))}
 					</CommentListContainer>
 					<RequestContainer>
@@ -171,7 +180,7 @@ const Icon = styled(Link)`
 	}
 `;
 /* 마이페이지 인풋 전체 컨테이너 */
-const InputContainer = styled.div`
+const DetailContainer = styled.div`
 	width: 220px;
 	height: 135px;
 	margin-left: 20px;
@@ -186,7 +195,7 @@ const InputContainer = styled.div`
 	}
 `;
 /* 마이페이지 인풋  */
-const Input = styled.div`
+const Detail = styled.div`
 	width: 220px;
 	height: 45px;
 	border-bottom: 1px solid #d9d9d9;
@@ -200,7 +209,7 @@ const Input = styled.div`
 	}
 `;
 /* 마이페이지 인풋2(프로필수정 부분)  */
-const Input2 = styled.div`
+const EditUserInfoButton = styled.div`
 	width: 220px;
 	height: 45px;
 	border-bottom: 1px solid #d9d9d9;
@@ -310,4 +319,4 @@ const List = styled.div`
 		font-size: 11px;
 	}
 `;
-export default Mypage;
+export default UserInfo;

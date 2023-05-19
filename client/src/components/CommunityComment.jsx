@@ -6,12 +6,12 @@ import MyProfile from './MyProfile';
 import { postCommunity } from '../api/communityAPI';
 
 function CommunityComment({ setIsCModalOpen }) {
-	// 초기 값 props로 받으면 useInput에 넣기
+	// TODO: CommunityDetail 페이지에서 초기 값 props로 주고 textareaBind 초기값 설정하기
 	const [textareaBind] = useInput('555');
 	const [isEdit, setIsEdit] = useState(false);
 	const textareaRef = useRef(null);
 	const memberId = useSelector((state) => state.auth.memberId);
-	// 댓글 아이디 확인해서 수정.삭제 렌더링하기
+	// TODO: 댓글 구현되면 댓글 작성자 아이디와 memberId 같을 시 수정.삭제 렌더링하기
 
 	// 수정 시 ContentInput에 포커스
 	const handleFocus = () => {
@@ -30,8 +30,7 @@ function CommunityComment({ setIsCModalOpen }) {
 		}
 	}, [isEdit]);
 
-	// 댓글 수정 함수 작성해야함
-	function editComment() {
+	const editComment = () => {
 		postCommunity(
 			`/comments/id`,
 			{
@@ -43,23 +42,24 @@ function CommunityComment({ setIsCModalOpen }) {
 			'patch',
 		);
 		setIsEdit(false);
-	}
+	};
 	return (
 		<>
 			<MyProfile className="porfile" />
-			{isEdit ? (
+			{isEdit && (
 				<ContentTextarea {...textareaBind} ref={textareaRef} autofocus />
-			) : (
-				<Content>{textareaBind.value}</Content>
 			)}
+			{isEdit || <Content>{textareaBind.value}</Content>}
 			<CommentDitail>
 				<time dateTime="2023-05-09">2023.05.9</time>
+				{/* TODO: 데이터 연결하면 useDate로 날짜 형식 수정해서 넣기 */}
 				<ButtonWrapper>
-					{isEdit ? (
+					{isEdit && (
 						<button onClick={() => editComment()} type="button">
 							수정 완료
 						</button>
-					) : (
+					)}
+					{isEdit || (
 						<button onClick={() => setIsEdit(true)} type="button">
 							수정
 						</button>

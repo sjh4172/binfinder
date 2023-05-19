@@ -4,8 +4,8 @@ import GlobalStyles from './styles/index';
 import MapPage from './pages/Mappage';
 import Login from './pages/login';
 import Signup from './pages/signup';
-import Mypage from './pages/mypage';
-import EditMyPage from './pages/editmypage';
+import UserInfo from './pages/UserInfo';
+import EditUserInfo from './pages/EditUserInfo';
 import Community from './pages/Community';
 import CommunityDetail from './pages/CommunityDetail';
 import CommunityEdit from './pages/CommunityEdit';
@@ -32,10 +32,13 @@ function App() {
 	const isMobile = useMediaQuery();
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	const [isSidebarOpeFirst, setIsSidebarOpeFirst] = useState(true);
+	const [isLogin, setIsLogin] = useState(false);
 	return (
 		<>
 			<GlobalStyles />
 			<Header
+				isLogin={isLogin}
+				setIsLogin={setIsLogin}
 				isSidebarOpen={isSidebarOpen}
 				setIsSidebarOpen={setIsSidebarOpen}
 				setIsSidebarOpeFirst={setIsSidebarOpeFirst}
@@ -50,8 +53,8 @@ function App() {
 				<Route path={URL_MAP} element={<MapPage />} />
 				<Route path={URL_LOGIN} element={<Login />} />
 				<Route path={URL_SIGNUP} element={<Signup />} />
-				<Route path={URL_MYPAGE} element={<Mypage />} />
-				<Route path={URL_EDITMYPAGE} element={<EditMyPage />} />
+				<Route path={URL_MYPAGE} element={<UserInfo />} />
+				<Route path={URL_EDITMYPAGE} element={<EditUserInfo />} />
 				<Route path={URL_POST} element={<Community />} />
 				<Route path={URL_POSTDETAIL} element={<CommunityDetail />} />
 				<Route path={URL_WRITEPOST} element={<CommunityEdit />} />

@@ -3,8 +3,23 @@ import styled from 'styled-components';
 function CommunityEditor({ contentBind, titleBind }) {
 	return (
 		<Editor>
-			<input placeholder="제목을 입력하세요" type="text" {...titleBind} />
-			<textarea placeholder="내용을 입력하세요" {...contentBind} />
+			<label htmlFor="title">
+				제목 입력
+				<input
+					id="title"
+					placeholder="제목을 입력하세요"
+					type="text"
+					{...titleBind}
+				/>
+			</label>
+			<label htmlFor="content">
+				내용입력
+				<textarea
+					id="content"
+					placeholder="내용을 입력하세요"
+					{...contentBind}
+				/>
+			</label>
 		</Editor>
 	);
 }
@@ -12,7 +27,9 @@ function CommunityEditor({ contentBind, titleBind }) {
 const Editor = styled.div`
 	display: flex;
 	flex-direction: column;
-
+	label {
+		font-size: 0px;
+	}
 	input {
 		outline: none;
 		border: none;
@@ -29,6 +46,7 @@ const Editor = styled.div`
 		font-size: var(--large);
 		border-color: var(--line-color);
 		height: 50vh;
+		width: 100%;
 		background-color: var(--bg-color);
 		resize: none;
 		outline: none;

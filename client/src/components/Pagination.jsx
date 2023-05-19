@@ -21,7 +21,7 @@ function Pagination({
 	}, [currentPage]);
 
 	return (
-		<Container>
+		<PagesContainer>
 			<Button
 				disabled={currentPage === 0}
 				onClick={() => setCurrentPage(currentPage - 1)}
@@ -43,11 +43,11 @@ function Pagination({
 			>
 				{currentPage !== totalPage - 1 && <MdNavigateNext className="icon" />}
 			</Button>
-		</Container>
+		</PagesContainer>
 	);
 }
 
-const Container = styled.div`
+const PagesContainer = styled.div`
 	display: flex;
 	margin: 60px 0px;
 	justify-content: center;
