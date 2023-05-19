@@ -24,6 +24,8 @@ public class Board extends BaseEntity {
 	@Column
 	private String b_content;
 
+	@Column
+	private boolean checkLike;
 	// N : 1(Member) 양방향 매핑
 	@ManyToOne
 	@JoinColumn(name="MEMBER_ID")

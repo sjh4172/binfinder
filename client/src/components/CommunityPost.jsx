@@ -1,14 +1,49 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import { URL_WRITEPOST } from '../routesURL';
+import useDate from '../hooks/useDate';
 
-const Detail = styled.div`
+function CommunityPost({ setIsPModalOpen, data }) {
+	const navigate = useNavigate();
+	const memberId = useSelector((state) => state.auth.email);
+
+	return (
+		<>
+			<PostDetail>
+				<div>
+					<time>{data && useDate(data.createdAt)[1]}</time>
+					<span>
+						댓글 <span className="comment">{data && data.length}</span>
+					</span>
+				</div>
+				{memberId === (data && data.memberId) && (
+					<div className="buttonWrapper">
+						<button
+							type="button"
+							onClick={() => navigate(URL_WRITEPOST, { state: { ...data } })}
+						>
+							수정
+						</button>
+						<button type="button" onClick={() => setIsPModalOpen(true)}>
+							삭제
+						</button>
+					</div>
+				)}
+			</PostDetail>
+			<PostContent>{data && data.b_content}</PostContent>
+		</>
+	);
+}
+
+const PostDetail = styled.div`
 	display: flex;
 	justify-content: space-between;
 	color: var(--line-color);
 	font-size: var(--small);
 	margin-top: 15px;
-	span {
+	span,
+	time {
 		margin-right: 15px;
 	}
 	.comment,
@@ -30,39 +65,11 @@ const Detail = styled.div`
 	}
 `;
 
-const Content = styled.p`
+const PostContent = styled.p`
 	font-size: var(--base);
 	padding: 10px 0px;
 	text-align: justify;
 	line-height: 1.5;
 `;
-
-function CommunityPost({ setIsPModalOpen, data }) {
-	const navigate = useNavigate();
-	return (
-		<>
-			<Detail>
-				<div>
-					<span>2023.05.08</span>
-					<span>
-						댓글 <span className="comment">{data && data.c_id.length}</span>
-					</span>
-				</div>
-				<div className="buttonWrapper">
-					<button
-						type="button"
-						onClick={() => navigate(URL_WRITEPOST, { state: { ...data } })}
-					>
-						수정
-					</button>
-					<button type="button" onClick={() => setIsPModalOpen(true)}>
-						삭제
-					</button>
-				</div>
-			</Detail>
-			<Content>{data && data.p_content}</Content>
-		</>
-	);
-}
 
 export default CommunityPost;

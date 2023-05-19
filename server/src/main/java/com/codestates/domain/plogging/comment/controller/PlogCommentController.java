@@ -6,6 +6,7 @@ import com.codestates.domain.plogging.comment.dto.PlogCommentResponseDto;
 import com.codestates.domain.plogging.comment.entity.PlogComment;
 import com.codestates.domain.plogging.comment.mapper.PlogCommentMapper;
 import com.codestates.domain.plogging.comment.service.PlogCommentService;
+import com.codestates.domain.plogging.entity.Plogging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

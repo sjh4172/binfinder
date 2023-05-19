@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
+import java.time.LocalDateTime;
 
 public class CommentDto {
 	@Getter
@@ -41,6 +42,9 @@ public class CommentDto {
 		private long memberId;
 		private long b_id;
 		private String username;
+		private LocalDateTime createdAt;
+		private LocalDateTime modifiedAt;
+
 
 		public void setMember(Member member){this.memberId= member.getMemberId();}
 		public void setBoard(Board board){this.b_id = board.getB_id();}
