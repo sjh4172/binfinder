@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import {
 	URL_MAP,
 	URL_MYPAGE,
@@ -8,6 +8,32 @@ import {
 	URL_NOTICE,
 	URL_INTRODUCTION,
 } from '../routesURL';
+
+const navigations = [
+	{ url: URL_INTRODUCTION, name: 'Introduction' },
+	{ url: URL_MAP, name: 'Map' },
+	{ url: URL_POST, name: 'Community' },
+	{ url: URL_PLOGGING, name: 'Plogging' },
+	{ url: URL_NOTICE, name: 'Notice' },
+	{ url: URL_MYPAGE, name: 'My page' },
+];
+
+export default function SidebarList() {
+	const location = useLocation();
+	const path = location.pathname.split('/')[1];
+	return (
+		<List>
+			{navigations.map((el) => (
+				<ListItem
+					key={el.name}
+					className={path === el.url.split('/')[1] && 'current'}
+				>
+					<NavigationLink href={el.url}>{el.name}</NavigationLink>
+				</ListItem>
+			))}
+		</List>
+	);
+}
 
 const List = styled.ul`
 	width: 100%;
@@ -40,35 +66,9 @@ const ListItem = styled.li`
 	}
 `;
 
-const AItem = styled.a`
+const NavigationLink = styled.a`
 	height: 40px;
 	width: 230px;
 	text-align: center;
 	line-height: 40px;
 `;
-
-const list = [
-	{ url: URL_INTRODUCTION, name: 'Introduction' },
-	{ url: URL_MAP, name: 'Map' },
-	{ url: URL_POST, name: 'Community' },
-	{ url: URL_PLOGGING, name: 'Plogging' },
-	{ url: URL_NOTICE, name: 'Notice' },
-	{ url: URL_MYPAGE, name: 'My page' },
-];
-
-export default function SidebarList() {
-	const location = useLocation();
-	const path = location.pathname.split('/')[1];
-	return (
-		<List>
-			{list.map((el) => (
-				<ListItem
-					key={el.name}
-					className={path === el.url.split('/')[1] && 'current'}
-				>
-					<AItem href={el.url}>{el.name}</AItem>
-				</ListItem>
-			))}
-		</List>
-	);
-}

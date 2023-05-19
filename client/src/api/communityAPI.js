@@ -1,23 +1,18 @@
-import request from './core';
+import axios from 'axios';
+import { apiUrl } from './AuthAPI';
 
-// get요청
-const getPostList = (page, count) => {
-	return request({ url: `/post/read?page=${page}&count=${count}` });
+const getPostList = (page = '?page=0') => {
+	return axios(`${apiUrl}/boards${page}&count=20`);
 };
 
 const getPost = (postId) => {
-	// return request({ url: `/post/read/${postId}` });
-	return request({ url: `/read/${postId}` }); // json server
+	return axios(`${apiUrl}/boards/${postId}`);
 };
 
 const Authorization = localStorage.getItem('accessToken');
 
-// post, patch 요청
 const postCommunity = (url, data, method = 'post') => {
-	request({
-		method,
-		url,
-		data,
+	axios[method](`${apiUrl}${url}`, data, {
 		headers: {
 			'Content-Type': 'application/json',
 			withCredentials: true,
@@ -27,9 +22,9 @@ const postCommunity = (url, data, method = 'post') => {
 };
 
 const deleteCommunity = (url) => {
-	request({
+	axios({
 		method: 'delete',
-		url,
+		url: `${apiUrl}${url}`,
 		headers: {
 			'Content-Type': 'application/json',
 			withCredentials: true,

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import HorizontalLine from '../components/HorizonLine';
-import { signup } from '../api/authAPI';
+import { signup } from '../api/AuthAPI';
 import {
 	ERROR_VALIDATION_EMAIL,
 	ERROR_VALIDATION_REQUIRED_EMAIL,
@@ -11,7 +11,8 @@ import {
 	ERROR_VALIDATION_REQUIRED_PASSWORD,
 	ERROR_VALIDATION_REQUIRED_USERNAME,
 	ERROR_VALIDATION_USERNAME,
-} from '../constant';
+} from '../Constant';
+import { URL_LOGIN } from '../routesURL';
 
 function Signup() {
 	const navigate = useNavigate();
@@ -34,7 +35,7 @@ function Signup() {
 	const onSubmit = (data) => {
 		signup(data.username, data.email, data.password)
 			.then(() => {
-				navigate('/login');
+				navigate(URL_LOGIN);
 			})
 			.catch((err) => {
 				console.error(err);
@@ -117,7 +118,7 @@ function Signup() {
 				</SignupKaKaoButton>
 				<SignupTextContainer>
 					<SignupText>이미 회원이십니까? </SignupText>
-					<LoginLink to="/login">로그인</LoginLink>
+					<LoginLink to={URL_LOGIN}>로그인</LoginLink>
 				</SignupTextContainer>
 			</form>
 		</SignupContainer>
@@ -261,6 +262,8 @@ const SignupGoogleButton = styled.button`
 /* 회원가입 OAuth 로고 */
 const Logo = styled.div`
 	width: 80px;
+	display: flex;
+	justify-content: center;
 	> img {
 		width: 30px;
 		height: 30px;

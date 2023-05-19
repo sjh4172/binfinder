@@ -1,5 +1,21 @@
 import styled from 'styled-components';
 
+export default function MyProfile() {
+	return (
+		// 마이페이지로 링크
+		<ProfileWrapper>
+			<ProfileImage
+				src={`${process.env.PUBLIC_URL}/assets/exprofile.png`}
+				alt="Profile"
+			/>
+			<UserInfoWrapper>
+				<UserName>username</UserName>
+				<UserEmail>user@example.com</UserEmail>
+			</UserInfoWrapper>
+		</ProfileWrapper>
+	);
+}
+
 const ProfileWrapper = styled.div`
 	display: flex;
 	align-items: center;
@@ -28,19 +44,3 @@ const UserName = styled.span`
 const UserEmail = styled.span`
 	font-size: var(--base);
 `;
-
-export default function MyProfile() {
-	return (
-		// 마이페이지로 링크
-		<ProfileWrapper>
-			<ProfileImage
-				src={`${process.env.PUBLIC_URL}/assets/exprofile.png`}
-				alt="Profile"
-			/>
-			<UserInfoWrapper>
-				<UserName>username</UserName>
-				<UserEmail>user@example.com</UserEmail>
-			</UserInfoWrapper>
-		</ProfileWrapper>
-	);
-}

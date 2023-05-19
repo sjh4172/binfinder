@@ -1,13 +1,48 @@
 import styled from 'styled-components';
-import { useState } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useSearchParams, Link, useLocation } from 'react-router-dom';
 import Title from '../styles/Title';
-import { Button } from '../styles/Buttons';
 import CommunityList from '../components/CommunityList';
 import Pagination from '../components/Pagination';
 import { URL_WRITEPOST } from '../routesURL';
+import { getPostList } from '../api/communityAPI';
 
-const CommunityPage = styled.div`
+function Community() {
+	const [searchParams, setSearchParams] = useSearchParams();
+	const [currentPage, setCurrentPage] = useState(0);
+	const [totalPage, setTotalPage] = useState(19);
+	const location = useLocation();
+	const [data, setData] = useState(null);
+
+	useEffect(() => {
+		if (location.search) {
+			getPostList(location.search).then((res) => setData(res.data));
+			// TODO: data의 총 페이지수로 setTotalPage(총 페이지수) 추가하기(아직 데이터 구현x)
+		}
+	}, [searchParams]);
+
+	return (
+		<CommunityPageContainer>
+			<div className="flex">
+				<Title>게시판</Title>
+				<Link to={URL_WRITEPOST} className="postWrite">
+					글 작성
+				</Link>
+			</div>
+			<CommunityList data={data} />
+			{totalPage >= 0 && (
+				<Pagination
+					currentPage={currentPage}
+					setCurrentPage={setCurrentPage}
+					totalPage={totalPage}
+					setSearchParams={setSearchParams}
+				/>
+			)}
+		</CommunityPageContainer>
+	);
+}
+
+const CommunityPageContainer = styled.section`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -53,30 +88,5 @@ const CommunityPage = styled.div`
 		}
 	}
 `;
-
-function Community() {
-	const [searchParams, setSearchParams] = useSearchParams();
-	const [currentPage, setCurrentPage] = useState(0);
-	const [totalPage, setTotalPage] = useState(19);
-	return (
-		<CommunityPage>
-			<div className="flex">
-				<Title>게시판</Title>
-				<Link to={URL_WRITEPOST} className="postWrite">
-					글 작성
-				</Link>
-			</div>
-			<CommunityList totalPage={totalPage} />
-			{totalPage >= 0 ? (
-				<Pagination
-					currentPage={currentPage}
-					setCurrentPage={setCurrentPage}
-					totalPage={totalPage}
-					setSearchParams={setSearchParams}
-				/>
-			) : null}
-		</CommunityPage>
-	);
-}
 
 export default Community;

@@ -1,7 +1,78 @@
 import styled from 'styled-components';
 import { useState, useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import useInput from '../hooks/useInput';
 import MyProfile from './MyProfile';
+import { postCommunity } from '../api/communityAPI';
+
+function CommunityComment({ setIsCModalOpen }) {
+	// TODO: CommunityDetail 페이지에서 초기 값 props로 주고 textareaBind 초기값 설정하기
+	const [textareaBind] = useInput('555');
+	const [isEdit, setIsEdit] = useState(false);
+	const textareaRef = useRef(null);
+	const memberId = useSelector((state) => state.auth.memberId);
+	// TODO: 댓글 구현되면 댓글 작성자 아이디와 memberId 같을 시 수정.삭제 렌더링하기
+
+	// 수정 시 ContentInput에 포커스
+	const handleFocus = () => {
+		if (textareaRef.current) {
+			textareaRef.current.focus();
+			textareaRef.current.setSelectionRange(
+				textareaBind.value.length,
+				textareaBind.value.length,
+			);
+		}
+	};
+
+	useEffect(() => {
+		if (isEdit) {
+			handleFocus();
+		}
+	}, [isEdit]);
+
+	const editComment = () => {
+		postCommunity(
+			`/comments/id`,
+			{
+				p_id: '게시글아이디',
+				c_id: '댓글 아이디',
+				c_content: textareaBind.value,
+				m_id: '작성자아이디',
+			},
+			'patch',
+		);
+		setIsEdit(false);
+	};
+	return (
+		<>
+			<MyProfile className="porfile" />
+			{isEdit && (
+				<ContentTextarea {...textareaBind} ref={textareaRef} autofocus />
+			)}
+			{isEdit || <Content>{textareaBind.value}</Content>}
+			<CommentDitail>
+				<time dateTime="2023-05-09">2023.05.9</time>
+				{/* TODO: 데이터 연결하면 useDate로 날짜 형식 수정해서 넣기 */}
+				<ButtonWrapper>
+					{isEdit && (
+						<button onClick={() => editComment()} type="button">
+							수정 완료
+						</button>
+					)}
+					{isEdit || (
+						<button onClick={() => setIsEdit(true)} type="button">
+							수정
+						</button>
+					)}
+					<button type="button" onClick={() => setIsCModalOpen(true)}>
+						삭제
+					</button>
+				</ButtonWrapper>
+			</CommentDitail>
+			<Line />
+		</>
+	);
+}
 
 const Content = styled.p`
 	font-size: var(--base);
@@ -49,59 +120,5 @@ const CommentDitail = styled.div`
 	font-size: var(--small);
 	color: var(--line-color);
 `;
-
-function CommunityComment({ setIsCModalOpen }) {
-	// 초기 값 props로 받으면 useInput에 넣기
-	const [textareaBind] = useInput('555');
-	const [isEdit, setIsEdit] = useState(false);
-	const textareaRef = useRef(null);
-
-	// 수정 시 ContentInput에 포커스
-	const handleFocus = () => {
-		if (textareaRef.current) {
-			textareaRef.current.focus();
-			textareaRef.current.setSelectionRange(
-				textareaBind.value.length,
-				textareaBind.value.length,
-			);
-		}
-	};
-
-	useEffect(() => {
-		if (isEdit) {
-			handleFocus();
-		}
-	}, [isEdit]);
-
-	// 댓글 수정, 삭제 함수 작성해야함
-	return (
-		<>
-			<MyProfile className="porfile" />
-			{isEdit ? (
-				<ContentTextarea {...textareaBind} ref={textareaRef} autofocus />
-			) : (
-				<Content>{textareaBind.value}</Content>
-			)}
-			<CommentDitail>
-				<time dateTime="2023-05-09">2023.05.9</time>
-				<ButtonWrapper>
-					{isEdit ? (
-						<button onClick={() => setIsEdit(false)} type="button">
-							수정 완료
-						</button>
-					) : (
-						<button onClick={() => setIsEdit(true)} type="button">
-							수정
-						</button>
-					)}
-					<button type="button" onClick={() => setIsCModalOpen(true)}>
-						삭제
-					</button>
-				</ButtonWrapper>
-			</CommentDitail>
-			<Line />
-		</>
-	);
-}
 
 export default CommunityComment;
