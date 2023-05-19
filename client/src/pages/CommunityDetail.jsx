@@ -59,7 +59,7 @@ function CommunityDetail() {
 			postCommunity(`boards/like/${data.b_id}/${data.memberId}`, null);
 			setIsLike(!isLike);
 		} else {
-			alert('회원만 가능한 기능입니다.');
+			// alert('회원만 가능한 기능입니다.');
 		}
 	};
 	return (

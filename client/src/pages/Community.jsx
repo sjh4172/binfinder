@@ -10,7 +10,7 @@ import { getPostList } from '../api/communityAPI';
 function Community() {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [currentPage, setCurrentPage] = useState(0);
-	const [totalPage, setTotalPage] = useState(19);
+	const [totalPage] = useState(19);
 	const location = useLocation();
 	const [data, setData] = useState(null);
 
