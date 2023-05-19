@@ -21,6 +21,7 @@ public class Vote extends BaseEntity {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    // 다
     @ManyToOne
     @JoinColumn(name = "trash_can_id", nullable = false)
     private TrashCan trashCan;
