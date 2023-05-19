@@ -7,30 +7,39 @@ import { useSelector } from 'react-redux';
 
 function UserInfo() {
 	const [postList, setPostList] = useState([]);
+	const [commentList, setCommentList] = useState([]);
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState();
 
-	const { email: userEmail } = useSelector((state) => state.auth);
+	const { memberId } = useSelector((state) => state.auth);
 
 	useEffect(() => {
-		axios
-			.get(`${process.env.REACT_APP_API_URL}/members?email=${userEmail}`)
-			.then((res) => {
-				setUsername(res.data[0].username);
-				setEmail(res.data[0].email);
-			})
-			.catch((err) => {
-				console.error(err);
-			});
-		axios
-			.get(`${process.env.REACT_APP_API_URL}/posts?email=${userEmail}`)
-			.then((res) => {
-				setPostList(res.data);
-			})
-			.catch((err) => {
-				console.error(err);
-			});
-	}, [userEmail]);
+		const fetchUserData = async () => {
+			try {
+				// 사용자 정보 가져오기
+				const userResponse = await axios.get(
+					`${process.env.REACT_APP_API_URL}/members/${memberId}`,
+				);
+				setUsername(userResponse.data.username);
+				setEmail(userResponse.data.email);
+
+				// 사용자가 작성한 게시글 가져오기
+				const postResponse = await axios.get(
+					`${process.env.REACT_APP_API_URL}/boards?userId=${memberId}`,
+				);
+				setPostList(postResponse.data);
+
+				const commentResponse = await axios.get(
+					`${process.env.REACT_APP_API_URL}/comments`,
+				);
+				setCommentList(commentResponse.data);
+			} catch (error) {
+				console.error(error);
+			}
+		};
+
+		fetchUserData();
+	}, [memberId]);
 
 	return (
 		<MyPageContainer>
@@ -61,13 +70,13 @@ function UserInfo() {
 					<PostListContainer>
 						<PostList>내가 작성한 게시글</PostList>
 						{postList.map((post) => (
-							<List key={post.id}>{post.title}</List>
+							<List key={post.b_id}>{post.b_title}</List>
 						))}
 					</PostListContainer>
 					<CommentListContainer>
 						<CommentList>내가 작성한 댓글</CommentList>
-						{postList.map((post) => (
-							<List key={post.id}>{post.comment}</List>
+						{commentList.map((comment) => (
+							<List key={comment.c_id}>{comment.c_content}</List>
 						))}
 					</CommentListContainer>
 					<RequestContainer>
