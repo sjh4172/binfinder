@@ -1,26 +1,24 @@
+/* eslint-disable no-console */
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import styled from 'styled-components';
-import KAKAO_MAP_API_KEY from '../api/kakaoMap';
+import REACT_APP_KAKAO_MAP_API_KEY from './KakaoMap';
 import Modal from './Modal';
 import TrashCanModal from './TrashCanModal';
+
+const mapUrl = process.env.REACT_APP_API_URL;
 
 function Map() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [trashCans, setTrashCans] = useState([]);
-	const [trashMarkers, setTrashMarkers] = useState([]);
-	const [trashCanModal, setTrashCanModal] = useState(false);
-	const closeModal = () => {
-		setTrashCanModal(false);
-	};
+	const [, setTrashMarkers] = useState([]);
 
 	// 쓰레기통 데이터를 가져오는 함수
 	const fetchTrashCans = useCallback(async () => {
 		try {
-			const response = await axios.get('http://localhost:4001/trashCan');
+			const response = await axios.get(`${mapUrl}/trashCan`);
 			setTrashCans(response.data);
-			console.log(response.data);
 			setTrashMarkers([]);
 		} catch (error) {
 			console.error(error);
@@ -30,10 +28,12 @@ function Map() {
 		fetchTrashCans();
 	}, [fetchTrashCans]);
 
+	// 시간이 많이 걸리면 -> 화면 시간벌기용[ ex) 로딩중, ]
+
 	const loadKakaoMap = useCallback(() => {
 		// 카카오맵 스크립트 읽어오기
 		const script = document.createElement('script');
-		script.src = `https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${KAKAO_MAP_API_KEY}`;
+		script.src = `https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${REACT_APP_KAKAO_MAP_API_KEY}`;
 		script.onload = () => {
 			const { kakao } = window;
 			kakao.maps.load(() => {
@@ -61,7 +61,7 @@ function Map() {
 							image: userMarkerImage,
 						});
 						marker.setMap(map);
-						// 필터링 500m기준으로하기
+						// NOTE: 필터링 500m기준으로하기
 						// 쓰레기통 마커
 						trashCans.forEach((trashCan) => {
 							const trashMarkerPosition = new kakao.maps.LatLng(
@@ -90,12 +90,10 @@ function Map() {
 								const root = document.getElementById('modal-root');
 								ReactDOM.createRoot(root).render(
 									<TrashCanModal
-										onClose={closeModal}
 										trashCan={trashCan} // 쓰레기통 데이터 전달
 									/>,
 								);
 							});
-
 							trashMarker.setMap(map);
 							setTrashMarkers((prevState) => [...prevState, trashMarker]);
 						});

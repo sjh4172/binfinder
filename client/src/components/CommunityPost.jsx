@@ -6,7 +6,7 @@ import useDate from '../hooks/useDate';
 
 function CommunityPost({ setIsPModalOpen, data }) {
 	const navigate = useNavigate();
-	const memberId = useSelector((state) => state.auth.email);
+	const memberId = useSelector((state) => state.auth.memberId);
 
 	return (
 		<>
@@ -14,7 +14,7 @@ function CommunityPost({ setIsPModalOpen, data }) {
 				<div>
 					<time>{data && useDate(data.createdAt)[1]}</time>
 					<span>
-						댓글 <span className="comment">{data && data.length}</span>
+						댓글 <span className="comment">{data && data.comments.length}</span>
 					</span>
 				</div>
 				{memberId === (data && data.memberId) && (
