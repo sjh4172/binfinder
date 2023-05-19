@@ -4,7 +4,7 @@ export const apiUrl = process.env.REACT_APP_API_URL;
 
 const login = (email, password) => {
 	return axios.post(
-		`${apiUrl}/api/members`,
+		`${apiUrl}/login`,
 		{
 			email,
 			password,

@@ -1,6 +1,6 @@
 // import styled from 'styled-components';
 import styled from 'styled-components';
-import Map from '../components/Map';
+import Map from '../components/map';
 import NearbyTrashCanList from '../components/TrashCanList';
 
 function MapPage() {

@@ -3,10 +3,10 @@ import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import styled from 'styled-components';
+import REACT_APP_KAKAO_MAP_API_KEY from './KakaoMap';
 import Modal from './Modal';
 import TrashCanModal from './TrashCanModal';
 
-const kakaoMapUrl = process.env.REACT_APP_KAKAO_MAP_API_KEY;
 const mapUrl = process.env.REACT_APP_API_URL;
 
 function Map() {
@@ -33,7 +33,7 @@ function Map() {
 	const loadKakaoMap = useCallback(() => {
 		// 카카오맵 스크립트 읽어오기
 		const script = document.createElement('script');
-		script.src = `https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${kakaoMapUrl}`;
+		script.src = `https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${REACT_APP_KAKAO_MAP_API_KEY}`;
 		script.onload = () => {
 			const { kakao } = window;
 			kakao.maps.load(() => {
