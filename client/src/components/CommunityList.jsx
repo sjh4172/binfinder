@@ -70,6 +70,7 @@ const Table = styled.table`
 	max-width: 1024px;
 	font-size: var(--base);
 	table-layout: fixed;
+	min-height: 371px;
 
 	// 테이블 항목
 	thead {
@@ -120,7 +121,7 @@ const Table = styled.table`
 	.empty {
 		text-align: center;
 		color: #b3b3b3;
-		padding: 149px 0px;
+		padding: 154px 0px;
 		border-bottom: 1px solid #d9d9d9;
 	}
 
