@@ -193,7 +193,7 @@
     }
   ],
   "vote": {
-    "trashCanId": 1,
-    "voteType": "DISLIKE"
+    "trashCanId": 4,
+    "voteType": "LIKE"
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -5,6 +6,7 @@ import styled from 'styled-components';
 function NearbyTrashCanList() {
 	const [trashCans, setTrashCans] = useState([]);
 	const [currentPosition, setCurrentPosition] = useState(null);
+	const mapUrl = process.env.REACT_APP_API_URL;
 	// 현재 위치 정보 가져오기
 	useEffect(() => {
 		navigator.geolocation.getCurrentPosition(
@@ -20,7 +22,7 @@ function NearbyTrashCanList() {
 	// 쓰레기통 데이터를 가져오는 함수
 	const fetchTrashCans = useCallback(async () => {
 		try {
-			const response = await axios.get('http://localhost:4001/trashCan');
+			const response = await axios.get(`${mapUrl}/trashCan`);
 			const sortedTrashCans = response.data
 				.map((trashCan) => {
 					if (!currentPosition) return { ...trashCan, distance: null };
@@ -64,6 +66,7 @@ function NearbyTrashCanList() {
 		</ListWapper>
 	);
 }
+// 거리 (82m) 동일한 위치
 const ListWapper = styled.div`
 	display: flex;
 	flex-direction: column;
