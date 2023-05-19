@@ -24,45 +24,49 @@ function CommunityDetail() {
 	const [isLike, setIsLike] = useState(true);
 
 	useEffect(() => {
-		getPost(postId).then((res) => setData(res.data));
-		// TODO: 사용자가 '좋아요'했는지가 데이터에 포함된다면 setIsLike로 초기 상태 설정하기
-		// 최종적으로 데이터 구현 안되면 isLike, setIsLike는 삭제하기
+		getPost(postId).then((res) => {
+			setData(res.data);
+			setIsLike(res.data.checkLike);
+		});
 	}, []);
 
 	const handleDelecteConfirmPost = () => {
 		closeModalPost();
-		deleteCommunity(`/boards/${data.id}`);
+		deleteCommunity(`/boards/${data.b_id}`);
 		navigate(URL_POST);
 	};
 
 	const handleDelecteConfirmComment = () => {
 		closeModalComment();
-		deleteCommunity(`/comments/${data.id}`);
+		deleteCommunity(`/comments/${data.comments[0].c_id}`);
 	};
 
 	const postComment = (value) => {
 		if (value !== '') {
 			postCommunity(`/comments`, {
-				b_id: data.id,
-				c_contant: value,
+				b_id: data.b_id,
+				c_content: value,
 			});
 		}
 	};
 
 	const likeUpDown = () => {
-		if (isLike) {
+		const Authorization = localStorage.getItem('accessToken');
+		if (isLike && Authorization) {
 			postCommunity(`boards/unlike/${data.b_id}/${data.memberId}`, null);
-		} else {
+			setIsLike(!isLike);
+		} else if (Authorization) {
 			postCommunity(`boards/like/${data.b_id}/${data.memberId}`, null);
+			setIsLike(!isLike);
+		} else {
+			alert('회원만 가능한 기능입니다.');
 		}
-		setIsLike(!isLike);
 	};
-
 	return (
 		<DetailPageContainer>
 			<section>
 				<Title className="title">{data && data.b_title}</Title>
-				<MyProfile />
+				<MyProfile username={data && data.username} marginNone />
 				<CommunityPost setIsPModalOpen={openModalPost} data={data} />
 				<Button
 					type="button"
@@ -78,8 +82,9 @@ function CommunityDetail() {
 			</section>
 			<section>
 				<h1 className="visually-hidden">댓글</h1>
-				{/* TODO: 댓글 구현되면 수정하기 */}
-				<TotalComment>1개의 댓글</TotalComment>
+				{data && (
+					<TotalComment>{`${data.comments.length}개의 댓글`}</TotalComment>
+				)}
 				<label htmlFor="comment">
 					댓글을 입력하세요
 					<textarea
@@ -94,16 +99,18 @@ function CommunityDetail() {
 				>
 					작성
 				</WarningButton>
-				<ul>
-					{/* TODO: 댓글 데이터 구현되면 Array대신 데이터 넣기, key도 id로 변경하기 */}
-					{Array(Math.floor(Math.random() * 10))
-						.fill()
-						.map((el) => (
-							<li key={el}>
-								<CommunityComment setIsCModalOpen={openModalComment} />
+				{data && (
+					<ul>
+						{data.comments.map((el) => (
+							<li key={el.c_id}>
+								<CommunityComment
+									setIsCModalOpen={openModalComment}
+									commentData={data.comments[0]}
+								/>
 							</li>
 						))}
-				</ul>
+					</ul>
+				)}
 			</section>
 			{isOpenModalPost && (
 				<Modal
