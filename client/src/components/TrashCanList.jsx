@@ -9,14 +9,10 @@ function NearbyTrashCanList() {
 	const mapUrl = process.env.REACT_APP_API_URL;
 	// 현재 위치 정보 가져오기
 	useEffect(() => {
-		navigator.geolocation.getCurrentPosition(
-			(position) => {
-				setCurrentPosition(position.coords);
-			},
-			(error) => {
-				console.error(error);
-			},
-		);
+		setCurrentPosition({
+			latitude: 37.497942,
+			longitude: 127.027621,
+		});
 	}, []);
 
 	// 쓰레기통 데이터를 가져오는 함수
