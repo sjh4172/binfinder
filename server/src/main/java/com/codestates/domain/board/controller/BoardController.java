@@ -4,15 +4,21 @@ import com.codestates.domain.board.dto.BoardDto;
 import com.codestates.domain.board.entity.Board;
 import com.codestates.domain.board.mapper.BoardMapper;
 import com.codestates.domain.board.service.BoardService;
+import com.codestates.domain.comment.dto.CommentDto;
+import com.codestates.domain.comment.service.CommentService;
+import com.codestates.domain.plogging.dto.PlogDetailDto;
+import com.codestates.domain.plogging.entity.Plogging;
 import com.codestates.exception.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
+import org.springframework.data.domain.Pageable;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -25,11 +31,14 @@ import java.util.stream.Collectors;
 public class BoardController {
 	private BoardService boardService;
 	private BoardMapper mapper;
+	private CommentService commentService;
 
-	public BoardController(BoardService boardService, BoardMapper mapper) {
+	public BoardController(BoardService boardService, BoardMapper mapper, CommentService commentService) {
 		this.boardService = boardService;
 		this.mapper = mapper;
+		this.commentService = commentService;
 	}
+	
 
 	@PostMapping
 	public ResponseEntity postBoard (@Valid @RequestBody BoardDto.Post postDto) {
@@ -59,22 +68,37 @@ public class BoardController {
 	}
 
 	@GetMapping
-	public ResponseEntity getBoards() {
-		List<Board> boards = boardService.findBoards();
+	public ResponseEntity getBoards(
+					@RequestParam(defaultValue = "0") int page,
+					@RequestParam(defaultValue = "10") int size
+	) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Board> boardPage = boardService.findBoards(pageable);
 
-		List<BoardDto.Response> response =
-						boards.stream()
-										.map(board -> mapper.boardToBoardResponseDto(board))
-										.collect(Collectors.toList());
+		List<BoardDto.Response> response = boardPage
+						.stream()
+						.map(board -> mapper.boardToBoardResponseDto(board))
+						.collect(Collectors.toList());
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity getBoard(@PathVariable("id") long id) {
-		Board response = boardService.findBoard(id);
+//	@GetMapping("/{id}")
+//	public ResponseEntity getBoard(@PathVariable("id") long id) {
+//		Board response = boardService.findBoard(id);
+//		//댓글 가져오기
+//		List<CommentDto> commentDtoList = commentService.findAll(id);
+//		return new ResponseEntity<>(mapper.boardToBoardResponseDto(response) ,HttpStatus.OK);
+//	}
 
-		return new ResponseEntity<>(mapper.boardToBoardResponseDto(response) ,HttpStatus.OK);
+	@GetMapping("/{b_id}")
+	public ResponseEntity findBoard(@PathVariable("b_id") Long id) {
+		Board board = boardService.findBoardWithComment(id);
+		if (board == null) {
+			return ResponseEntity.notFound().build();
+		}
+		BoardDto.Detail Details = mapper.BoardToDetailDto(board);
+		return ResponseEntity.ok(Details);
 	}
 
 	@DeleteMapping("/{id}")
