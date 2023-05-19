@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { apiUrl } from './authAPI';
+import { apiUrl } from './AuthAPI';
 
 const getPostList = (page = '?page=0') => {
 	return axios(`${apiUrl}/boards${page}&count=20`);
