@@ -10,21 +10,14 @@
 - API 명세서 : https://documenter.getpostman.com/view/25535504/2s93eZxB7u
 - 배포링크 : 
 
-## 👩‍💻 Team
+## Features
 
-### Front
-| 최승원<br>(FE팀장) | 유슬기<br> | 전형호<br> | 원영은<br> |
-| :---: | :---: | :---: | :---: |
-| <img alt="최승원" src="https://avatars.githubusercontent.com/u/112051914?v=4" height="100" width="100"> | <img alt="유슬기" src="https://avatars.githubusercontent.com/u/119473025?v=4" height="100" width="100"> | <img alt="전형호" src="https://avatars.githubusercontent.com/u/120395025?v=4" height="100" width="100"> | <img alt="원영은" src="https://avatars.githubusercontent.com/u/119933024?v=4" height="100" width="100"> |
-| [@RomaneeChoiti](https://github.com/RomaneeChoiti) |   [@Seulgi-Yoo](https://github.com/Seulgi-Yoo) | [@JHH0906](https://github.com/JHH0906) | [@lulu242](https://github.com/lulu242) | 
-|<p align="left">- Front </p> | <p align="left">- Front </p>| <p align="left">- Front </p> | <p align="left">- Front </p> |
+- Add a new todo item
+- Edit an existing todo item
+- Delete a todo item
+- Mark a todo item as completed
+- View a list of all todo items
 
-### Back
-| 손정훈<br>(BE팀장) | 백서연<br> | 김나연<br> | 이난영<br> |
-| :---: | :---: | :---: | :---: |
-| <img alt="손정훈" src="https://avatars.githubusercontent.com/u/84003339?v=4" height="100" width="100"> |<img alt="백서연" src="https://avatars.githubusercontent.com/u/97516208?v=4" height="100" width="100"> | <img alt="김나연" src="https://avatars.githubusercontent.com/u/120254001?v=4" height="100" width="100"> | <img alt="이난영" src="https://avatars.githubusercontent.com/u/105438919?s=400&u=4b7fa72a06d36daad6da24e94a6545ab9983e633&v=4" height="100" width="100"> |
-| [@sjh4172](https://github.com/sjh4172) |[@yeri134](https://github.com/yeri134) | [@0324skdus](https://github.com/0324skdus) | [@NYinJP](https://github.com/NYinJP) |
-| <p align="left">- Back </p>| <p align="left">- Back </p>| <p align="left">- Back </p>| <p align="left">- Back </p>|
 
 ## 🛠 Skils
 
@@ -42,6 +35,49 @@
 | :---: | :---: | :---: | :---: | :---: | :---: |
 | <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/java-icon.svg" alt="icon" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/mysql-icon.svg" alt="icon" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/restapi-icon.svg" alt="icon" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/aws-icon.svg" alt="icon" width="65" height="65" /></div> | <img alt="spring logo" src="https://www.vectorlogo.zone/logos/springio/springio-icon.svg" height="50" width="50" > | <img alt="spring-boot logo" src="https://t1.daumcdn.net/cfile/tistory/27034D4F58E660F616" width="65" height="65" > |
 <br/>
+
+## Installation
+
+1. Clone the repository
+2. Open `index.html` in your web browser
+
+## Usage
+
+1. Add a new todo item by typing in the input field and pressing "Enter"
+2. Edit a todo item by clicking on the edit button next to it
+3. Delete a todo item by clicking on the delete button next to it
+4. Mark a todo item as completed by clicking on the checkbox next to it
+
+## Contributing
+
+Contributions are always welcome! If you'd like to contribute to TODO APP, please follow these steps:
+
+1. Fork the repository
+2. Create a new branch (`git checkout -b new-feature`)
+3. Make your changes and commit them (`git commit -am 'Added a new feature'`)
+4. Push your changes to your forked repository (`git push origin new-feature`)
+5. Open a pull request
+
+## License
+
+This project is licensed under the XXX License - see the LICENSE.md file for details
+
+
+## 👩‍💻 Team
+
+### Front
+| 최승원<br>(FE팀장) | 유슬기<br> | 전형호<br> | 원영은<br> |
+| :---: | :---: | :---: | :---: |
+| <img alt="최승원" src="https://avatars.githubusercontent.com/u/112051914?v=4" height="100" width="100"> | <img alt="유슬기" src="https://avatars.githubusercontent.com/u/119473025?v=4" height="100" width="100"> | <img alt="전형호" src="https://avatars.githubusercontent.com/u/120395025?v=4" height="100" width="100"> | <img alt="원영은" src="https://avatars.githubusercontent.com/u/119933024?v=4" height="100" width="100"> |
+| [@RomaneeChoiti](https://github.com/RomaneeChoiti) |   [@Seulgi-Yoo](https://github.com/Seulgi-Yoo) | [@JHH0906](https://github.com/JHH0906) | [@lulu242](https://github.com/lulu242) | 
+|<p align="left">- Front </p> | <p align="left">- Front </p>| <p align="left">- Front </p> | <p align="left">- Front </p> |
+
+### Back
+| 손정훈<br>(BE팀장) | 백서연<br> | 김나연<br> | 이난영<br> |
+| :---: | :---: | :---: | :---: |
+| <img alt="손정훈" src="https://avatars.githubusercontent.com/u/84003339?v=4" height="100" width="100"> |<img alt="백서연" src="https://avatars.githubusercontent.com/u/97516208?v=4" height="100" width="100"> | <img alt="김나연" src="https://avatars.githubusercontent.com/u/120254001?v=4" height="100" width="100"> | <img alt="이난영" src="https://avatars.githubusercontent.com/u/105438919?s=400&u=4b7fa72a06d36daad6da24e94a6545ab9983e633&v=4" height="100" width="100"> |
+| [@sjh4172](https://github.com/sjh4172) |[@yeri134](https://github.com/yeri134) | [@0324skdus](https://github.com/0324skdus) | [@NYinJP](https://github.com/NYinJP) |
+| <p align="left">- Back </p>| <p align="left">- Back </p>| <p align="left">- Back </p>| <p align="left">- Back </p>|
 
 ![footer](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=250&animation=twinkling&section=footer)
 
