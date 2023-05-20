@@ -15,9 +15,17 @@ function Map() {
 	// 쓰레기통 데이터를 가져오는 함수
 	const fetchTrashCans = useCallback(async () => {
 		try {
-			const response = await axios.get(`${mapUrl}/trashCan`);
-			setTrashCans(response.data);
-			console.log(response.data);
+			const response = await axios.get(`${mapUrl}/api/v1/trash-cans`);
+			const filteredTrashCans = response.data.filter((trashCan) => {
+				const lat = 37.49817126048722;
+				const lng = 127.0270164514336;
+				const distance =
+					Math.sqrt(
+						(lat - trashCan.Latitude) ** 2 + (lng - trashCan.Longitude) ** 2,
+					) * 100000;
+				return distance <= 700; // 700m 반경 내의 쓰레기통만 필터링
+			});
+			setTrashCans(filteredTrashCans);
 			setTrashMarkers([]);
 		} catch (error) {
 			console.error(error);
