@@ -18,7 +18,7 @@ import {
 } from '../Constant';
 import { URL_MAP, URL_SIGNUP } from '../routesURL';
 
-function Login() {
+function Login({setIsLogin}) {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
