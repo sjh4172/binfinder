@@ -16,9 +16,10 @@ function NearbyTrashCanList() {
 	}, []);
 
 	// 쓰레기통 데이터를 가져오는 함수
+	// 쓰레기통 데이터를 가져오는 함수
 	const fetchTrashCans = useCallback(async () => {
 		try {
-			const response = await axios.get(`${mapUrl}/trashCan`);
+			const response = await axios.get(`${mapUrl}/api/v1/trash-cans`);
 			const sortedTrashCans = response.data
 				.map((trashCan) => {
 					if (!currentPosition) return { ...trashCan, distance: null };
@@ -34,7 +35,10 @@ function NearbyTrashCanList() {
 					// 거리순으로 정렬
 					return a.distance - b.distance;
 				});
-			setTrashCans(sortedTrashCans);
+
+			const limitedTrashCans = sortedTrashCans.slice(0, 5); // 처음 10개의 항목만 남기기
+
+			setTrashCans(limitedTrashCans);
 		} catch (error) {
 			console.error(error);
 		}
