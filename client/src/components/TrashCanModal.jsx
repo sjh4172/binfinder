@@ -1,29 +1,31 @@
+/* eslint-disable no-console */
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '../styles/Buttons';
-import KAKAO_MAP_API_KEY from '../api/kakaoMap';
 
-function TrashCanModal({ trashCan, onClose }) {
-	const [count, setCount] = useState(0);
-	const [currentPosition, setCurrentPosition] = useState(null);
-	const { kakao } = window;
+function TrashCanModal({ trashCan }) {
+	const [likeCount, setLikeCount] = useState(0);
+	const [disLikeCount, setDisLikeCount] = useState(0);
+	const [, setCurrentPosition] = useState(null);
+	const [TrashCanModalOpen, setTrashCanModalOpen] = useState(true);
+	const mapUrl = process.env.REACT_APP_API_URL;
 
 	// 모달창 닫기
-	const handleCloseModal = () => {
-		onClose();
+	const handleCloseTrashCanModal = () => {
+		setTrashCanModalOpen(false);
 	};
-	const handleIncrementCount = (event) => {
+	// 좋아요
+	const handleLikeCount = (event) => {
 		event.preventDefault(); // 새로고침 방지
-		setCount(count + 1);
-
+		setLikeCount(likeCount + 1);
 		// POST 요청 보내기
 		const data = {
 			trashCanId: trashCan.id,
-			voteType: 'DISLIKE',
+			voteType: 'LIKE',
 		};
 		axios
-			.post('http://localhost:4001/vote', data)
+			.post(`${mapUrl}/vote`, data)
 			.then((response) => {
 				console.log('POST 요청 성공:', response.data);
 			})
@@ -31,17 +33,17 @@ function TrashCanModal({ trashCan, onClose }) {
 				console.error('POST 요청 실패:', error);
 			});
 	};
-
-	const handleIncrementCount2 = (event) => {
+	// 안 좋아요
+	const handleDisLikeCount = (event) => {
 		event.preventDefault(); // 새로고침 방지
-		setCount(count + 1);
+		setDisLikeCount(disLikeCount + 1);
 		// POST 요청 보내기
 		const data = {
 			trashCanId: trashCan.id,
-			voteType: 'LIKE',
+			voteType: 'DISLIKE',
 		};
 		axios
-			.post('http://localhost:4001/vote', data)
+			.post(`${mapUrl}/vote`, data)
 			.then((response) => {
 				console.log('POST 요청 성공:', response.data);
 			})
@@ -72,59 +74,79 @@ function TrashCanModal({ trashCan, onClose }) {
 	}, []);
 
 	// 길찾기
-	const handleShowDirections = (event) => {
-		event.preventDefault();
-		const startLatLng = new kakao.maps.LatLng(
-			currentPosition.latitude,
-			currentPosition.longitude,
-		);
-		const endLatLng = new kakao.maps.LatLng(
-			trashCan.Latitude,
-			trashCan.Longitude,
-		);
-		const directionsService = new kakao.maps.services.Directions(); // 변경된 부분
-		const request = {
-			origin: startLatLng,
-			destination: endLatLng,
-			travelMode: kakao.maps.services.TravelMode.TRANSIT, // 변경된 부분
-		};
-		directionsService.route(request, (result, status) => {
-			if (status === kakao.maps.services.Status.OK) {
-				// 변경된 부분
-				const { path } = result.routes[0];
-				const encodedPath = kakao.maps.util.encodePath(path);
-
-				const directionUrl = `https://map.kakao.com/link/to/${encodeURIComponent(
-					trashCan.설치위치,
-				)},${endLatLng.getLat()},${endLatLng.getLng()}?via=${encodedPath}`;
-
-				window.open(directionUrl);
-			} else {
-				console.error('길찾기 요청 실패:', status);
-			}
-		});
-	};
-
+	// const handleShowDirections = () => {
+	// 	// 출발지와 목적지 좌표
+	// 	if (currentPosition && currentPosition.latitude) {
+	// 		const startLatLng = new kakao.maps.LatLng(
+	// 			currentPosition.latitude,
+	// 			currentPosition.longitude,
+	// 		);
+	// 		const endLatLng = new kakao.maps.LatLng(
+	// 			trashCan.Latitude,
+	// 			trashCan.Longitude,
+	// 		);
+	// 		// 길찾기 서비스 생성
+	// 		const directionsService = new kakao.maps.services.Directions();
+	// 		// 길찾기 요청 설정
+	// 		const request = {
+	// 			origin: startLatLng,
+	// 			destination: endLatLng,
+	// 			transportationMode: kakao.maps.Directions.TRAVEL_MODE_TRANSIT,
+	// 		};
+	// 		// 길찾기 요청 보내기
+	// 		directionsService.route(request, (result, status) => {
+	// 			if (status === kakao.maps.services.Status.OK) {
+	// 				// 성공적으로 경로를 받아왔을 때
+	// 				const { path } = result.routes[0];
+	// 				const encodedPath = kakao.maps.util.encodePath(path);
+	// 				const directionUrl = `https://map.kakao.com/link/to/${encodeURIComponent(
+	// 					trashCan.설치위치,
+	// 				)},${endLatLng.getLat()},${endLatLng.getLng()}?via=${encodedPath}`;
+	// 				// 페이지 열림
+	// 				window.open(directionUrl);
+	// 			} else {
+	// 				console.error('길찾기 요청 실패:', status);
+	// 			}
+	// 		});
+	// 	}
+	// };
+	// 카카오맵 API
+	// useEffect(() => {
+	// 	const script = document.createElement('script');
+	// 	script.async = true;
+	// 	script.src = `https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${KAKAO_MAP_API_KEY}`;
+	// 	script.onload = () => {
+	// 		kakao.maps.load(() => {
+	// 			handleShowDirections();
+	// 		});
+	// 	};
+	// 	document.head.appendChild(script);
+	// 	return () => {
+	// 		document.head.removeChild(script);
+	// 	};
+	// }, [currentPosition, trashCan]);
+	if (!TrashCanModalOpen) {
+		return null;
+	}
 	return (
-		<ModalContainer className="modal-container" onClick={handleCloseModal}>
+		<ModalContainer onClick={handleCloseTrashCanModal}>
 			<Modal>
 				<ModalHeader>
-					<ModalTitle>{trashCan.설치위치}</ModalTitle>
-					<DistanceText>100m</DistanceText>
+					<ModalTitle>쓰레기통 위치 : {trashCan.설치위치}</ModalTitle>
 				</ModalHeader>
 				<BtnContent>
 					<TrashModalButton onClick={handleLoadRoadView}>
 						로드뷰
 					</TrashModalButton>
-					<TrashModalButton onClick={handleShowDirections}>
-						길찾기
-					</TrashModalButton>
-					<TrashModalButton onClick={handleIncrementCount}>
-						좋아요 : {count}
-					</TrashModalButton>
-					<TrashModalButton onClick={handleIncrementCount2}>
-						싫어요 : {count}
-					</TrashModalButton>
+					<TrashModalButton>길찾기</TrashModalButton>
+					<LikeDislikeContainer>
+						<LikeButton type="button" onClick={handleLikeCount}>
+							좋아요 : {likeCount}
+						</LikeButton>
+						<DislikeButton onClick={handleDisLikeCount}>
+							싫어요 : {disLikeCount}
+						</DislikeButton>
+					</LikeDislikeContainer>
 				</BtnContent>
 			</Modal>
 		</ModalContainer>
@@ -172,21 +194,38 @@ const ModalTitle = styled.h3`
 	margin-left: 100px;
 	flex-grow: 1;
 `;
-const DistanceText = styled.h3`
-	margin-right: 80px;
-`;
+
 const BtnContent = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
 `;
+const LikeDislikeContainer = styled.div`
+	display: flex;
+`;
+
 const TrashModalButton = styled(Button)`
 	width: 85%;
 	margin-bottom: 5px;
 	height: 50px;
 	@media (max-width: 768px) {
 		width: 100px;
+	}
+`;
+const LikeButton = styled(TrashModalButton)`
+	width: 142px;
+	@media (max-width: 768px) {
+		width: 50px;
+	}
+`;
+
+const DislikeButton = styled(TrashModalButton)`
+	width: 142px;
+	margin-left: 10px;
+	@media (max-width: 768px) {
+		width: 50px;
+		margin-left: 2px;
 	}
 `;
 

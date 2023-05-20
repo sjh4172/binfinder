@@ -11,12 +11,11 @@ function CommunityEdit() {
 	const location = useLocation();
 	const [titleBind] = useInput(location.state && location.state.b_title);
 	const [contentBind] = useInput(location.state && location.state.b_content);
-	console.log(titleBind.value);
 	const writePost = () => {
 		if (!titleBind.value) {
-			alert('제목을 작성해주세요.');
+			// alert('제목을 작성해주세요.');
 		} else if (!contentBind.value) {
-			alert('내용을 작성해주세요.');
+			// alert('내용을 작성해주세요.');
 		} else if (location.state) {
 			postCommunity(
 				`/boards/${location.state.id}`,

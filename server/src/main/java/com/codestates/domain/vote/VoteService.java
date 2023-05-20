@@ -11,7 +11,13 @@ import com.codestates.domain.trashcan.TrashCanRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +35,13 @@ public class VoteService {
         this.trashCanRepository = trashCanRepository;
         this.voteMapper = voteMapper;
     }
+
+    // 쿼리문 사용 위함
+    @PersistenceContext
+    private EntityManager entityManager;
+
     // 좋아요, 싫어요 투표하기
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     public VoteDto.Response createVote(VoteDto.CreateRequest createRequest) {
         // 사용자 인증
         verifyAuthorizedMember();
@@ -54,6 +66,7 @@ public class VoteService {
     }
 
     // 투표 수정
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     public VoteDto.Response updateVote(VoteDto.CreateRequest createRequest) {
 
         verifyAuthorizedMember();
@@ -76,6 +89,7 @@ public class VoteService {
         return response;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     // 로그인 한 사람만 삭제!
     public void deleteVote(Long voteId)  {
 
@@ -151,5 +165,32 @@ public class VoteService {
     private Authentication getAuthentication(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth;
+    }
+
+    // trashCan id 별로 LIKE enum 카운트하는 메서드(쿼리문 사용)
+    public Long countLike(long trashCanId){
+
+        VoteDto.VoteTypeEnum voteType = VoteDto.VoteTypeEnum.LIKE;
+
+        String jpql = "SELECT COUNT(v) FROM Vote v WHERE v.voteType = :voteType AND v.trashCan.id = :trashCanId";
+        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+        query.setParameter("voteType", voteType);
+        query.setParameter("trashCanId", trashCanId);
+
+        return query.getSingleResult();
+
+    }
+
+    // 싫어요 세기
+    public Long countDislike(long trashCanId){
+
+        VoteDto.VoteTypeEnum voteType = VoteDto.VoteTypeEnum.DISLIKE;
+
+        String jpql = "SELECT COUNT(v) FROM Vote v WHERE v.voteType = :voteType AND v.trashCan.id = :trashCanId";
+        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+        query.setParameter("voteType", voteType);
+        query.setParameter("trashCanId", trashCanId);
+
+        return query.getSingleResult();
     }
 }

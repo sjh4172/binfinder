@@ -13,6 +13,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
 import Prepare from './pages/Prepare';
+import NotFound from './pages/NotFound';
 import {
 	URL_MAP,
 	URL_LOGIN,
@@ -61,6 +62,7 @@ function App() {
 				<Route path={URL_PLOGGING} element={<Prepare />} />
 				<Route path={URL_NOTICE} element={<Prepare />} />
 				<Route path={URL_INTRODUCTION} element={<Prepare />} />
+				<Route path="*" element={<NotFound />} />
 			</Routes>
 			{!isMobile && <Footer />}
 		</>
