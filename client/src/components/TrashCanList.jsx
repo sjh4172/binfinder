@@ -10,15 +10,16 @@ function NearbyTrashCanList() {
 	// 현재 위치 정보 가져오기
 	useEffect(() => {
 		setCurrentPosition({
-			latitude: 37.497942,
-			longitude: 127.027621,
+			latitude: 37.49817126048722,
+			longitude: 127.0270164514336,
 		});
 	}, []);
 
 	// 쓰레기통 데이터를 가져오는 함수
 	const fetchTrashCans = useCallback(async () => {
 		try {
-			const response = await axios.get(`${mapUrl}/trashCan`);
+			// `${mapUrl}/api/v1/trash-cans`
+			const response = await axios.get(`${mapUrl}/api/v1/trash-cans`);
 			const sortedTrashCans = response.data
 				.map((trashCan) => {
 					if (!currentPosition) return { ...trashCan, distance: null };
@@ -34,7 +35,10 @@ function NearbyTrashCanList() {
 					// 거리순으로 정렬
 					return a.distance - b.distance;
 				});
-			setTrashCans(sortedTrashCans);
+
+			const limitedTrashCans = sortedTrashCans.slice(0, 5); // 처음 10개의 항목만 남기기
+
+			setTrashCans(limitedTrashCans);
 		} catch (error) {
 			console.error(error);
 		}
@@ -52,7 +56,7 @@ function NearbyTrashCanList() {
 				{trashCans.map((trashCan, index) => (
 					<ListItem key={trashCan.id}>
 						<Rank>{index + 1}</Rank>
-						<Name>{trashCan.설치위치}</Name>
+						<Name>{trashCan.Address}</Name>
 						<Distance>
 							{trashCan.distance ? `${trashCan.distance.toFixed(0)}m` : '-'}
 						</Distance>
@@ -90,10 +94,10 @@ const List = styled.ul`
 const ListItem = styled.li`
 	height: 40px;
 	width: 240px;
-	padding: 10px 0;
+	padding: 10px 0 20px 0;
 	margin: 10px 0;
 	font-size: var(--base);
-	font-weight: 700;
+	font-weight: 425;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -111,15 +115,17 @@ const Rank = styled.div`
 	background-color: skyblue;
 	color: white;
 	border-radius: 50%;
+	flex-shrink: 0; /* 추가 */
 `;
 const Name = styled.div`
 	margin-left: 10px;
-	flex-grow: 2;
+	flex-grow: 1;
 	@media (max-width: 768px) {
 		text-align: center;
 	}
 `;
 const Distance = styled.div`
+	margin: 0 0 0 3px;
 	flex-grow: 1;
 	color: skyblue;
 	@media (max-width: 768px) {
