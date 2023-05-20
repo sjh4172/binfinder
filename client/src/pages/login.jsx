@@ -41,8 +41,8 @@ function Login() {
 	const onSubmit = (data) => {
 		login(data.email, data.password)
 			.then((res) => {
-				const accessToken = res.data.access_token;
-				const refreshToken = res.data.refresh_token;
+				const accessToken = res.headers.authorization;
+				const refreshToken = res.headers.refresh;
 
 				localStorage.setItem(KEY_ACCESS_TOKEN, accessToken);
 				localStorage.setItem(KEY_REFRESH_TOKEN, refreshToken);
