@@ -48,6 +48,20 @@
 3. Delete a todo item by clicking on the delete button next to it
 4. Mark a todo item as completed by clicking on the checkbox next to it
 
+## Git Hub 커밋 메시지
+
+- `Feat` : 새로운 기능 추가
+- `Fix` : 버그 수정
+- `Docs` : 문서 수정 (README.md 등)
+- `Comment` : 필요한 주석 추가 및 변경
+- `Style` : 코드 포맷팅, 세미콜론 누락, 코드 변경이 없는 경우
+- `Refactor` : 코드 리팩토링
+- `Test` : 테스트 코드, 리팩토링 테스트 코드 추가
+- `Chore` : 빌드 업무 수정, 패키지 매니저 수정 등 모듈의 변경 (프로덕션 코드 변경 X)
+- `Rename` : 파일 혹은 폴더명을 수정하거나 경로 이동
+- `Remove` : 파일 삭제
+- `Merge`: 브랜치 merge
+
 ## Contributing
 
 Contributions are always welcome! If you'd like to contribute to TODO APP, please follow these steps:
