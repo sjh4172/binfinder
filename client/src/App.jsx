@@ -51,7 +51,7 @@ function App() {
 			)}
 			<Routes>
 				<Route path={URL_MAP} element={<MapPage />} />
-				<Route path={URL_LOGIN} element={<Login />} />
+				<Route path={URL_LOGIN} element={<Login setIsLogin={setIsLogin} />} />
 				<Route path={URL_SIGNUP} element={<Signup />} />
 				<Route path={URL_MYPAGE} element={<UserInfo />} />
 				<Route path={URL_EDITMYPAGE} element={<EditUserInfo />} />
