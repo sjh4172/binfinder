@@ -117,19 +117,6 @@ public class SecurityConfiguration{
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    // CORS 정책 설정
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "DELETE"));  // (8-2)
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();   // (8-3)
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
-
-
     // 구현한 JwtAuthenticationFilter를 등록하는 역할
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {  // (2-1)
         @Override
