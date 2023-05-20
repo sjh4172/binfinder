@@ -24,6 +24,10 @@ public class VoteController {
     @PostMapping("")
     public ResponseEntity<VoteDto.Response> createVote(@Valid @RequestBody VoteDto.CreateRequest createRequest) {
         VoteDto.Response response = voteService.createVote(createRequest);
+
+        // trashCanId 가져오기
+        response.setTrashCanId(createRequest.getTrashCanId());
+
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 

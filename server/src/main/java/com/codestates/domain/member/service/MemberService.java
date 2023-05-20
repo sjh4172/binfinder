@@ -37,6 +37,7 @@ public class MemberService {
         this.authorityUtils = authorityUtils;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     public Member createMember(Member member) {
         verifyExistsEmail(member.getEmail());
 
@@ -89,6 +90,7 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     public void deleteMember(long memberId) {
         verifyAuthorizedMember(memberId);
         memberRepository.delete(findVerifiedMember(memberId));
