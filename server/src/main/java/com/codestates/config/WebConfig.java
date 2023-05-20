@@ -4,12 +4,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
-public class WebConfig implements WebMvcConfigurer{
+public class WebConfig implements WebMvcConfigurer {
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://3.26.117.251:3000")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
+                .allowedOrigins("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE","PATCH")
                 .allowedHeaders("*")
                 .allowCredentials(false)
                 .maxAge(3600);
