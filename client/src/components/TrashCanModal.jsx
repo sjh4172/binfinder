@@ -38,7 +38,7 @@ function TrashCanModal({ trashCan }) {
 			voteType: 'LIKE',
 		};
 		axios
-			.post(`${mapUrl}/vote`, data)
+			.post(`${mapUrl}/api/v1/trash-cans/1/vote`, data)
 			.then((response) => {
 				console.log('POST 요청 성공:', response.data);
 			})
@@ -56,7 +56,7 @@ function TrashCanModal({ trashCan }) {
 			voteType: 'DISLIKE',
 		};
 		axios
-			.post(`${mapUrl}/vote`, data)
+			.post(`${mapUrl}/api/v1/trash-cans/1/vote`, data)
 			.then((response) => {
 				console.log('POST 요청 성공:', response.data);
 			})
