@@ -9,6 +9,7 @@ import TrashCanModal from './TrashCanModal';
 
 function Map() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 	const [trashCans, setTrashCans] = useState([]);
 	const [, setTrashMarkers] = useState([]);
 	const mapUrl = process.env.REACT_APP_API_URL;
@@ -17,6 +18,7 @@ function Map() {
 	const fetchTrashCans = useCallback(async () => {
 		try {
 			const response = await axios.get(`${mapUrl}/api/v1/trash-cans`);
+
 			const filteredTrashCans = response.data.filter((trashCan) => {
 				const lat = 37.49817126048722;
 				const lng = 127.0270164514336;
@@ -36,6 +38,15 @@ function Map() {
 	useEffect(() => {
 		fetchTrashCans();
 	}, [fetchTrashCans]);
+
+	// 쓰레기통 로딩 중
+	useEffect(() => {
+		const timer = setInterval(() => {
+			setIsLoading((prevLoading) => !prevLoading);
+		}, 450);
+
+		return () => clearInterval(timer);
+	}, []);
 
 	const loadKakaoMap = useCallback(() => {
 		// 카카오맵 스크립트 읽어오기
@@ -128,6 +139,14 @@ function Map() {
 			<MapStyle>
 				<div id="map" className="map" />
 			</MapStyle>
+			{trashCans.length === 0 && (
+				<LoadingMessageContainer>
+					<LoadingMessage>
+						주변 쓰레기통 찾는 중{isLoading ? '...' : '..'}
+					</LoadingMessage>
+				</LoadingMessageContainer>
+			)}
+
 			{isModalOpen && (
 				<Modal
 					message="GPS 기능이 꺼져 있으면 현재 위치를 가져올 수 없습니다. 
@@ -153,6 +172,27 @@ const MapStyle = styled.div`
 		width: 100vw;
 		height: 60vh;
 	}
+`;
+// 로딩 메시지
+const LoadingMessage = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 200px;
+	font-size: 18px;
+	font-weight: bold;
+`;
+const LoadingMessageContainer = styled.div`
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 9999;
+	background-color: rgba(255, 255, 255, 0.9);
 `;
 
 export default Map;

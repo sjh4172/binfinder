@@ -18,7 +18,7 @@ function TrashCanModal({ trashCan }) {
 
 		// 카카오 맵 API의 길찾기 페이지 열기
 		window.open(
-			`https://map.kakao.com/link/to/,${trashCan.설치위치},${destinationLat},${destinationLng},${startLat},${startLng}`,
+			`https://map.kakao.com/link/to/,${trashCan.Address},${destinationLat},${destinationLng},${startLat},${startLng}`,
 			'_blank',
 		);
 	};
