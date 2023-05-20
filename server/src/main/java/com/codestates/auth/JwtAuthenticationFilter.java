@@ -1,12 +1,12 @@
 package com.codestates.auth;
 
-import com.codestates.member.entity.Member;
+import com.codestates.domain.member.entity.Member;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
+@Slf4j // 로그 추가를 위한 애너테이션?
 // 로그인 인증을 처리하는 필터.
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {  // 디폴트 Security Filter
     private final AuthenticationManager authenticationManager;
@@ -37,10 +38,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         ObjectMapper objectMapper = new ObjectMapper();    // (3-1)
         // LoginDto 클래스의 객체로 역직렬화한다.
         LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
+        log.info("###### loginDTO : {} ######", loginDto.toString());
 
         // Email과 Password 정보를 포함한 UsernamePasswordAuthenticationToken를 생성한다.
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
+        log.info("### Email과 Password 정보를 포함한 토큰은 {} 입니다. ###", authenticationToken);
 
         // AuthenticationManager에게 전달하면서 인증 처리를 위임한다.
         return authenticationManager.authenticate(authenticationToken);  // (3-4)
@@ -58,11 +61,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String accessToken = delegateAccessToken(member);   // 액세스 토큰 생성
         String refreshToken = delegateRefreshToken(member); // 리프레시 토큰 생성
+        log.info("### access Token 값은 {} 입니다.", accessToken);
 
         // response 헤더에 액세스 토큰을 추가한다.
         response.setHeader("Authorization", "Bearer "+accessToken);
         // response 헤더에 리프레시 토큰을 추가한다.
         response.setHeader("Refresh", refreshToken);
+
+        log.info("### {}의 response의 Authorization의 값은 {} 입니다.###",member.getUsername() ,response.getHeaders("Authorization"));
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
 
@@ -73,6 +79,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", member.getEmail());
         claims.put("roles", member.getRoles());
+        claims.put("m_id",member.getMemberId()); // JWT 토큰에 멤버아이디 추가
 
         String subject = member.getEmail();
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());

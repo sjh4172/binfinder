@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 
-export default function MyProfile() {
+export default function MyProfile({ username, userEmail, marginNone }) {
 	return (
 		// 마이페이지로 링크
-		<ProfileWrapper>
+		<ProfileWrapper marginNone={marginNone}>
 			<ProfileImage
 				src={`${process.env.PUBLIC_URL}/assets/exprofile.png`}
 				alt="Profile"
 			/>
 			<UserInfoWrapper>
-				<UserName>username</UserName>
-				<UserEmail>user@example.com</UserEmail>
+				<UserName>{username}</UserName>
+				{userEmail && <UserEmail>{userEmail}</UserEmail>}
 			</UserInfoWrapper>
 		</ProfileWrapper>
 	);
@@ -19,7 +19,7 @@ export default function MyProfile() {
 const ProfileWrapper = styled.div`
 	display: flex;
 	align-items: center;
-	margin-left: 20px;
+	margin-left: ${(props) => (props.marginNone ? '0px' : '20px')};
 	gap: 20px;
 	cursor: pointer;
 `;
