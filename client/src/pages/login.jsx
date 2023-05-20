@@ -41,14 +41,41 @@ function Login() {
 	const onSubmit = (data) => {
 		login(data.email, data.password)
 			.then((res) => {
-				const accessToken = res.data.access_token;
-				const refreshToken = res.data.refresh_token;
 
+				// // 토큰 가져오기
+				// console.log(res.headers.Authorization);
+				// const accessToken = res.headers.Authorization;
+				// const refreshToken = res.headers.Refresh;
+				// console.log(accessToken);
+		  
+				// // 상수화 한 토큰 저장
+				// localStorage.setItem(KEY_ACCESS_TOKEN, accessToken);
+				// localStorage.setItem(KEY_REFRESH_TOKEN, refreshToken);
+		  
+				// axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+		  
+				// dispatch(loginSuccess({ email: res.data.email }));
+				// setIsLogin(true);
+				// navigate(URL_MAP);
+				// ======================================
+
+				// 액세스 토큰 가져오기
+				console.log(res.headers.get('Authorization')); 
+
+				// 액세스 값 가져오기
+				const accessToken = res.headers.authorization;
+				// 리프레시 값 가져오기
+				const refreshToken = res.headers.refresh;
+
+				console.log(accessToken);
+				console.log(refreshToken);
+		  
+				// 상수화 한 토큰 저장
 				localStorage.setItem(KEY_ACCESS_TOKEN, accessToken);
 				localStorage.setItem(KEY_REFRESH_TOKEN, refreshToken);
-
+		  
 				axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-
+		  
 				dispatch(loginSuccess({ email: res.data.email }));
 				setIsLogin(true);
 				navigate(URL_MAP);
