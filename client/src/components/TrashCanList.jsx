@@ -16,9 +16,9 @@ function NearbyTrashCanList() {
 	}, []);
 
 	// 쓰레기통 데이터를 가져오는 함수
+	// 쓰레기통 데이터를 가져오는 함수
 	const fetchTrashCans = useCallback(async () => {
 		try {
-			// `${mapUrl}/api/v1/trash-cans`
 			const response = await axios.get(`${mapUrl}/api/v1/trash-cans`);
 			const sortedTrashCans = response.data
 				.map((trashCan) => {

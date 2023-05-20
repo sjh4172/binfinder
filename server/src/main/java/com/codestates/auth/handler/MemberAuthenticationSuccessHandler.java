@@ -1,6 +1,6 @@
 package com.codestates.auth.handler;
 
-import com.codestates.member.entity.Member;
+import com.codestates.domain.member.entity.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;

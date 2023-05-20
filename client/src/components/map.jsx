@@ -16,7 +16,6 @@ function Map() {
 	// 쓰레기통 데이터를 가져오는 함수 + 필터링
 	const fetchTrashCans = useCallback(async () => {
 		try {
-			// `${mapUrl}/api/v1/trash-cans`;
 			const response = await axios.get(`${mapUrl}/api/v1/trash-cans`);
 			const filteredTrashCans = response.data.filter((trashCan) => {
 				const lat = 37.49817126048722;

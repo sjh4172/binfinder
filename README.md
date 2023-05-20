@@ -1,4 +1,4 @@
-![header](https://capsule-render.vercel.app/api?type=waving&color=gradient&text=별칭&height=350&fontSize=100&animation=twinkling)
+![header](https://capsule-render.vercel.app/api?type=waving&color=gradient&text=어디에🗑️&height=350&fontSize=100&animation=twinkling)
 
 # 🗑️ 쓰레기통 위치 조회 웹 애플리케이션
 
@@ -7,6 +7,7 @@
 
 ## 🐣 Intro
 - 안녕하세요. 팀 에배레스트 입니다.
+- API 명세서 : https://documenter.getpostman.com/view/25535504/2s93eZxB7u
 - 배포링크 : 
 
 ## 👩‍💻 Team
