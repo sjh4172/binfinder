@@ -18,7 +18,7 @@ function UserInfo() {
 			try {
 				// 사용자 정보 가져오기
 				const userResponse = await axios.get(
-					`${process.env.REACT_APP_API_URL}/members/${memberId}`,
+					`${process.env.REACT_APP_API_URL}/api/members/${memberId}`,
 				);
 				setUsername(userResponse.data.username);
 				setEmail(userResponse.data.email);
@@ -30,7 +30,7 @@ function UserInfo() {
 				setPostList(postResponse.data);
 
 				const commentResponse = await axios.get(
-					`${process.env.REACT_APP_API_URL}/comments`,
+					`${process.env.REACT_APP_API_URL}/comments?userId=${memberId}`,
 				);
 				setCommentList(commentResponse.data);
 			} catch (error) {
