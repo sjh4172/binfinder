@@ -10,12 +10,11 @@ function NearbyTrashCanList() {
 	// 현재 위치 정보 가져오기
 	useEffect(() => {
 		setCurrentPosition({
-			latitude: 37.49817126048722,
-			longitude: 127.0270164514336,
+			latitude: 37.497942,
+			longitude: 127.027621,
 		});
 	}, []);
 
-	// 쓰레기통 데이터를 가져오는 함수
 	// 쓰레기통 데이터를 가져오는 함수
 	const fetchTrashCans = useCallback(async () => {
 		try {
@@ -35,10 +34,20 @@ function NearbyTrashCanList() {
 					// 거리순으로 정렬
 					return a.distance - b.distance;
 				});
+			console.log(sortedTrashCans.slice(0, 5));
+			const limitedTrashCans = sortedTrashCans.slice(0, 10); // 처음 10개의 항목만 남기기
 
-			const limitedTrashCans = sortedTrashCans.slice(0, 5); // 처음 10개의 항목만 남기기
+			// 중복된 주소 제거
+			const uniqueTrashCans = [];
+			limitedTrashCans.forEach((trashCan) => {
+				if (
+					!uniqueTrashCans.some((item) => item.Address === trashCan.Address)
+				) {
+					uniqueTrashCans.push(trashCan);
+				}
+			});
 
-			setTrashCans(limitedTrashCans);
+			setTrashCans(uniqueTrashCans);
 		} catch (error) {
 			console.error(error);
 		}
@@ -48,7 +57,7 @@ function NearbyTrashCanList() {
 		if (currentPosition) {
 			fetchTrashCans();
 		}
-	}, [currentPosition, fetchTrashCans]);
+	}, [currentPosition]);
 
 	return (
 		<ListWapper>
