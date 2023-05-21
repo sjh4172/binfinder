@@ -7,6 +7,7 @@ function NearbyTrashCanList() {
 	const [trashCans, setTrashCans] = useState([]);
 	const [currentPosition, setCurrentPosition] = useState(null);
 	const mapUrl = process.env.REACT_APP_API_URL;
+
 	// 현재 위치 정보 가져오기
 	useEffect(() => {
 		setCurrentPosition({
@@ -34,21 +35,14 @@ function NearbyTrashCanList() {
 					// 거리순으로 정렬
 					return a.distance - b.distance;
 				});
-			console.log(sortedTrashCans.slice(0, 5));
-			const limitedTrashCans = sortedTrashCans.slice(0, 10); // 처음 10개의 항목만 남기기
+			// 중복된 Address 제거
+			const uniqueTrashCans = sortedTrashCans.filter(
+				(trashCan, index, self) =>
+					index === self.findIndex((t) => t.Address === trashCan.Address),
+			);
 
-			// 중복된 주소 제거
-			const uniqueTrashCans = limitedTrashCans.reduce((acc, trashCan) => {
-				const isDuplicate = acc.some(
-					(item) => item.Address === trashCan.Address,
-				);
-				if (!isDuplicate) {
-					acc.push(trashCan);
-				}
-				return acc;
-			}, []);
-
-			setTrashCans(uniqueTrashCans);
+			const limitedTrashCans = uniqueTrashCans.slice(0, 10); // 처음 10개의 항목만 남기기
+			setTrashCans(limitedTrashCans);
 		} catch (error) {
 			console.error(error);
 		}

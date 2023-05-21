@@ -12,6 +12,7 @@ function UserInfo() {
 	const [email, setEmail] = useState('');
 
 	const { memberId } = useSelector((state) => state.auth);
+	console.log(memberId);
 
 	useEffect(() => {
 		const fetchUserData = async () => {

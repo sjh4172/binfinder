@@ -18,7 +18,7 @@ import {
 } from '../Constant';
 import { URL_MAP, URL_SIGNUP } from '../routesURL';
 
-function Login({setIsLogin}) {
+function Login() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -52,7 +52,7 @@ function Login({setIsLogin}) {
 				dispatch(
 					loginSuccess({ email: res.data.email, memberId: res.data.memberId }),
 				);
-
+				// setIsLogin(true);
 				navigate(URL_MAP);
 			})
 			.catch((err) => {
