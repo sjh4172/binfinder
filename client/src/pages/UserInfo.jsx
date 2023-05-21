@@ -61,7 +61,7 @@ function UserInfo() {
 							<Icon to="/editmypage">
 								<img
 									src={`${process.env.PUBLIC_URL}/assets/mdi_pencil.png`}
-									alt="editfile button.png"
+									alt="editprofile button.png"
 								/>
 							</Icon>
 						</EditUserInfoButton>
