@@ -108,7 +108,7 @@ public class MemberService {
     }
 
     // 로그인한 사용자가 회원 본인인지 또는 관리자인지 확인하는 메서드이다.
-    private void verifyAuthorizedMember(Long memberId) {
+    public void verifyAuthorizedMember(Long memberId) {
         // 사용자 인증 정보 Authentication의 인스턴스 auth로 접근
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
