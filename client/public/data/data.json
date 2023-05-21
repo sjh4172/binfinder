@@ -126,10 +126,6 @@
 			"c_id": ["1", "2", "3"]
 		}
 	],
-	"vote": {
-		"trashCanId": 4,
-		"voteType": "LIKE"
-	},
 	"trashCan": [
 		{
 			"id": 1,
@@ -149,5 +145,9 @@
 			"Address": "종로구 자하문로 자하문로 28 ",
 			"canType": "일반쓰레기"
 		}
-	]
+	],
+	"vote": {
+		"trashCanId": 4,
+		"voteType": "LIKE"
+	}
 }

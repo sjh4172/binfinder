@@ -38,14 +38,15 @@ function NearbyTrashCanList() {
 			const limitedTrashCans = sortedTrashCans.slice(0, 10); // 처음 10개의 항목만 남기기
 
 			// 중복된 주소 제거
-			const uniqueTrashCans = [];
-			limitedTrashCans.forEach((trashCan) => {
-				if (
-					!uniqueTrashCans.some((item) => item.Address === trashCan.Address)
-				) {
-					uniqueTrashCans.push(trashCan);
+			const uniqueTrashCans = limitedTrashCans.reduce((acc, trashCan) => {
+				const isDuplicate = acc.some(
+					(item) => item.Address === trashCan.Address,
+				);
+				if (!isDuplicate) {
+					acc.push(trashCan);
 				}
-			});
+				return acc;
+			}, []);
 
 			setTrashCans(uniqueTrashCans);
 		} catch (error) {
