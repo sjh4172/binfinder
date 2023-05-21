@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Title from '../styles/Title';
 import CommunityList from '../components/CommunityList';
 import Pagination from '../components/Pagination';
 import { URL_WRITEPOST } from '../routesURL';
 import { getPostList } from '../api/communityAPI';
+import Modal from '../components/Modal';
+import { Button } from '../styles/Buttons';
 
 function Community() {
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -13,6 +16,8 @@ function Community() {
 	const [totalPage] = useState(19);
 	const location = useLocation();
 	const [data, setData] = useState(null);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
 	useEffect(() => {
 		if (location.search) {
@@ -21,13 +26,28 @@ function Community() {
 		}
 	}, [searchParams]);
 
+	const handleConfirm = () => {
+		setIsModalOpen(false);
+	};
+
 	return (
 		<CommunityPageContainer>
 			<div className="flex">
 				<Title>게시판</Title>
-				<Link to={URL_WRITEPOST} className="postWrite">
-					글 작성
-				</Link>
+				{isAuthenticated && (
+					<Link to={URL_WRITEPOST} className="postWrite">
+						글 작성
+					</Link>
+				)}
+				{isAuthenticated || (
+					<Button
+						type="button"
+						className="postWrite"
+						onClick={() => setIsModalOpen(true)}
+					>
+						글 작성
+					</Button>
+				)}
 			</div>
 			<CommunityList data={data} />
 			{totalPage >= 0 && (
@@ -36,6 +56,13 @@ function Community() {
 					setCurrentPage={setCurrentPage}
 					totalPage={totalPage}
 					setSearchParams={setSearchParams}
+				/>
+			)}
+			{isModalOpen && (
+				<Modal
+					message="회원만 작성 가능합니다."
+					cancel={false}
+					handleConfirm={handleConfirm}
 				/>
 			)}
 		</CommunityPageContainer>

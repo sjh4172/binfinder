@@ -3,7 +3,12 @@ import styled from 'styled-components';
 import { Button, WarningButton } from '../styles/Buttons';
 import MOBILE_MAX_WIDTH from '../mediaQuery';
 
-export default function Modal({ message, handleConfirm, handleCancel }) {
+export default function Modal({
+	message,
+	handleConfirm,
+	handleCancel,
+	cancel,
+}) {
 	const splitMessage = message.split('<br>');
 
 	// const handleConfirm = () => {
@@ -24,7 +29,7 @@ export default function Modal({ message, handleConfirm, handleCancel }) {
 				</ModalMessage>
 				<ModalButtonWrapper>
 					<WarningButton onClick={handleConfirm}>확인</WarningButton>
-					<Button onClick={handleCancel}>취소</Button>
+					{cancel && <Button onClick={handleCancel}>취소</Button>}
 				</ModalButtonWrapper>
 			</ModalContent>
 		</ModalWrapper>
