@@ -1,8 +1,9 @@
 import styled from 'styled-components';
+import Editor from './Editor';
 
 function CommunityEditor({ contentBind, titleBind }) {
 	return (
-		<Editor>
+		<EditorContainer>
 			<label htmlFor="title">
 				제목 입력
 				<input
@@ -12,19 +13,12 @@ function CommunityEditor({ contentBind, titleBind }) {
 					{...titleBind}
 				/>
 			</label>
-			<label htmlFor="content">
-				내용입력
-				<textarea
-					id="content"
-					placeholder="내용을 입력하세요"
-					{...contentBind}
-				/>
-			</label>
-		</Editor>
+			<Editor value={contentBind} />
+		</EditorContainer>
 	);
 }
 
-const Editor = styled.div`
+const EditorContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	label {
@@ -41,17 +35,6 @@ const Editor = styled.div`
 
 	input::placeholder {
 		color: var(--line-color);
-	}
-	textarea {
-		font-size: var(--large);
-		border-color: var(--line-color);
-		height: 50vh;
-		width: 100%;
-		background-color: var(--bg-color);
-		resize: none;
-		outline: none;
-		border-radius: 5px;
-		padding: 5px;
 	}
 	@media (max-width: 768px) {
 		input {
