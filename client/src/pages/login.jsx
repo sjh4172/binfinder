@@ -49,8 +49,10 @@ function Login({setIsLogin}) {
 
 				axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
-				dispatch(loginSuccess({ email: res.data.email }));
-				setIsLogin(true);
+				dispatch(
+					loginSuccess({ email: res.data.email, memberId: res.data.memberId }),
+				);
+
 				navigate(URL_MAP);
 			})
 			.catch((err) => {
@@ -101,7 +103,7 @@ function Login({setIsLogin}) {
 					<Logo>
 						<img
 							src={`${process.env.PUBLIC_URL}/assets/google.png`}
-							alt="google.png"
+							alt="google logo.png"
 						/>
 					</Logo>
 					<Text>구글 계정으로 로그인 하기</Text>
@@ -110,7 +112,7 @@ function Login({setIsLogin}) {
 					<Logo>
 						<img
 							src={`${process.env.PUBLIC_URL}/assets/kakaotalk.png`}
-							alt="KaKao.png"
+							alt="kakao logo.png"
 						/>
 					</Logo>
 					<Text>카카오 계정으로 로그인 하기</Text>
