@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 import axios from 'axios';
 
 export const apiUrl = process.env.REACT_APP_API_URL;
