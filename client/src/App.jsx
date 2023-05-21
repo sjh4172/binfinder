@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { useState } from 'react';
+import { Provider } from 'react-redux';
 import GlobalStyles from './styles/index';
 import MapPage from './pages/mapPage';
 import Login from './pages/login';
@@ -28,18 +29,17 @@ import {
 	URL_INTRODUCTION,
 } from './routesURL';
 import useMediaQuery from './hooks/useMediaQuery';
+import store from './store/UserSlice';
 
 function App() {
 	const isMobile = useMediaQuery();
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	const [isSidebarOpeFirst, setIsSidebarOpeFirst] = useState(true);
-	const [isLogin, setIsLogin] = useState(false);
+
 	return (
-		<>
+		<Provider store={store}>
 			<GlobalStyles />
 			<Header
-				isLogin={isLogin}
-				setIsLogin={setIsLogin}
 				isSidebarOpen={isSidebarOpen}
 				setIsSidebarOpen={setIsSidebarOpen}
 				setIsSidebarOpeFirst={setIsSidebarOpeFirst}
@@ -65,7 +65,7 @@ function App() {
 				<Route path="*" element={<NotFound />} />
 			</Routes>
 			{!isMobile && <Footer />}
-		</>
+		</Provider>
 	);
 }
 

@@ -18,6 +18,8 @@ function Community() {
 	const [data, setData] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+	const email = useSelector((state) => state.auth.email);
+	console.log(email);
 
 	useEffect(() => {
 		if (location.search) {

@@ -53,10 +53,10 @@ function CommunityDetail() {
 	const likeUpDown = () => {
 		const Authorization = localStorage.getItem('accessToken');
 		if (isLike && Authorization) {
-			postCommunity(`boards/unlike/${data.b_id}/${data.memberId}`, null);
+			postCommunity(`/boards/unlike/${data.b_id}/${data.memberId}`, null);
 			setIsLike(!isLike);
 		} else if (Authorization) {
-			postCommunity(`boards/like/${data.b_id}/${data.memberId}`, null);
+			postCommunity(`/boards/like/${data.b_id}/${data.memberId}`, null);
 			setIsLike(!isLike);
 		} else {
 			// alert('회원만 가능한 기능입니다.');
@@ -105,7 +105,7 @@ function CommunityDetail() {
 							<li key={el.c_id}>
 								<CommunityComment
 									setIsCModalOpen={openModalComment}
-									commentData={data.comments[0]}
+									commentData={el}
 								/>
 							</li>
 						))}
