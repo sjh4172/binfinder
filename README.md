@@ -1,16 +1,18 @@
 ![header](https://capsule-render.vercel.app/api?type=waving&color=gradient&text=어디에🗑️&height=350&fontSize=100&animation=twinkling)
 
-# 🗑️ 쓰레기통 위치 조회 웹 애플리케이션 프로젝트 개요
-쓰레기통 위치를 알려주는 웹 애플리케이션은 사용자들에게 가장 가까운 쓰레기통의 위치를 제공하여 환경 보호와 쓰레기 처리를 돕는 서비스입니다. 이 애플리케이션은 사용자가 현재 위치를 입력하면 인근에 있는 쓰레기통의 위치와 정보를 표시해줍니다. 또한, 사용자들 간에 자유롭게 소통할 수 있는 커뮤니티 게시판과 쓰레기통 위치를 기반으로 플로깅할 멤버를 모집하는 게시판 기능을 추가하였습니다.
-개발 기간: 23.05.01 - 23.05.30
+## 🗑️ BinFinder 프로젝트 개요
+
+쓰레기통 위치를 알려주는 웹 애플리케이션은 사용자들에게 가장 가까운 쓰레기통의 위치를 제공하여 환경 보호와 쓰레기 처리를 돕는 서비스입니다. 
 
 
 ## 🐣 Intro
+
 - 안녕하세요. 팀 에배레스트 입니다.
 - 배포링크 : https://binfinder43.link/
 
 
 ## 주요 기능
+
 - 사용자 위치 기반 쓰레기통 탐색: 사용자가 현재 위치를 가져와 주변에 있는 쓰레기통의 위치를 지도상에 표시합니다.
 - 쓰레기통 상세 정보 제공: 사용자가 선택한 쓰레기통에 대한 상세 정보를 제공합니다. 이 정보에는 분리수거 유형(일반쓰레기,재활용쓰레기,담배꽁초) 등이 포함될 수 있습니다.
 - 쓰레기통 등록 기능: 쓰레기통을 새로 등록하려는 사용자는 애플리케이션을 통해 해당 쓰레기통의 위치와 기타 정보를 등록할 수 있습니다.
@@ -20,6 +22,11 @@
 - OAUTH 기반(카카오톡,구글) 로그인을 지원합니다. 
 
 ## 🛠 Skils
+
+- 프론트엔드: HTML, CSS, JavaScript, React.js
+- 백엔드: Spring Boot, Gradle, Java 11, Rest
+- 데이터베이스: MySQL
+- AWS : EC2, Route 53, Certificate Manager, RDS
 
 ### 🔨 Front-end
 | Html | JavaScript | React |
@@ -39,7 +46,8 @@
 - `public` 폴더: 정적 파일(이미지, CSS 파일 등)이 들어있는 폴더입니다.
 
 ## 설치 및 실행 방법
-1. 이 저장소를 클론합니다: `git clone https://github.com/your-username/redeam.git`.
+
+1. 이 저장소를 클론합니다
 2. `cd redeam` 명령어를 사용하여 프로젝트 폴더로 이동합니다.
 3. 필요한 의존성을 설치합니다: `npm install`.
 4. 프론트엔드 및 백엔드를 각각 빌드합니다:
@@ -49,10 +57,7 @@
 6. 애플리케이션을 실행합니다: Spring Boot 애플리케이션을 실행하고, 웹 브라우저에서 `http://localhost:3000`으로 접속하여 애플리케이션을 확인합니다.
 
 
-## Installation
 
-1. Clone the repository
-2. Open `index.html` in your web browser
 
 
 ## Git Hub 커밋 메시지
@@ -71,6 +76,7 @@
 
 
 ## 기여하기
+
 이 프로젝트에 기여하고 싶다면, 다음과 같은 단계를 따르세요:
 1. 이 저장소를 포크합니다.
 2. 새로운 브랜치를 생성합니다: `git checkout -b feature/your-feature`.
