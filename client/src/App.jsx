@@ -33,13 +33,11 @@ function App() {
 	const isMobile = useMediaQuery();
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	const [isSidebarOpeFirst, setIsSidebarOpeFirst] = useState(true);
-	const [isLogin, setIsLogin] = useState(false);
+
 	return (
 		<>
 			<GlobalStyles />
 			<Header
-				isLogin={isLogin}
-				setIsLogin={setIsLogin}
 				isSidebarOpen={isSidebarOpen}
 				setIsSidebarOpen={setIsSidebarOpen}
 				setIsSidebarOpeFirst={setIsSidebarOpeFirst}
@@ -52,7 +50,7 @@ function App() {
 			)}
 			<Routes>
 				<Route path={URL_MAP} element={<MapPage />} />
-				<Route path={URL_LOGIN} element={<Login setIsLogin={setIsLogin} />} />
+				<Route path={URL_LOGIN} element={<Login />} />
 				<Route path={URL_SIGNUP} element={<Signup />} />
 				<Route path={URL_MYPAGE} element={<UserInfo />} />
 				<Route path={URL_EDITMYPAGE} element={<EditUserInfo />} />

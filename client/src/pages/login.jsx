@@ -18,7 +18,7 @@ import {
 } from '../Constant';
 import { URL_MAP, URL_SIGNUP } from '../routesURL';
 
-function Login({ setIsLogin }) {
+function Login() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -49,8 +49,10 @@ function Login({ setIsLogin }) {
 
 				axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
-				dispatch(loginSuccess({ email: res.data.email }));
-				setIsLogin(true);
+				dispatch(
+					loginSuccess({ email: res.data.email, memberId: res.data.email }),
+				);
+
 				navigate(URL_MAP);
 			})
 			.catch((err) => {
