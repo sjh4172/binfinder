@@ -80,7 +80,9 @@ function CommunityList({ data }) {
 					))}
 				</tbody>
 			)}
-			{!data && <p className="empty">게시물이 없습니다.</p>}
+			{(!data || data.length === 0) && (
+				<p className="empty">게시물이 없습니다.</p>
+			)}
 			{ismodalOpen && (
 				<Modal
 					message="회원만 읽을 수 있습니다."
