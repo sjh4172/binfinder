@@ -22,11 +22,13 @@ function CommunityDetail() {
 	const postId = location.pathname.split('/')[2];
 	const [textareaBind] = useInput();
 	const [isLike, setIsLike] = useState(true);
+	const [totalLike, setTotalLike] = useState(null);
 
 	useEffect(() => {
 		getPost(postId).then((res) => {
 			setData(res.data);
 			setIsLike(res.data.checkLike);
+			setTotalLike(res.data.likes);
 		});
 	}, []);
 
@@ -39,6 +41,7 @@ function CommunityDetail() {
 	const handleDelecteConfirmComment = () => {
 		closeModalComment();
 		deleteCommunity(`/comments/${data.comments[0].c_id}`);
+		navigate(0);
 	};
 
 	const postComment = (value) => {
@@ -47,16 +50,21 @@ function CommunityDetail() {
 				b_id: data.b_id,
 				c_content: value,
 			});
+			navigate(0);
 		}
 	};
 
 	const likeUpDown = () => {
 		const Authorization = localStorage.getItem('accessToken');
 		if (isLike && Authorization) {
-			postCommunity(`/boards/unlike/${data.b_id}/${data.memberId}`, null);
+			postCommunity(`/boards/unlike/${data.b_id}/${data.memberId}`, null).then(
+				(res) => setTotalLike(res.data.likes),
+			);
 			setIsLike(!isLike);
 		} else if (Authorization) {
-			postCommunity(`/boards/like/${data.b_id}/${data.memberId}`, null);
+			postCommunity(`/boards/like/${data.b_id}/${data.memberId}`, null).then(
+				(res) => setTotalLike(res.data.likes),
+			);
 			setIsLike(!isLike);
 		} else {
 			// alert('회원만 가능한 기능입니다.');
@@ -76,8 +84,8 @@ function CommunityDetail() {
 					목록 보기
 				</Button>
 				<Button type="button" className="bt" onClick={() => likeUpDown()}>
-					{data && isLike && `♥ ${data.likes}`}
-					{data && (isLike || `♡ ${data.likes}`)}
+					{data && isLike && `♥ ${totalLike}`}
+					{data && (isLike || `♡ ${totalLike}`)}
 				</Button>
 			</section>
 			<section>
