@@ -68,7 +68,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // response 헤더에 리프레시 토큰을 추가한다.
         response.setHeader("Refresh", refreshToken);
 
-        log.info("### {}의 response의 Authorization의 값은 {} 입니다.###",member.getUsername() ,response.getHeaders("Authorization"));
+        // response 바디에 memberId와 email 값을 추가하여 클라이언트에게 전달
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("memberId", member.getMemberId());
+        responseBody.put("email", member.getEmail());
+        responseBody.put("username", member.getUsername());
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().write(new ObjectMapper().writeValueAsString(responseBody));
+
+        log.info("### {}의 response의 Authorization의 값은 {} 입니다.###", member.getUsername() ,response.getHeaders("Authorization"));
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
 
