@@ -101,7 +101,7 @@ function Login({ setIsLogin }) {
 					<Logo>
 						<img
 							src={`${process.env.PUBLIC_URL}/assets/google.png`}
-							alt="구글로고.png"
+							alt="google logo.png"
 						/>
 					</Logo>
 					<Text>구글 계정으로 로그인 하기</Text>
@@ -110,7 +110,7 @@ function Login({ setIsLogin }) {
 					<Logo>
 						<img
 							src={`${process.env.PUBLIC_URL}/assets/kakaotalk.png`}
-							alt="카카오로고.png"
+							alt="kakao logo.png"
 						/>
 					</Logo>
 					<Text>카카오 계정으로 로그인 하기</Text>
