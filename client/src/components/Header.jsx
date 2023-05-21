@@ -17,7 +17,7 @@ export default function Header({
 	setIsSidebarOpen,
 	setIsSidebarOpeFirst,
 }) {
-	const dispatch = useDispatch;
+	const dispatch = useDispatch();
 	const isMobile = useMediaQuery();
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 	const handleLogout = () => {
@@ -52,7 +52,7 @@ export default function Header({
 					/>
 					{!isMobile && <LogoText>어디에버려</LogoText>}
 				</LogoWrapper>
-				{isAuthenticated ? (
+				{!isAuthenticated ? (
 					<ButtonWrapper>
 						<HeaderButton type="button">
 							<Link to={URL_SIGNUP}>Sign up</Link>
