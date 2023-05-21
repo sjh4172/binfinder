@@ -144,6 +144,7 @@ public class BoardService {
 	}
 
 	public Board addLike(long b_id, long m_id) {
+		verifyAuthorizedMember(b_id);
 		Board board = boardRepository.findById(b_id).orElseThrow(() -> new RuntimeException("Board not found"));
 		List<Long> likedUserIds = board.getLikedUserIds();
 
@@ -151,23 +152,22 @@ public class BoardService {
 			likedUserIds.add(m_id);
 			board.setLikedUserIds(likedUserIds);
 			board.setLikes(board.getLikes() + 1);
+			board.setCheckLike(true);
 		}
 
 		return boardRepository.save(board);
 	}
 
 	public Board removeLike(long b_id, long m_id) {
+		verifyAuthorizedMember(b_id);
 		Board board = boardRepository.findById(b_id).orElseThrow(() -> new RuntimeException("Board not found"));
 		List<Long> likedUserIds = board.getLikedUserIds();
 		if (likedUserIds.remove(m_id)) {
 			board.setLikedUserIds(likedUserIds);
 			board.setLikes(board.getLikes() - 1);
+			board.setCheckLike(false);
 		}
 		return boardRepository.save(board);
-	}
-
-	private Member verifyExistingMember(Member member){
-		return memberService.findVerifiedMember(member.getMemberId());
 	}
 
 	public Member verifyExistingMember(String loginEmail) {
