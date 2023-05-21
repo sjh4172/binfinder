@@ -52,7 +52,7 @@ function Login() {
 				dispatch(
 					loginSuccess({ email: res.data.email, memberId: res.data.memberId }),
 				);
-
+				// setIsLogin(true);
 				navigate(URL_MAP);
 			})
 			.catch((err) => {
