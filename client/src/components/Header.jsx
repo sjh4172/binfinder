@@ -50,7 +50,7 @@ export default function Header({
 						src={`${process.env.PUBLIC_URL}/assets/logo.png`}
 						alt="로고 이미지"
 					/>
-					{!isMobile && <LogoText>어디에버려</LogoText>}
+					{!isMobile && <LogoText>BinFinder</LogoText>}
 				</LogoWrapper>
 				{!isAuthenticated ? (
 					<ButtonWrapper>
