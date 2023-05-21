@@ -31,7 +31,7 @@ export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }) {
 			</CloseButton>
 			<SidebarContent>
 				<MyProfile />
-				<SidebarList />
+				<SidebarList setIsSidebarOpen={setIsSidebarOpen} />
 			</SidebarContent>
 		</SidebarWrapper>
 	);

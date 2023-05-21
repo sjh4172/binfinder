@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import {
 	URL_MAP,
 	URL_MYPAGE,
@@ -18,7 +18,7 @@ const navigations = [
 	{ url: URL_MYPAGE, name: 'My page' },
 ];
 
-export default function SidebarList() {
+export default function SidebarList({ setIsSidebarOpen }) {
 	const location = useLocation();
 	const path = location.pathname.split('/')[1];
 	return (
@@ -28,7 +28,9 @@ export default function SidebarList() {
 					key={el.name}
 					className={path === el.url.split('/')[1] && 'current'}
 				>
-					<NavigationLink href={el.url}>{el.name}</NavigationLink>
+					<NavigationLink to={el.url} onClick={() => setIsSidebarOpen(false)}>
+						{el.name}
+					</NavigationLink>
 				</ListItem>
 			))}
 		</List>
@@ -66,7 +68,7 @@ const ListItem = styled.li`
 	}
 `;
 
-const NavigationLink = styled.a`
+const NavigationLink = styled(Link)`
 	height: 40px;
 	width: 230px;
 	text-align: center;
