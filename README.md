@@ -2,13 +2,12 @@
 
 # 🗑️ 쓰레기통 위치 조회 웹 애플리케이션
 
-쓰레기통 위치를 알려주는 웹 애플리케이션입니다.<br>
+서울시 쓰레기통 위치를 알려주는 웹 애플리케이션입니다.<br>
 개발 기간: 23.05.01 - 23.05.30
 
 ## 🐣 Intro
 - 안녕하세요. 팀 에배레스트 입니다.
-- API 명세서 : https://documenter.getpostman.com/view/25535504/2s93eZxB7u
-- 배포링크 : 
+- 배포링크 : https://binfinder43.link/
 
 ## Features
 
