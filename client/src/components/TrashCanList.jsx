@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 function NearbyTrashCanList() {
 	const [trashCans, setTrashCans] = useState([]);
-	// const mapUrl = process.env.REACT_APP_API_URL;
+	const mapUrl = process.env.REACT_APP_API_URL;
 
 	const getCurrentPosition = () => {
 		return new Promise((resolve, reject) => {
@@ -28,8 +28,7 @@ function NearbyTrashCanList() {
 	// 쓰레기통 데이터를 가져오는 함수
 	const fetchTrashCans = useCallback(async () => {
 		try {
-			// const response = await axios.get(`${mapUrl}/api/v1/trash-cans`);
-			const response = await axios.get(`http://localhost:4001/trashCan`);
+			const response = await axios.get(`${mapUrl}/api/v1/trash-cans`);
 			const { latitude, longitude } = await getCurrentPosition();
 			const sortedTrashCans = response.data
 				.map((trashCan) => {

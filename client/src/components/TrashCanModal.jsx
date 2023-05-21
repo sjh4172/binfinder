@@ -6,7 +6,7 @@ import { Button } from '../styles/Buttons';
 
 function TrashCanModal({ trashCan }) {
 	const [TrashCanModalOpen, setTrashCanModalOpen] = useState(true);
-	// const mapUrl = process.env.REACT_APP_API_URL;
+	const mapUrl = process.env.REACT_APP_API_URL;
 
 	const handleLoadDirections = () => {
 		const startLat = 37.497942; // 출발지 위도
@@ -29,7 +29,6 @@ function TrashCanModal({ trashCan }) {
 	// 좋아요
 	const handleLikeCount = (event) => {
 		event.preventDefault(); // 새로고침 방지
-		event.stopPropagation();
 		// POST 요청 보내기
 		const data = {
 			memberId: 1,
@@ -37,8 +36,7 @@ function TrashCanModal({ trashCan }) {
 			voteType: 'LIKE',
 		};
 		axios
-			// .post(`${mapUrl}/api/v1/trash-cans/1/vote`, data)
-			.post(`http://localhost:4001/vote`, data)
+			.post(`${mapUrl}/api/v1/trash-cans/1/vote`, data)
 			.then((response) => {
 				console.log('POST 요청 성공:', response.data);
 			})
@@ -49,7 +47,6 @@ function TrashCanModal({ trashCan }) {
 	// 안 좋아요
 	const handleDisLikeCount = (event) => {
 		event.preventDefault(); // 새로고침 방지
-		event.stopPropagation();
 		// POST 요청 보내기
 		const data = {
 			memberId: 1,
@@ -57,8 +54,7 @@ function TrashCanModal({ trashCan }) {
 			voteType: 'DISLIKE',
 		};
 		axios
-			// .post(`${mapUrl}/api/v1/trash-cans/1/vote`, data)
-			.post(`http://localhost:4001/vote`, data)
+			.post(`${mapUrl}/api/v1/trash-cans/1/vote`, data)
 			.then((response) => {
 				console.log('POST 요청 성공:', response.data);
 			})
