@@ -18,7 +18,6 @@ function Map() {
 	const fetchTrashCans = useCallback(async () => {
 		try {
 			const response = await axios.get(`${mapUrl}/api/v1/trash-cans`);
-
 			const filteredTrashCans = response.data.filter((trashCan) => {
 				const lat = 37.49817126048722;
 				const lng = 127.0270164514336;
@@ -38,7 +37,6 @@ function Map() {
 	useEffect(() => {
 		fetchTrashCans();
 	}, [fetchTrashCans]);
-
 	// 쓰레기통 로딩 중
 	useEffect(() => {
 		const timer = setInterval(() => {

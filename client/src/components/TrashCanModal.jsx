@@ -5,8 +5,6 @@ import styled from 'styled-components';
 import { Button } from '../styles/Buttons';
 
 function TrashCanModal({ trashCan }) {
-	const [likeCount, setLikeCount] = useState(0);
-	const [disLikeCount, setDisLikeCount] = useState(0);
 	const [TrashCanModalOpen, setTrashCanModalOpen] = useState(true);
 	const mapUrl = process.env.REACT_APP_API_URL;
 
@@ -18,7 +16,7 @@ function TrashCanModal({ trashCan }) {
 
 		// 카카오 맵 API의 길찾기 페이지 열기
 		window.open(
-			`https://map.kakao.com/link/to/,${trashCan.Address},${destinationLat},${destinationLng},${startLat},${startLng}`,
+			`https://map.kakao.com/link/to/,${trashCan.설치위치},${destinationLat},${destinationLng},${startLat},${startLng}`,
 			'_blank',
 		);
 	};
@@ -31,7 +29,6 @@ function TrashCanModal({ trashCan }) {
 	// 좋아요
 	const handleLikeCount = (event) => {
 		event.preventDefault(); // 새로고침 방지
-		setLikeCount(likeCount + 1);
 		// POST 요청 보내기
 		const data = {
 			trashCanId: trashCan.id,
@@ -49,7 +46,6 @@ function TrashCanModal({ trashCan }) {
 	// 안 좋아요
 	const handleDisLikeCount = (event) => {
 		event.preventDefault(); // 새로고침 방지
-		setDisLikeCount(disLikeCount + 1);
 		// POST 요청 보내기
 		const data = {
 			trashCanId: trashCan.id,
@@ -95,7 +91,7 @@ function TrashCanModal({ trashCan }) {
 							좋아요 : {trashCan.likeCount}
 						</LikeButton>
 						<DislikeButton type="button" onClick={handleDisLikeCount}>
-							싫어요 : {disLikeCount}
+							싫어요 : {trashCan.dislikeCount}
 						</DislikeButton>
 					</LikeDislikeContainer>
 				</BtnContent>
@@ -136,7 +132,7 @@ const ModalHeader = styled.div`
 	margin-bottom: 20px;
 	font-size: 20px;
 	@media (max-width: 768px) {
-		width: 250px;
+		width: 180px;
 		font-size: 12px;
 	}
 `;
