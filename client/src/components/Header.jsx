@@ -45,12 +45,12 @@ export default function Header({
 				<Menu>
 					<MenuIcon onClick={toggleSideBar} />
 				</Menu>
-				<LogoWrapper>
+				<LogoWrapper to={URL_MAP}>
 					<LogoImage
 						src={`${process.env.PUBLIC_URL}/assets/logo.png`}
 						alt="로고 이미지"
 					/>
-					{!isMobile && <LogoText>BinFinder</LogoText>}
+					{!isMobile && <LogoText>Bin Finder</LogoText>}
 				</LogoWrapper>
 				{!isAuthenticated ? (
 					<ButtonWrapper>
@@ -118,7 +118,7 @@ const MenuIcon = styled(FiMenu)`
 	font-size: var(--title);
 `;
 
-const LogoWrapper = styled.div`
+const LogoWrapper = styled(Link)`
 	display: flex;
 	flex: 2;
 	text-align: center;
@@ -133,9 +133,11 @@ const LogoImage = styled.img`
 `;
 
 const LogoText = styled.div`
-	font-size: var(--sub-title);
-	font-weight: 700;
-	letter-spacing: 0.2em;
+	font-size: 35px;
+	font-weight: 800;
+	/* letter-spacing: 0.1em; */
+	color: var(--footer-color);
+	font-family: 'GFS Neohellenic', sans-serif;
 `;
 
 const ButtonWrapper = styled.div`
