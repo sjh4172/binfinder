@@ -10,30 +10,30 @@ const headers = {
 
 const getPostList = (page = '?page=0') => {
 	if (Authorization) {
-		return axios(`${apiUrl}/boards${page}&count=20`, {
+		return axios(`${apiUrl}/api/boards${page}&count=20`, {
 			headers,
 		});
 	}
-	return axios(`${apiUrl}/boards${page}&count=20`);
+	return axios(`${apiUrl}/api/boards${page}&count=20`);
 };
 
 const getPost = (postId) => {
 	if (Authorization) {
-		return axios(`${apiUrl}/boards/${postId}`, {
+		return axios(`${apiUrl}/api/boards/${postId}`, {
 			headers,
 		});
 	}
-	return axios(`${apiUrl}/boards/${postId}`);
+	return axios(`${apiUrl}/api/boards/${postId}`);
 };
 
 const postCommunity = (url, data, method = 'post') => {
-	return axios[method](`${apiUrl}${url}`, data, {
+	return axios[method](`${apiUrl}/api${url}`, data, {
 		headers,
 	});
 };
 
 const deleteCommunity = (url) => {
-	return axios.delete(`${apiUrl}${url}`, {
+	return axios.delete(`${apiUrl}/api${url}`, {
 		headers,
 	});
 };
