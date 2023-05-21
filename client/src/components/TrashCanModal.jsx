@@ -1,15 +1,26 @@
 /* eslint-disable no-console */
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '../styles/Buttons';
 
 function TrashCanModal({ trashCan }) {
-	const [likeCount, setLikeCount] = useState(0);
-	const [disLikeCount, setDisLikeCount] = useState(0);
-	const [, setCurrentPosition] = useState(null);
 	const [TrashCanModalOpen, setTrashCanModalOpen] = useState(true);
 	const mapUrl = process.env.REACT_APP_API_URL;
+
+	const handleLoadDirections = () => {
+		const startLat = 37.497942; // 출발지 위도
+		const startLng = 127.027621; // 출발지 경도
+		const destinationLat = trashCan.Latitude; // 목적지 위도
+		const destinationLng = trashCan.Longitude; // 목적지 경도
+
+		// 카카오 맵 API의 길찾기 페이지 열기
+		window.open(
+			`https://map.kakao.com/link/to/,${trashCan.설치위치},${destinationLat},${destinationLng},${startLat},${startLng}`,
+			'_blank',
+		);
+	};
+	// NOTE: 카카오API에선 출발지와 목적지를 각각 지정이 불가능하고 목적지만 지정이 가능합니다.
 
 	// 모달창 닫기
 	const handleCloseTrashCanModal = () => {
@@ -18,14 +29,13 @@ function TrashCanModal({ trashCan }) {
 	// 좋아요
 	const handleLikeCount = (event) => {
 		event.preventDefault(); // 새로고침 방지
-		setLikeCount(likeCount + 1);
 		// POST 요청 보내기
 		const data = {
 			trashCanId: trashCan.id,
 			voteType: 'LIKE',
 		};
 		axios
-			.post(`${mapUrl}/vote`, data)
+			.post(`${mapUrl}/api/v1/trash-cans/1/vote`, data)
 			.then((response) => {
 				console.log('POST 요청 성공:', response.data);
 			})
@@ -36,14 +46,13 @@ function TrashCanModal({ trashCan }) {
 	// 안 좋아요
 	const handleDisLikeCount = (event) => {
 		event.preventDefault(); // 새로고침 방지
-		setDisLikeCount(disLikeCount + 1);
 		// POST 요청 보내기
 		const data = {
 			trashCanId: trashCan.id,
 			voteType: 'DISLIKE',
 		};
 		axios
-			.post(`${mapUrl}/vote`, data)
+			.post(`${mapUrl}/api/v1/trash-cans/1/vote`, data)
 			.then((response) => {
 				console.log('POST 요청 성공:', response.data);
 			})
@@ -61,70 +70,6 @@ function TrashCanModal({ trashCan }) {
 		window.open(roadViewUrl);
 	};
 
-	// 현재 위치 정보 가져오기
-	useEffect(() => {
-		navigator.geolocation.getCurrentPosition(
-			(position) => {
-				setCurrentPosition(position.coords);
-			},
-			(error) => {
-				console.error(error);
-			},
-		);
-	}, []);
-
-	// 길찾기
-	// const handleShowDirections = () => {
-	// 	// 출발지와 목적지 좌표
-	// 	if (currentPosition && currentPosition.latitude) {
-	// 		const startLatLng = new kakao.maps.LatLng(
-	// 			currentPosition.latitude,
-	// 			currentPosition.longitude,
-	// 		);
-	// 		const endLatLng = new kakao.maps.LatLng(
-	// 			trashCan.Latitude,
-	// 			trashCan.Longitude,
-	// 		);
-	// 		// 길찾기 서비스 생성
-	// 		const directionsService = new kakao.maps.services.Directions();
-	// 		// 길찾기 요청 설정
-	// 		const request = {
-	// 			origin: startLatLng,
-	// 			destination: endLatLng,
-	// 			transportationMode: kakao.maps.Directions.TRAVEL_MODE_TRANSIT,
-	// 		};
-	// 		// 길찾기 요청 보내기
-	// 		directionsService.route(request, (result, status) => {
-	// 			if (status === kakao.maps.services.Status.OK) {
-	// 				// 성공적으로 경로를 받아왔을 때
-	// 				const { path } = result.routes[0];
-	// 				const encodedPath = kakao.maps.util.encodePath(path);
-	// 				const directionUrl = `https://map.kakao.com/link/to/${encodeURIComponent(
-	// 					trashCan.설치위치,
-	// 				)},${endLatLng.getLat()},${endLatLng.getLng()}?via=${encodedPath}`;
-	// 				// 페이지 열림
-	// 				window.open(directionUrl);
-	// 			} else {
-	// 				console.error('길찾기 요청 실패:', status);
-	// 			}
-	// 		});
-	// 	}
-	// };
-	// 카카오맵 API
-	// useEffect(() => {
-	// 	const script = document.createElement('script');
-	// 	script.async = true;
-	// 	script.src = `https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${KAKAO_MAP_API_KEY}`;
-	// 	script.onload = () => {
-	// 		kakao.maps.load(() => {
-	// 			handleShowDirections();
-	// 		});
-	// 	};
-	// 	document.head.appendChild(script);
-	// 	return () => {
-	// 		document.head.removeChild(script);
-	// 	};
-	// }, [currentPosition, trashCan]);
 	if (!TrashCanModalOpen) {
 		return null;
 	}
@@ -132,19 +77,21 @@ function TrashCanModal({ trashCan }) {
 		<ModalContainer onClick={handleCloseTrashCanModal}>
 			<Modal>
 				<ModalHeader>
-					<ModalTitle>쓰레기통 위치 : {trashCan.설치위치}</ModalTitle>
+					<ModalTitle>{trashCan.Address}</ModalTitle>
 				</ModalHeader>
 				<BtnContent>
 					<TrashModalButton onClick={handleLoadRoadView}>
 						로드뷰
 					</TrashModalButton>
-					<TrashModalButton>길찾기</TrashModalButton>
+					<TrashModalButton onClick={handleLoadDirections}>
+						길찾기
+					</TrashModalButton>
 					<LikeDislikeContainer>
 						<LikeButton type="button" onClick={handleLikeCount}>
-							좋아요 : {likeCount}
+							좋아요 : {trashCan.likeCount}
 						</LikeButton>
-						<DislikeButton onClick={handleDisLikeCount}>
-							싫어요 : {disLikeCount}
+						<DislikeButton type="button" onClick={handleDisLikeCount}>
+							싫어요 : {trashCan.dislikeCount}
 						</DislikeButton>
 					</LikeDislikeContainer>
 				</BtnContent>
@@ -180,19 +127,21 @@ const Modal = styled.div`
 const ModalHeader = styled.div`
 	display: flex;
 	justify-content: center;
+	flex-direction: column;
 	align-items: center;
 	margin-bottom: 20px;
 	font-size: 20px;
 	@media (max-width: 768px) {
-		width: 250px;
+		width: 180px;
 		font-size: 12px;
 	}
 `;
 
 const ModalTitle = styled.h3`
 	margin: 0;
-	margin-left: 100px;
-	flex-grow: 1;
+	margin-left: 10%;
+	margin-right: auto;
+	text-align: center;
 `;
 
 const BtnContent = styled.div`
