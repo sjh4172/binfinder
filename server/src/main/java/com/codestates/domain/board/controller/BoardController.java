@@ -12,6 +12,7 @@ import com.codestates.exception.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -70,7 +71,7 @@ public class BoardController {
 	@GetMapping
 	public ResponseEntity getBoards(
 					@RequestParam(defaultValue = "0") int page,
-					@RequestParam(defaultValue = "10") int size
+					@RequestParam(defaultValue = "20") int size
 	) {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<Board> boardPage = boardService.findBoards(pageable);
@@ -80,7 +81,15 @@ public class BoardController {
 						.map(board -> mapper.boardToBoardResponseDto(board))
 						.collect(Collectors.toList());
 
-		return new ResponseEntity<>(response, HttpStatus.OK);
+		//나연: 전체 페이지수 추가 요청에 따라 추가했습니다.기존 리턴문 주석처리, 헤더로 전체페이지수 반환, 디폴트사이즈도 20으로 바꿨습니다
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("X-Total-Pages", String.valueOf(boardService.getTotalPages(size)));
+		return ResponseEntity.ok()
+				.headers(headers)
+				.body(response);
+
+
+		//return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 //	@GetMapping("/{id}")

@@ -3,6 +3,7 @@ package com.codestates.auth;
 import com.codestates.domain.member.entity.Member;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
+@Slf4j // 로그 추가를 위한 애너테이션?
 // 로그인 인증을 처리하는 필터.
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {  // 디폴트 Security Filter
     private final AuthenticationManager authenticationManager;
@@ -36,10 +38,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         ObjectMapper objectMapper = new ObjectMapper();    // (3-1)
         // LoginDto 클래스의 객체로 역직렬화한다.
         LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
+        log.info("###### loginDTO : {} ######", loginDto.toString());
 
         // Email과 Password 정보를 포함한 UsernamePasswordAuthenticationToken를 생성한다.
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
+        log.info("### Email과 Password 정보를 포함한 토큰은 {} 입니다. ###", authenticationToken);
 
         // AuthenticationManager에게 전달하면서 인증 처리를 위임한다.
         return authenticationManager.authenticate(authenticationToken);  // (3-4)
@@ -57,11 +61,22 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String accessToken = delegateAccessToken(member);   // 액세스 토큰 생성
         String refreshToken = delegateRefreshToken(member); // 리프레시 토큰 생성
+        log.info("### access Token 값은 {} 입니다.", accessToken);
 
         // response 헤더에 액세스 토큰을 추가한다.
         response.setHeader("Authorization", "Bearer "+accessToken);
         // response 헤더에 리프레시 토큰을 추가한다.
         response.setHeader("Refresh", refreshToken);
+
+        // response 바디에 memberId와 email 값을 추가하여 클라이언트에게 전달
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("memberId", member.getMemberId());
+        responseBody.put("email", member.getEmail());
+        responseBody.put("username", member.getUsername());
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().write(new ObjectMapper().writeValueAsString(responseBody));
+
+        log.info("### {}의 response의 Authorization의 값은 {} 입니다.###", member.getUsername() ,response.getHeaders("Authorization"));
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
 
