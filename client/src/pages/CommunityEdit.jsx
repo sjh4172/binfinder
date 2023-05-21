@@ -37,7 +37,8 @@ function CommunityEdit() {
 				b_title: titleBind.value,
 				b_content: contentBind.value,
 			});
-			// TODO: 응답에서 postid 받으면 navigate로 작성글, 아니라면 전체목록 연결하기
+			navigate(URL_POST);
+			// TODO: 응답에서 postid 받으면 navigate 작성글로 변경
 		}
 	};
 	const handleConfirm = () => {
