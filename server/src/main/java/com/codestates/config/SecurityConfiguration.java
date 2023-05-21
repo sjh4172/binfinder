@@ -103,9 +103,6 @@ public class SecurityConfiguration{
                         .antMatchers(HttpMethod.PUT,"/vote/**").hasRole("USER") // 투표 수정은 유저만 가능
                         .antMatchers(HttpMethod.DELETE,"/vote/**").hasAnyRole("ADMIN","USER") // 투표 삭제는 관리자, 유저만 가능
 
-
-
-
                         .anyRequest().permitAll()); // 서버 측으로 들어오는 모든 request 접근 허용
 
         return http.build();
@@ -118,16 +115,34 @@ public class SecurityConfiguration{
     }
 
     // CORS 정책 설정
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "DELETE"));  // (8-2)
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080"));
+//        configuration.setAllowedMethods(Arrays.asList(""));
+//        configuration.addAllowedHeader("");
+//        configuration.addExposedHeader("Authorization"); //
+//        configuration.addExposedHeader("Refresh");
+//        configuration.addExposedHeader("memberId");
+//        configuration.setAllowCredentials(false);
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//
+//        return source;
+//    }
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();   // (8-3)
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration corsConfiguration = new CorsConfiguration();
+//        corsConfiguration.setAllowedOrigins(Arrays.asList("*"));
+//        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "PUT"));
+//        corsConfiguration.setExposedHeaders(Arrays.asList("Authorization", "Refresh")); // 허용된 도메인에 대해 노출시킬 헤더 설정
+//
+//        //UrlBasedCorsConfigurationSource 는 CorsConfigurationSource 인터페이스를 구현한 클래스이다.
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**",corsConfiguration);
+//        return source;
+//    }
 
 
     // 구현한 JwtAuthenticationFilter를 등록하는 역할
