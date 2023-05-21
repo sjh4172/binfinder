@@ -5,7 +5,7 @@ export default function MyProfile({ username, userEmail, marginNone }) {
 		// 마이페이지로 링크
 		<ProfileWrapper marginNone={marginNone}>
 			<ProfileImage
-				src={`https://api.dicebear.com/6.x/thumbs/svg?seed=${userEmail}&scale=90&size=60&shapeColor=0a5b83,1c799f,69d2e7,f1f4dc&backgroundColor=0a5b83,69d2e7,f1f4dc`}
+				src={`https://api.dicebear.com/6.x/thumbs/svg?seed=${username}&scale=90&size=60&shapeColor=0a5b83,1c799f,69d2e7,f1f4dc&backgroundColor=0a5b83,69d2e7,f1f4dc`}
 				alt="Profile"
 			/>
 			<UserInfoWrapper>
