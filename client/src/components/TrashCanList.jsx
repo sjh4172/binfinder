@@ -5,29 +5,38 @@ import styled from 'styled-components';
 
 function NearbyTrashCanList() {
 	const [trashCans, setTrashCans] = useState([]);
-	const [currentPosition, setCurrentPosition] = useState(null);
 	const mapUrl = process.env.REACT_APP_API_URL;
 
-	// 현재 위치 정보 가져오기
-	useEffect(() => {
-		setCurrentPosition({
-			latitude: 37.497942,
-			longitude: 127.027621,
+	const getCurrentPosition = () => {
+		return new Promise((resolve, reject) => {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(
+					(position) => {
+						const { latitude, longitude } = position.coords;
+						resolve({ latitude, longitude });
+					},
+					(error) => {
+						reject(error);
+					},
+				);
+			} else {
+				reject(new Error('Geolocation is not supported by this browser.'));
+			}
 		});
-	}, []);
+	};
 
 	// 쓰레기통 데이터를 가져오는 함수
 	const fetchTrashCans = useCallback(async () => {
 		try {
 			const response = await axios.get(`${mapUrl}/api/v1/trash-cans`);
+			const { latitude, longitude } = await getCurrentPosition();
 			const sortedTrashCans = response.data
 				.map((trashCan) => {
-					if (!currentPosition) return { ...trashCan, distance: null };
 					// 현재 위치와 쓰레기통의 거리 계산
 					const distance =
 						Math.sqrt(
-							(currentPosition.latitude - trashCan.Latitude) ** 2 +
-								(currentPosition.longitude - trashCan.Longitude) ** 2,
+							(latitude - trashCan.Latitude) ** 2 +
+								(longitude - trashCan.Longitude) ** 2,
 						) * 100000;
 					return { ...trashCan, distance };
 				})
@@ -46,13 +55,11 @@ function NearbyTrashCanList() {
 		} catch (error) {
 			console.error(error);
 		}
-	}, [currentPosition]);
+	}, []);
 
 	useEffect(() => {
-		if (currentPosition) {
-			fetchTrashCans();
-		}
-	}, [currentPosition]);
+		fetchTrashCans();
+	}, []);
 
 	return (
 		<ListWapper>
