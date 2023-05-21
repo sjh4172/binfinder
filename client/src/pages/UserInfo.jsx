@@ -9,7 +9,7 @@ function UserInfo() {
 	const [postList, setPostList] = useState([]);
 	const [commentList, setCommentList] = useState([]);
 	const [username, setUsername] = useState('');
-	const [email, setEmail] = useState();
+	const [email, setEmail] = useState('');
 
 	const { memberId } = useSelector((state) => state.auth);
 
@@ -25,12 +25,13 @@ function UserInfo() {
 
 				// 사용자가 작성한 게시글 가져오기
 				const postResponse = await axios.get(
-					`${process.env.REACT_APP_API_URL}/boards?userId=${memberId}`,
+					`${process.env.REACT_APP_API_URL}/api/boards?memberId=${memberId}`,
 				);
 				setPostList(postResponse.data);
 
+				// 사용자가 작성한 댓글 가져오기
 				const commentResponse = await axios.get(
-					`${process.env.REACT_APP_API_URL}/comments?userId=${memberId}`,
+					`${process.env.REACT_APP_API_URL}/api/comments?memberId=${memberId}`,
 				);
 				setCommentList(commentResponse.data);
 			} catch (error) {
@@ -49,7 +50,7 @@ function UserInfo() {
 					<Logo>
 						<img
 							src={`${process.env.PUBLIC_URL}/assets/Ellipse.png`}
-							alt="Ellipse.png"
+							alt="default profile.png"
 						/>
 					</Logo>
 					<DetailContainer>
@@ -60,7 +61,7 @@ function UserInfo() {
 							<Icon to="/editmypage">
 								<img
 									src={`${process.env.PUBLIC_URL}/assets/mdi_pencil.png`}
-									alt="pencil.png"
+									alt="editfile button.png"
 								/>
 							</Icon>
 						</EditUserInfoButton>

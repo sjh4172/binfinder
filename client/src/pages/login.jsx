@@ -18,7 +18,7 @@ import {
 } from '../Constant';
 import { URL_MAP, URL_SIGNUP } from '../routesURL';
 
-function Login() {
+function Login({ setIsLogin }) {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -101,7 +101,7 @@ function Login() {
 					<Logo>
 						<img
 							src={`${process.env.PUBLIC_URL}/assets/google.png`}
-							alt="google.png"
+							alt="구글로고.png"
 						/>
 					</Logo>
 					<Text>구글 계정으로 로그인 하기</Text>
@@ -110,7 +110,7 @@ function Login() {
 					<Logo>
 						<img
 							src={`${process.env.PUBLIC_URL}/assets/kakaotalk.png`}
-							alt="KaKao.png"
+							alt="카카오로고.png"
 						/>
 					</Logo>
 					<Text>카카오 계정으로 로그인 하기</Text>
