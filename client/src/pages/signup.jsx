@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import HorizontalLine from '../components/HorizonLine';
-import { signup } from '../api/authAPI';
+import { signup } from '../api/AuthAPI';
 import {
 	ERROR_VALIDATION_EMAIL,
 	ERROR_VALIDATION_REQUIRED_EMAIL,
@@ -11,7 +11,8 @@ import {
 	ERROR_VALIDATION_REQUIRED_PASSWORD,
 	ERROR_VALIDATION_REQUIRED_USERNAME,
 	ERROR_VALIDATION_USERNAME,
-} from '../constant';
+} from '../Constant';
+import { URL_LOGIN } from '../routesURL';
 
 function Signup() {
 	const navigate = useNavigate();
@@ -34,7 +35,7 @@ function Signup() {
 	const onSubmit = (data) => {
 		signup(data.username, data.email, data.password)
 			.then(() => {
-				navigate('/login');
+				navigate(URL_LOGIN);
 			})
 			.catch((err) => {
 				console.error(err);
@@ -97,27 +98,10 @@ function Signup() {
 					회원가입
 				</button>
 				<HorizontalLine text="또는" />
-				<SignupGoogleButton>
-					<Logo>
-						<img
-							src={`${process.env.PUBLIC_URL}/assets/google.png`}
-							alt="google.png"
-						/>
-					</Logo>
-					<Text>구글 계정으로 회원가입 하기</Text>
-				</SignupGoogleButton>
-				<SignupKaKaoButton>
-					<Logo>
-						<img
-							src={`${process.env.PUBLIC_URL}/assets/kakaotalk.png`}
-							alt="KaKao.png"
-						/>
-					</Logo>
-					<Text>카카오 계정으로 회원가입 하기</Text>
-				</SignupKaKaoButton>
+
 				<SignupTextContainer>
 					<SignupText>이미 회원이십니까? </SignupText>
-					<LoginLink to="/login">로그인</LoginLink>
+					<LoginLink to={URL_LOGIN}>로그인</LoginLink>
 				</SignupTextContainer>
 			</form>
 		</SignupContainer>
@@ -233,77 +217,6 @@ const SignupInputContainer = styled.div`
 	}
 `;
 
-/* 회원가입 구글 회원가입 버튼 */
-const SignupGoogleButton = styled.button`
-	width: 440px;
-	height: 50px;
-	background-color: white;
-	color: black;
-	border-radius: 10px;
-	border: 1px solid #d9d9d9;
-	margin-bottom: 28px;
-	font-size: 17px;
-	font-weight: 700;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	&:hover {
-		background-color: #d9d9d9;
-	}
-	@media (max-width: 768px) {
-		width: 220px;
-		height: 40px;
-		font-size: 13px;
-		font-weight: 700;
-	}
-`;
-
-/* 회원가입 OAuth 로고 */
-const Logo = styled.div`
-	width: 80px;
-	> img {
-		width: 30px;
-		height: 30px;
-	}
-	@media (max-width: 768px) {
-		width: 60px;
-		> img {
-			width: 20px;
-			height: 24px;
-		}
-	}
-`;
-/* 회원가입 OAuth 텍스트 */
-const Text = styled.div`
-	width: 240px;
-	text-align: center;
-	display: flex;
-`;
-
-/* 회원가입 카카오 회원가입 버튼 */
-const SignupKaKaoButton = styled.button`
-	width: 440px;
-	height: 50px;
-	background-color: #f1d100;
-	color: black;
-	border-radius: 10px;
-	border: none;
-	margin-bottom: 40px;
-	font-size: 17px;
-	font-weight: 700;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	&:hover {
-		background-color: #d9d9d9;
-	}
-	@media (max-width: 768px) {
-		width: 220px;
-		height: 40px;
-		font-size: 13px;
-		font-weight: 700;
-	}
-`;
 /* 회원가입 텍스트 전체 컨테이너 */
 const SignupTextContainer = styled.div`
 	width: 440px;

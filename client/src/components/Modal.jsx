@@ -3,6 +3,38 @@ import styled from 'styled-components';
 import { Button, WarningButton } from '../styles/Buttons';
 import MOBILE_MAX_WIDTH from '../mediaQuery';
 
+export default function Modal({
+	message,
+	handleConfirm,
+	handleCancel,
+	cancel,
+}) {
+	const splitMessage = message.split('<br>');
+
+	// const handleConfirm = () => {
+	// 	setIsModalOpen(false);
+	// 확인 버튼 클릭 시 실행할 로직 추가 (각 페이지에서 props 내려주기)
+	// };
+
+	// const handleCancel = () => {
+	// 	setIsModalOpen(false);
+	// };
+	return (
+		<ModalWrapper>
+			<ModalContent>
+				<ModalMessage>
+					{splitMessage.map((msg, index) => (
+						<p key={index}>{msg}</p>
+					))}
+				</ModalMessage>
+				<ModalButtonWrapper>
+					<WarningButton onClick={handleConfirm}>확인</WarningButton>
+					{cancel && <Button onClick={handleCancel}>취소</Button>}
+				</ModalButtonWrapper>
+			</ModalContent>
+		</ModalWrapper>
+	);
+}
 const ModalWrapper = styled.div`
 	position: fixed;
 	top: 0;
@@ -64,31 +96,3 @@ const ModalButtonWrapper = styled.div`
 		gap: 20px;
 	}
 `;
-
-export default function Modal({ message, handleConfirm, handleCancel }) {
-	const splitMessage = message.split('<br>');
-
-	// const handleConfirm = () => {
-	// 	setIsModalOpen(false);
-	// 확인 버튼 클릭 시 실행할 로직 추가 (각 페이지에서 props 내려주기)
-	// };
-
-	// const handleCancel = () => {
-	// 	setIsModalOpen(false);
-	// };
-	return (
-		<ModalWrapper>
-			<ModalContent>
-				<ModalMessage>
-					{splitMessage.map((msg, index) => (
-						<p key={index}>{msg}</p>
-					))}
-				</ModalMessage>
-				<ModalButtonWrapper>
-					<WarningButton onClick={handleConfirm}>확인</WarningButton>
-					<Button onClick={handleCancel}>취소</Button>
-				</ModalButtonWrapper>
-			</ModalContent>
-		</ModalWrapper>
-	);
-}

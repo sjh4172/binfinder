@@ -128,18 +128,26 @@
 	],
 	"trashCan": [
 		{
-			"Address": "강서 허준로 가양3동 1484-6 인도변",
-			"Latitude": 37.49879704127873,
-			"Longitude": 126.92868117919484,
-			"canType": "일반쓰레기",
-			"설치위치": "파리바게트"
+			"id": 1,
+			"likeCount": 0,
+			"dislikeCount": 0,
+			"Latitude": 37.583485,
+			"Longitude": 127.001468,
+			"Address": "종로구 사직로 경복궁역 4번출구 ",
+			"canType": "재활용"
 		},
 		{
-			"Address": "강서 파리바게트",
-			"Latitude": 37.498576414209964,
-			"Longitude": 126.9288792920622,
-			"canType": "재활용쓰레기",
-			"설치위치": "버스정류장"
+			"id": 2,
+			"likeCount": 0,
+			"dislikeCount": 0,
+			"Latitude": 37.5785599,
+			"Longitude": 126.9719683,
+			"Address": "종로구 자하문로 자하문로 28 ",
+			"canType": "일반쓰레기"
 		}
-	]
+	],
+	"vote": {
+		"trashCanId": 4,
+		"voteType": "LIKE"
+	}
 }

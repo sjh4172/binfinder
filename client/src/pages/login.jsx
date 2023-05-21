@@ -1,11 +1,13 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-console */
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import HorizontalLine from '../components/HorizonLine';
-import { loginSuccess, loginFailure } from '../store/userSlice';
-import login from '../api/authAPI';
+import { loginSuccess, loginFailure } from '../store/UserSlice';
+import login from '../api/AuthAPI';
 import {
 	KEY_ACCESS_TOKEN,
 	KEY_REFRESH_TOKEN,
@@ -13,10 +15,12 @@ import {
 	ERROR_VALIDATION_REQUIRED_EMAIL,
 	ERROR_VALIDATION_PASSWORD,
 	ERROR_VALIDATION_REQUIRED_PASSWORD,
-} from '../constant';
+} from '../Constant';
+import { URL_MAP, URL_SIGNUP } from '../routesURL';
 
 function Login() {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const validateEmail = (email) => {
 		return /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/.test(
@@ -37,21 +41,26 @@ function Login() {
 	const onSubmit = (data) => {
 		login(data.email, data.password)
 			.then((res) => {
-				const accessToken = res.data.access_token;
-				const refreshToken = res.data.refresh_token;
+				const accessToken = res.headers.authorization;
+				const refreshToken = res.headers.refresh;
 
 				localStorage.setItem(KEY_ACCESS_TOKEN, accessToken);
 				localStorage.setItem(KEY_REFRESH_TOKEN, refreshToken);
 
 				axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
-				dispatch(loginSuccess({ email: res.data.email }));
+				dispatch(
+					loginSuccess({ email: res.data.email, memberId: res.data.memberId }),
+				);
+				// setIsLogin(true);
+				navigate(URL_MAP);
 			})
 			.catch((err) => {
 				console.log(err);
 				dispatch(loginFailure());
 			});
 	};
+
 	return (
 		<LoginContainer>
 			<LoginTitle>로그인</LoginTitle>
@@ -94,7 +103,7 @@ function Login() {
 					<Logo>
 						<img
 							src={`${process.env.PUBLIC_URL}/assets/google.png`}
-							alt="google.png"
+							alt="google logo.png"
 						/>
 					</Logo>
 					<Text>구글 계정으로 로그인 하기</Text>
@@ -103,14 +112,14 @@ function Login() {
 					<Logo>
 						<img
 							src={`${process.env.PUBLIC_URL}/assets/kakaotalk.png`}
-							alt="KaKao.png"
+							alt="kakao logo.png"
 						/>
 					</Logo>
 					<Text>카카오 계정으로 로그인 하기</Text>
 				</LoginKaKaoButton>
 				<LoginTextContainer>
 					<LoginText>아직 회원이 아니십니까?</LoginText>
-					<SignupLink>회원가입</SignupLink>
+					<SignupLink to={URL_SIGNUP}>회원가입</SignupLink>
 				</LoginTextContainer>
 			</form>
 		</LoginContainer>
@@ -157,7 +166,6 @@ const LoginContainer = styled.div`
 		height: 45px;
 		border: none;
 		border-bottom: 2px solid #d9d9d9;
-		color: #d9d9d9;
 		font-family: 'Inter';
 		display: flex;
 		align-items: center;
@@ -254,6 +262,8 @@ const LoginGoogleButton = styled.button`
 /* 로그인 OAuth 로고 */
 const Logo = styled.div`
 	width: 80px;
+	display: flex;
+	justify-content: center;
 	> img {
 		width: 30px;
 		height: 30px;
@@ -332,7 +342,7 @@ const ErrorMessage = styled.div`
 	}
 `;
 /* 로그인 회원가입 링크 */
-const SignupLink = styled.a`
+const SignupLink = styled(Link)`
 	width: 140px;
 	height: 45px;
 	color: #37a0db;

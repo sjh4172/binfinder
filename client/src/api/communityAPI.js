@@ -1,40 +1,39 @@
-import request from './core';
+import axios from 'axios';
+import { apiUrl } from './AuthAPI';
 
-// get요청
-const getPostList = (page, count) => {
-	return request({ url: `/post/read?page=${page}&count=${count}` });
+const Authorization = localStorage.getItem('accessToken');
+const headers = {
+	'Content-Type': 'application/json',
+	Authorization,
+};
+
+const getPostList = (page = '?page=0') => {
+	if (Authorization) {
+		return axios(`${apiUrl}/api/boards${page}&count=20`, {
+			headers,
+		});
+	}
+	return axios(`${apiUrl}/api/boards${page}&count=20`);
 };
 
 const getPost = (postId) => {
-	// return request({ url: `/post/read/${postId}` });
-	return request({ url: `/read/${postId}` }); // json server
+	if (Authorization) {
+		return axios(`${apiUrl}/api/boards/${postId}`, {
+			headers,
+		});
+	}
+	return axios(`${apiUrl}/api/boards/${postId}`);
 };
 
-const Authorization = localStorage.getItem('accessToken');
-
-// post, patch 요청
 const postCommunity = (url, data, method = 'post') => {
-	request({
-		method,
-		url,
-		data,
-		headers: {
-			'Content-Type': 'application/json',
-			withCredentials: true,
-			Authorization,
-		},
+	return axios[method](`${apiUrl}/api${url}`, data, {
+		headers,
 	});
 };
 
 const deleteCommunity = (url) => {
-	request({
-		method: 'delete',
-		url,
-		headers: {
-			'Content-Type': 'application/json',
-			withCredentials: true,
-			Authorization,
-		},
+	return axios.delete(`${apiUrl}/api${url}`, {
+		headers,
 	});
 };
 

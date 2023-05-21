@@ -8,6 +8,7 @@ import com.codestates.auth.handler.MemberAccessDeniedHandler;
 import com.codestates.auth.handler.MemberAuthenticationEntryPoint;
 import com.codestates.auth.handler.MemberAuthenticationFailureHandler;
 import com.codestates.auth.handler.MemberAuthenticationSuccessHandler;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,8 +17,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -35,11 +40,17 @@ import static org.springframework.security.config.Customizer.withDefaults;
 - 세션 정책 설정 추가
 - JwtVerificationFilter 추가
 - Exception 발생시 처리하는 핸들러 추가
+- OAuth 2 인증 설정
 
 */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration{
+    @Value("${spring.security.oauth2.client.registration.google.clientId}")  // application.yml
+    private String clientId;
+
+    @Value("${spring.security.oauth2.client.registration.google.clientSecret}") // application.yml
+    private String clientSecret;
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
 
@@ -75,21 +86,28 @@ public class SecurityConfiguration{
 
                         .antMatchers(HttpMethod.GET, "/boards").permitAll() //전체 게시판 조회는 로그인 없이도 가능
                         .antMatchers(HttpMethod.GET, "/boards/**").hasAnyRole("ADMIN", "USER") // 특정 게시판 조회는 관리자, 회원만 가능
-                        .antMatchers(HttpMethod.POST, "/boards").hasRole("USER") // 게시판 글 작성은 회원만 가능
+                        .antMatchers(HttpMethod.POST, "/boards").hasAnyRole("USER") // 게시판 글 작성은 회원만 가능
                         .antMatchers(HttpMethod.PATCH, "/boards/**").hasAnyRole("ADMIN","USER") // 불량 게시판 글일 경우 관리자가 수정, 회원 본인 글 수정
                         .antMatchers(HttpMethod.DELETE, "/boards/**").hasAnyRole("ADMIN","USER") // 불량 게시판 글일 경우 관리자가 삭제, 회원 본인 글 삭제
 
-                        .antMatchers(HttpMethod.GET, "/comments").hasRole("ADMIN") // 전체 댓글 조회는 관리자만 가능
-                        .antMatchers(HttpMethod.GET, "/comments/").hasRole("ADMIN") // 전체 댓글 조회는 관리자만 가능
+                        .antMatchers(HttpMethod.GET, "/comments").hasAnyRole("ADMIN","USER") // 전체 댓글 조회는 관리자와 회원만 가능
+                        .antMatchers(HttpMethod.GET, "/comments/").hasAnyRole("ADMIN","USER") // 전체 댓글 조회는 관리자와 회원만 가능
                         .antMatchers(HttpMethod.GET, "/comments/**").hasAnyRole("ADMIN", "USER")
-                        .antMatchers(HttpMethod.POST, "/comments").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/comments").hasRole("USER") // 댓글 작성은 회원만 가능
                         .antMatchers(HttpMethod.PATCH, "/comments/**").hasAnyRole("ADMIN","USER") // 불량 댓글일 경우 관리자가 수정, 회원 댓글 수정
                         .antMatchers(HttpMethod.DELETE, "/comments/**").hasAnyRole("ADMIN","USER") // 불량 게시판 댓글일 경우 관리자가 삭제, 회원 댓글 삭제
+
+                        .antMatchers(HttpMethod.GET,"/trash-cans/**").hasAnyRole("ADMIN","USER")
+                        .antMatchers(HttpMethod.GET,"/vote/members/**").hasAnyRole("ADMIN","USER")
+                        .antMatchers(HttpMethod.POST,"/vote").hasRole("USER") // 쓰레기통 좋아요, 싫어요 투표는 유저만 가능
+                        .antMatchers(HttpMethod.PUT,"/vote/**").hasRole("USER") // 투표 수정은 유저만 가능
+                        .antMatchers(HttpMethod.DELETE,"/vote/**").hasAnyRole("ADMIN","USER") // 투표 삭제는 관리자, 유저만 가능
 
                         .anyRequest().permitAll()); // 서버 측으로 들어오는 모든 request 접근 허용
 
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -97,16 +115,34 @@ public class SecurityConfiguration{
     }
 
     // CORS 정책 설정
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "DELETE"));  // (8-2)
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080"));
+//        configuration.setAllowedMethods(Arrays.asList(""));
+//        configuration.addAllowedHeader("");
+//        configuration.addExposedHeader("Authorization"); //
+//        configuration.addExposedHeader("Refresh");
+//        configuration.addExposedHeader("memberId");
+//        configuration.setAllowCredentials(false);
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//
+//        return source;
+//    }
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();   // (8-3)
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration corsConfiguration = new CorsConfiguration();
+//        corsConfiguration.setAllowedOrigins(Arrays.asList("*"));
+//        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "PUT"));
+//        corsConfiguration.setExposedHeaders(Arrays.asList("Authorization", "Refresh")); // 허용된 도메인에 대해 노출시킬 헤더 설정
+//
+//        //UrlBasedCorsConfigurationSource 는 CorsConfigurationSource 인터페이스를 구현한 클래스이다.
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**",corsConfiguration);
+//        return source;
+//    }
 
 
     // 구현한 JwtAuthenticationFilter를 등록하는 역할

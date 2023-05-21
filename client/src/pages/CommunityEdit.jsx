@@ -1,11 +1,72 @@
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import CommunityEditor from '../components/CommunityEditor';
 import { Button, WarningButton } from '../styles/Buttons';
 import { postCommunity } from '../api/communityAPI';
 import useInput from '../hooks/useInput';
+import { URL_POST } from '../routesURL';
+import Modal from '../components/Modal';
 
-const EditPage = styled.div`
+function CommunityEdit() {
+	const navigate = useNavigate();
+	const location = useLocation();
+	const [titleBind] = useInput(location.state && location.state.b_title);
+	const [contentBind] = useInput(location.state && location.state.b_content);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [message, setMessage] = useState('');
+	console.log(location.state);
+	const writePost = () => {
+		if (!titleBind.value) {
+			setMessage('제목을 작성해주세요.');
+			setIsModalOpen(true);
+		} else if (!contentBind.value) {
+			setMessage('내용을 작성해주세요.');
+			setIsModalOpen(true);
+		} else if (location.state) {
+			postCommunity(
+				`/boards/${location.state.b_id}`,
+				{
+					b_title: titleBind.value,
+					b_content: contentBind.value,
+				},
+				'patch',
+			);
+			navigate(`${URL_POST}/${location.state.b_id}`);
+			navigate(0);
+		} else {
+			postCommunity('/boards', {
+				b_title: titleBind.value,
+				b_content: contentBind.value,
+			});
+			navigate(URL_POST);
+			navigate(0);
+			// TODO: 응답에서 postid 받으면 navigate 작성글로 변경
+		}
+	};
+	const handleConfirm = () => {
+		setIsModalOpen(false);
+	};
+
+	return (
+		<EditPageContainer>
+			<CommunityEditor contentBind={contentBind} titleBind={titleBind} />
+			<div className="flex">
+				<Button type="button" className="bt" onClick={() => navigate(-1)}>
+					작성 취소
+				</Button>
+				<WarningButton className="bt" onClick={() => writePost()}>
+					작성 완료
+				</WarningButton>
+			</div>
+			{isModalOpen && (
+				<Modal message={message} handleConfirm={handleConfirm} cancel={false} />
+			)}
+		</EditPageContainer>
+	);
+}
+
+const EditPageContainer = styled.section`
 	max-width: 1024px;
 	width: 80vw;
 	margin-left: auto;
@@ -31,50 +92,5 @@ const EditPage = styled.div`
 		}
 	}
 `;
-
-function CommunityEdit() {
-	const navigate = useNavigate();
-	const location = useLocation();
-	const [titleBind] = useInput(location.state ? location.state.p_title : '');
-	const [contentBind] = useInput(
-		location.state ? location.state.p_content : '',
-	);
-	// 수정 시 기존의 제목, 내용, postid props로 받기
-
-	// json서버 테스트용 실제서버는 url이랑 data 변경해야함
-	function writePost() {
-		if (location.state) {
-			postCommunity(
-				'/write/1',
-				{
-					p_title: titleBind.value,
-					P_content: contentBind.value,
-				},
-				'patch',
-			);
-			navigate(`/post/read/${location.state.id}`);
-		} else {
-			postCommunity('/write', {
-				p_title: titleBind.value,
-				P_content: contentBind.value,
-				m_id: '작성자아이디',
-			});
-			// 응답에서 postid 받으면 navigate연결하기
-		}
-	}
-	return (
-		<EditPage>
-			<CommunityEditor contentBind={contentBind} titleBind={titleBind} />
-			<div className="flex">
-				<Button className="bt" onClick={() => navigate(-1)}>
-					작성 취소
-				</Button>
-				<WarningButton className="bt" onClick={() => writePost()}>
-					작성 완료
-				</WarningButton>
-			</div>
-		</EditPage>
-	);
-}
 
 export default CommunityEdit;

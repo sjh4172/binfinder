@@ -1,25 +1,99 @@
+/* eslint-disable no-console */
+import axios from 'axios';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '../styles/Buttons';
 
-function TrashCanModal({ trashCan, onClose }) {
-	const handleBackgroundClick = (event) => {
-		if (event.target.classList.contains('modal-container')) {
-			onClose();
-		}
-	};
-	console.log(trashCan);
+function TrashCanModal({ trashCan }) {
+	const [TrashCanModalOpen, setTrashCanModalOpen] = useState(true);
+	const mapUrl = process.env.REACT_APP_API_URL;
 
+	const handleLoadDirections = () => {
+		const startLat = 37.497942; // 출발지 위도
+		const startLng = 127.027621; // 출발지 경도
+		const destinationLat = trashCan.Latitude; // 목적지 위도
+		const destinationLng = trashCan.Longitude; // 목적지 경도
+
+		// 카카오 맵 API의 길찾기 페이지 열기
+		window.open(
+			`https://map.kakao.com/link/to/,${trashCan.설치위치},${destinationLat},${destinationLng},${startLat},${startLng}`,
+			'_blank',
+		);
+	};
+	// NOTE: 카카오API에선 출발지와 목적지를 각각 지정이 불가능하고 목적지만 지정이 가능합니다.
+
+	// 모달창 닫기
+	const handleCloseTrashCanModal = () => {
+		setTrashCanModalOpen(false);
+	};
+	// 좋아요
+	const handleLikeCount = (event) => {
+		event.preventDefault(); // 새로고침 방지
+		// POST 요청 보내기
+		const data = {
+			trashCanId: trashCan.id,
+			voteType: 'LIKE',
+		};
+		axios
+			.post(`${mapUrl}/api/v1/trash-cans/1/vote`, data)
+			.then((response) => {
+				console.log('POST 요청 성공:', response.data);
+			})
+			.catch((error) => {
+				console.error('POST 요청 실패:', error);
+			});
+	};
+	// 안 좋아요
+	const handleDisLikeCount = (event) => {
+		event.preventDefault(); // 새로고침 방지
+		// POST 요청 보내기
+		const data = {
+			trashCanId: trashCan.id,
+			voteType: 'DISLIKE',
+		};
+		axios
+			.post(`${mapUrl}/api/v1/trash-cans/1/vote`, data)
+			.then((response) => {
+				console.log('POST 요청 성공:', response.data);
+			})
+			.catch((error) => {
+				console.error('POST 요청 실패:', error);
+			});
+	};
+
+	// 로드뷰
+	const handleLoadRoadView = (event) => {
+		event.preventDefault(); // 새로고침 방지
+		// 카카오맵 로드뷰 페이지 URL 주소 설정
+		const roadViewUrl = `https://map.kakao.com/link/roadview/${trashCan.Latitude},${trashCan.Longitude}`;
+		// 새로운 창 열기
+		window.open(roadViewUrl);
+	};
+
+	if (!TrashCanModalOpen) {
+		return null;
+	}
 	return (
-		<ModalContainer className="modal-container" onClick={handleBackgroundClick}>
+		<ModalContainer onClick={handleCloseTrashCanModal}>
 			<Modal>
 				<ModalHeader>
-					<ModalTitle>11</ModalTitle>
-					<DistanceText>100m</DistanceText>
+					<ModalTitle>{trashCan.Address}</ModalTitle>
 				</ModalHeader>
 				<BtnContent>
-					<TrashModalButton>로드뷰</TrashModalButton>
-					<TrashModalButton>길찾기</TrashModalButton>
-					<TrashModalButton>여기없어요</TrashModalButton>
+					<TrashModalButton onClick={handleLoadRoadView}>
+						로드뷰
+					</TrashModalButton>
+					<TrashModalButton onClick={handleLoadDirections}>
+						길찾기
+					</TrashModalButton>
+					<LikeDislikeContainer>
+						<LikeButton type="button" onClick={handleLikeCount}>
+							좋아요 : {trashCan.likeCount}
+						</LikeButton>
+						<DislikeButton type="button" onClick={handleDisLikeCount}>
+							싫어요 : {trashCan.dislikeCount}
+						</DislikeButton>
+					</LikeDislikeContainer>
 				</BtnContent>
 			</Modal>
 		</ModalContainer>
@@ -53,35 +127,54 @@ const Modal = styled.div`
 const ModalHeader = styled.div`
 	display: flex;
 	justify-content: center;
+	flex-direction: column;
 	align-items: center;
 	margin-bottom: 20px;
 	font-size: 20px;
 	@media (max-width: 768px) {
-		width: 250px;
+		width: 180px;
 		font-size: 12px;
 	}
 `;
 
 const ModalTitle = styled.h3`
 	margin: 0;
-	margin-left: 50px;
-	flex-grow: 1;
+	margin-left: 10%;
+	margin-right: auto;
+	text-align: center;
 `;
-const DistanceText = styled.h3`
-	margin-right: 80px;
-`;
+
 const BtnContent = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
 `;
+const LikeDislikeContainer = styled.div`
+	display: flex;
+`;
+
 const TrashModalButton = styled(Button)`
 	width: 85%;
 	margin-bottom: 5px;
 	height: 50px;
 	@media (max-width: 768px) {
 		width: 100px;
+	}
+`;
+const LikeButton = styled(TrashModalButton)`
+	width: 142px;
+	@media (max-width: 768px) {
+		width: 50px;
+	}
+`;
+
+const DislikeButton = styled(TrashModalButton)`
+	width: 142px;
+	margin-left: 10px;
+	@media (max-width: 768px) {
+		width: 50px;
+		margin-left: 2px;
 	}
 `;
 
