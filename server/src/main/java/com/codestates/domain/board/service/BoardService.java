@@ -103,14 +103,13 @@ public class BoardService {
 		if (!authentication.isAuthenticated()) {
 			throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
 		}
-
 		// 인증된 사용자의 아이디 추출
 		String loginEmail = authentication.getName();
-
 		// 로그인한 사용자 정보로 멤버 확인
 		Member member = verifyExistingMember(loginEmail);
 
 		Optional<Board> optionalBoard = boardRepository.findBoardWithComments(b_id);
+
 		if (optionalBoard.isPresent()) {
 			Board board = optionalBoard.get();
 			List<Long> likedUserIds = board.getLikedUserIds();
@@ -122,7 +121,13 @@ public class BoardService {
 	}
 
 	public Page<Board> findBoards(Pageable pageable) {
+
 		return boardRepository.findAll(pageable);
+	}
+	// 프론트엔드 측의 전체 페이지수 요청에 따라 추가한 코드입니다.
+	public long getTotalPages(int size) {
+		long totalBoards = boardRepository.count();
+		return (totalBoards + size - 1) / size;
 	}
 
 	public void deleteBoard(long b_id) {
