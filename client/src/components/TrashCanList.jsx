@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 function NearbyTrashCanList() {
 	const [trashCans, setTrashCans] = useState([]);
-	const mapUrl = process.env.REACT_APP_API_URL;
+	// const mapUrl = process.env.REACT_APP_API_URL;
 
 	const getCurrentPosition = () => {
 		return new Promise((resolve, reject) => {
@@ -28,7 +28,8 @@ function NearbyTrashCanList() {
 	// 쓰레기통 데이터를 가져오는 함수
 	const fetchTrashCans = useCallback(async () => {
 		try {
-			const response = await axios.get(`${mapUrl}/api/v1/trash-cans`);
+			// const response = await axios.get(`${mapUrl}/api/v1/trash-cans`);
+			const response = await axios.get(`http://localhost:4001/trashCan`);
 			const { latitude, longitude } = await getCurrentPosition();
 			const sortedTrashCans = response.data
 				.map((trashCan) => {
@@ -103,12 +104,12 @@ const List = styled.ul`
 	align-items: center;
 `;
 const ListItem = styled.li`
-	height: 40px;
-	width: 240px;
-	padding: 10px 0 20px 0;
+	height: 52.5px;
+	width: 265px;
+	padding: 20px 0 35px 0;
 	margin: 10px 0;
 	font-size: var(--base);
-	font-weight: 425;
+	font-weight: 400;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -131,6 +132,8 @@ const Rank = styled.div`
 const Name = styled.div`
 	margin-left: 10px;
 	flex-grow: 1;
+	line-height: 1.15;
+	width: 200px;
 	@media (max-width: 768px) {
 		text-align: center;
 	}
