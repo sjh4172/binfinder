@@ -105,7 +105,7 @@ function CommunityDetail() {
 							<li key={el.c_id}>
 								<CommunityComment
 									setIsCModalOpen={openModalComment}
-									commentData={data.comments}
+									commentData={el}
 								/>
 							</li>
 						))}
