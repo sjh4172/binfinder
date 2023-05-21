@@ -1,4 +1,4 @@
-![header](https://capsule-render.vercel.app/api?type=waving&color=gradient&text=어디에🗑️&height=350&fontSize=100&animation=twinkling)
+![header](https://capsule-render.vercel.app/api?type=waving&color=gradient&text=BinFinder🗑️&height=350&fontSize=100&animation=twinkling)
 
 ## 🗑️ BinFinder 프로젝트 개요
 
