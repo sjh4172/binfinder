@@ -41,8 +41,8 @@ function Login() {
 	const onSubmit = (data) => {
 		login(data.email, data.password)
 			.then((res) => {
-				const accessToken = res.data.access_token;
-				const refreshToken = res.data.refresh_token;
+				const accessToken = res.headers.authorization;
+				const refreshToken = res.headers.refresh;
 
 				localStorage.setItem(KEY_ACCESS_TOKEN, accessToken);
 				localStorage.setItem(KEY_REFRESH_TOKEN, refreshToken);
@@ -103,7 +103,7 @@ function Login() {
 					<Logo>
 						<img
 							src={`${process.env.PUBLIC_URL}/assets/google.png`}
-							alt="google.png"
+							alt="google logo.png"
 						/>
 					</Logo>
 					<Text>구글 계정으로 로그인 하기</Text>
@@ -112,7 +112,7 @@ function Login() {
 					<Logo>
 						<img
 							src={`${process.env.PUBLIC_URL}/assets/kakaotalk.png`}
-							alt="KaKao.png"
+							alt="kakao logo.png"
 						/>
 					</Logo>
 					<Text>카카오 계정으로 로그인 하기</Text>

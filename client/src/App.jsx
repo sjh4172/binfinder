@@ -33,13 +33,11 @@ function App() {
 	const isMobile = useMediaQuery();
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	const [isSidebarOpeFirst, setIsSidebarOpeFirst] = useState(true);
-	const [isLogin, setIsLogin] = useState(false);
+
 	return (
 		<>
 			<GlobalStyles />
 			<Header
-				isLogin={isLogin}
-				setIsLogin={setIsLogin}
 				isSidebarOpen={isSidebarOpen}
 				setIsSidebarOpen={setIsSidebarOpen}
 				setIsSidebarOpeFirst={setIsSidebarOpeFirst}

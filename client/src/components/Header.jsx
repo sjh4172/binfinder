@@ -3,27 +3,29 @@ import { FiMenu } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import useMediaQuery from '../hooks/useMediaQuery';
 import { HeaderButton } from '../styles/Buttons';
 import { Z_INDEX_STYLED_HEADER } from '../zIndex';
 import MOBILE_MAX_WIDTH from '../mediaQuery';
 import { URL_LOGIN, URL_MAP, URL_SIGNUP } from '../routesURL';
 import { KEY_ACCESS_TOKEN, KEY_REFRESH_TOKEN } from '../Constant';
+import { loginFailure } from '../store/UserSlice';
 
 export default function Header({
-	isLogin,
-	setIsLogin,
 	isSidebarOpen,
 	setIsSidebarOpen,
 	setIsSidebarOpeFirst,
 }) {
+	const dispatch = useDispatch;
 	const isMobile = useMediaQuery();
-
+	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 	const handleLogout = () => {
 		localStorage.removeItem(KEY_ACCESS_TOKEN);
 		localStorage.removeItem(KEY_REFRESH_TOKEN);
 		axios.defaults.headers.common.Authorization = null;
-		setIsLogin(false);
+
+		dispatch(loginFailure());
 	};
 	const toggleSideBar = () => {
 		setIsSidebarOpen(!isSidebarOpen);
@@ -35,9 +37,8 @@ export default function Header({
 
 		if (accessToken && refreshToken) {
 			axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-			setIsLogin(true); // 로그인 상태 변경
 		}
-	}, [setIsLogin]);
+	}, []);
 	return (
 		<StyledHeader>
 			<HeaderWrapper>
@@ -51,7 +52,7 @@ export default function Header({
 					/>
 					{!isMobile && <LogoText>어디에버려</LogoText>}
 				</LogoWrapper>
-				{!isLogin ? (
+				{isAuthenticated ? (
 					<ButtonWrapper>
 						<HeaderButton type="button">
 							<Link to={URL_SIGNUP}>Sign up</Link>
