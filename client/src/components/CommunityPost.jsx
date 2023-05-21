@@ -31,7 +31,9 @@ function CommunityPost({ setIsPModalOpen, data }) {
 					</div>
 				)}
 			</PostDetail>
-			<PostContent>{data && data.b_content}</PostContent>
+			{data && (
+				<PostContent dangerouslySetInnerHTML={{ __html: data.b_content }} />
+			)}
 		</>
 	);
 }
@@ -70,6 +72,12 @@ const PostContent = styled.p`
 	padding: 10px 0px;
 	text-align: justify;
 	line-height: 1.5;
+	strong {
+		font-weight: 800;
+	}
+	em {
+		font-style: italic;
+	}
 `;
 
 export default CommunityPost;
