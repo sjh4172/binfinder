@@ -19,21 +19,6 @@ function Community() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		if (location.search) {
-	// 			try {
-	// 				const res = await getPostList(location.search);
-	// 				setData(res.data);
-	// 				setTotalPage(res.headers.get('X-Total-Pages'));
-	// 			} catch (error) {
-	// 				// Handle error
-	// 			}
-	// 		}
-	// 	};
-	// 	fetchData();
-	// }, [searchParams]);
-
 	useEffect(() => {
 		if (location.search) {
 			getPostList(location.search).then((res) => {
