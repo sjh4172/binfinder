@@ -103,12 +103,12 @@ const List = styled.ul`
 	align-items: center;
 `;
 const ListItem = styled.li`
-	height: 40px;
-	width: 240px;
-	padding: 10px 0 20px 0;
+	height: 52.5px;
+	width: 265px;
+	padding: 20px 0 35px 0;
 	margin: 10px 0;
 	font-size: var(--base);
-	font-weight: 425;
+	font-weight: 400;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -131,6 +131,8 @@ const Rank = styled.div`
 const Name = styled.div`
 	margin-left: 10px;
 	flex-grow: 1;
+	line-height: 1.15;
+	width: 200px;
 	@media (max-width: 768px) {
 		text-align: center;
 	}

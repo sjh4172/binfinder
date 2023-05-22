@@ -1,8 +1,17 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
 import { URL_POST } from '../routesURL';
 import useDate from '../hooks/useDate';
+import Modal from './Modal';
 
 function CommunityList({ data }) {
+	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+	const [ismodalOpen, setIsModalOpen] = useState(false);
+	const handleConfirm = () => {
+		setIsModalOpen(false);
+	};
 	return (
 		<Table>
 			<thead>
@@ -18,7 +27,18 @@ function CommunityList({ data }) {
 					{data.map((el) => (
 						<tr key={el.b_id}>
 							<th title={el.b_title} className="title">
-								<a href={`${URL_POST}/${el.b_id}`}>{el.b_title}</a>
+								{isAuthenticated && (
+									<Link to={`${URL_POST}/${el.b_id}`}>{el.b_title}</Link>
+								)}
+								{isAuthenticated || (
+									<button
+										type="button"
+										className="memberModalOpen"
+										onClick={() => setIsModalOpen(true)}
+									>
+										{el.b_title}
+									</button>
+								)}
 							</th>
 							<th className="none">{el.username}</th>
 							<th className="none">
@@ -60,7 +80,16 @@ function CommunityList({ data }) {
 					))}
 				</tbody>
 			)}
-			{!data && <p className="empty">게시물이 없습니다.</p>}
+			{(!data || data.length === 0) && (
+				<p className="empty">게시물이 없습니다.</p>
+			)}
+			{ismodalOpen && (
+				<Modal
+					message="회원만 읽을 수 있습니다."
+					cancel={false}
+					handleConfirm={handleConfirm}
+				/>
+			)}
 		</Table>
 	);
 }
@@ -117,6 +146,11 @@ const Table = styled.table`
 		font-weight: 800;
 	}
 
+	.memberModalOpen {
+		border: 0;
+		outline: 0;
+		background-color: transparent;
+	}
 	// 게시글 없는 경우
 	.empty {
 		text-align: center;
