@@ -36,6 +36,7 @@ function Map() {
 	// 쓰레기통 데이터를 가져오는 함수 + 필터링
 	const fetchTrashCans = useCallback(async () => {
 		try {
+			setIsLoading(true);
 			const response = await axios.get(`${mapUrl}/api/v1/trash-cans`);
 			const { latitude, longitude } = await getCurrentPosition();
 			const filteredTrashCans = response.data.filter((trashCan) => {
@@ -45,12 +46,14 @@ function Map() {
 					Math.sqrt(
 						(lat - trashCan.Latitude) ** 2 + (lng - trashCan.Longitude) ** 2,
 					) * 100000;
-				return distance <= 700; // 700m 반경 내의 쓰레기통만 필터링
+				return distance <= 10000; // 700m 반경 내의 쓰레기통만 필터링
 			});
 			setTrashCans(filteredTrashCans);
 			setTrashMarkers([]);
+			setIsLoading(false);
 		} catch (error) {
 			console.error(error);
+			setIsLoading(false);
 		}
 	}, []);
 
@@ -83,7 +86,6 @@ function Map() {
 							center: new kakao.maps.LatLng(lat, lng),
 							level: 3,
 						};
-
 						// 지도 객체를 생성
 						const map = new kakao.maps.Map(mapContainer, options);
 						// 유저 마커
@@ -97,13 +99,10 @@ function Map() {
 							position: markerPosition,
 							image: userMarkerImage,
 						});
-
 						marker.setMap(map);
 						// 쓰레기통 마커
-
 						trashCans.forEach((trashCan) => {
 							if (!trashCan) return; // 쓰레기통이 없는 경우 건너뜀
-
 							// 500m 반경 내의 쓰레기통만 표시
 							const trashMarkerPosition = new kakao.maps.LatLng(
 								trashCan.Latitude,
@@ -162,13 +161,6 @@ function Map() {
 			<MapStyle>
 				<div id="map" className="map" />
 			</MapStyle>
-			{trashCans.length === 0 && (
-				<LoadingMessageContainer>
-					<LoadingMessage>
-						주변 쓰레기통 찾는 중{isLoading ? '...' : '..'}
-					</LoadingMessage>
-				</LoadingMessageContainer>
-			)}
 
 			{isModalOpen && (
 				<Modal
@@ -177,6 +169,13 @@ function Map() {
 					handleConfirm={handleModalConfirm}
 					handleCancel={handleModalConfirm}
 				/>
+			)}
+			{trashCans.length === 0 && (
+				<LoadingMessageContainer>
+					<LoadingMessage>
+						주변 쓰레기통 찾는 중{isLoading ? '...' : '..'}
+					</LoadingMessage>
+				</LoadingMessageContainer>
 			)}
 		</>
 	);

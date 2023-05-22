@@ -5,6 +5,7 @@ const initialState = {
 	isAuthenticated: false,
 	email: '',
 	memberId: '',
+	username: '',
 };
 
 const userSlice = createSlice({
@@ -15,6 +16,7 @@ const userSlice = createSlice({
 			state.isAuthenticated = true;
 			state.email = action.payload.email;
 			state.memberId = action.payload.memberId;
+			state.username = action.payload.username;
 		},
 		loginFailure: (state) => {
 			state.isAuthenticated = false;

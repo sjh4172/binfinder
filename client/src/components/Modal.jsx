@@ -7,7 +7,7 @@ export default function Modal({
 	message,
 	handleConfirm,
 	handleCancel,
-	cancel,
+	cancel = true,
 }) {
 	const splitMessage = message.split('<br>');
 

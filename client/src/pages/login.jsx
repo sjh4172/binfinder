@@ -50,7 +50,11 @@ function Login() {
 				axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
 				dispatch(
-					loginSuccess({ email: res.data.email, memberId: res.data.memberId }),
+					loginSuccess({
+						email: res.data.email,
+						memberId: res.data.memberId,
+						usename: res.data.username,
+					}),
 				);
 				// setIsLogin(true);
 				navigate(URL_MAP);

@@ -57,6 +57,34 @@ const GlobalStyles = createGlobalStyle`
 		clip: rect(0 0 0 0);
 		overflow: hidden;
 	}
+
+    // react-quill
+    .ql-snow {
+    border-color: var(--line-color) !important;
+    }
+    .ql-toolbar {
+    border-radius: 0.2rem 0.2rem 0 0;
+    border-bottom: none !important;
+    }
+    .ql-container {
+    border-radius: 0 0 0.2rem 0.2rem;
+    }
+    .ql-editor {
+    height: 30vh !important;
+    min-height: 210px;
+    }
+    .ql-editor,
+    input {
+    font-size: var(--base);
+    }
+    .quill {
+        strong {
+            font-weight: 800;
+        }
+        em {
+            font-style: italic;
+        }
+    }
 `;
 
 export default GlobalStyles;

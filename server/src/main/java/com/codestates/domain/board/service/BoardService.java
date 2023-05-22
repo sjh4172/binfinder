@@ -96,21 +96,22 @@ public class BoardService {
 	}
 
 
+	// 게시판에 달린 댓글과 함께 특정 게시판 글을 조회하는 메서드 - 로그인 없이도 조회 가능하도록 수정
 	public Board findBoardWithComment(long b_id) {
+
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		// 인증된 사용자만 접근 가능하도록 확인
 		if (!authentication.isAuthenticated()) {
 			throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
 		}
-
 		// 인증된 사용자의 아이디 추출
 		String loginEmail = authentication.getName();
-
 		// 로그인한 사용자 정보로 멤버 확인
 		Member member = verifyExistingMember(loginEmail);
 
 		Optional<Board> optionalBoard = boardRepository.findBoardWithComments(b_id);
+
 		if (optionalBoard.isPresent()) {
 			Board board = optionalBoard.get();
 			List<Long> likedUserIds = board.getLikedUserIds();
@@ -120,9 +121,13 @@ public class BoardService {
 			throw new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND);
 		}
 	}
-
 	public Page<Board> findBoards(Pageable pageable) {
 		return boardRepository.findAll(pageable);
+	}
+	// 프론트엔드 측의 전체 페이지수 요청에 따라 추가한 코드입니다.
+	public long getTotalPages(int size) {
+		long totalBoards = boardRepository.count();
+		return (totalBoards + size - 1) / size;
 	}
 
 	public void deleteBoard(long b_id) {
@@ -144,7 +149,7 @@ public class BoardService {
 	}
 
 	public Board addLike(long b_id, long m_id) {
-		verifyAuthorizedMember(b_id);
+		memberService.verifyAuthorizedMember(m_id);
 		Board board = boardRepository.findById(b_id).orElseThrow(() -> new RuntimeException("Board not found"));
 		List<Long> likedUserIds = board.getLikedUserIds();
 
@@ -159,7 +164,7 @@ public class BoardService {
 	}
 
 	public Board removeLike(long b_id, long m_id) {
-		verifyAuthorizedMember(b_id);
+		memberService.verifyAuthorizedMember(m_id);
 		Board board = boardRepository.findById(b_id).orElseThrow(() -> new RuntimeException("Board not found"));
 		List<Long> likedUserIds = board.getLikedUserIds();
 		if (likedUserIds.remove(m_id)) {

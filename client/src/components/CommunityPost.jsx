@@ -31,7 +31,9 @@ function CommunityPost({ setIsPModalOpen, data }) {
 					</div>
 				)}
 			</PostDetail>
-			<PostContent>{data && data.b_content}</PostContent>
+			{data && (
+				<PostContent dangerouslySetInnerHTML={{ __html: data.b_content }} />
+			)}
 		</>
 	);
 }
@@ -65,11 +67,20 @@ const PostDetail = styled.div`
 	}
 `;
 
-const PostContent = styled.p`
+const PostContent = styled.div`
 	font-size: var(--base);
 	padding: 10px 0px;
 	text-align: justify;
 	line-height: 1.5;
+	white-space: pre-wrap;
+	word-wrap: break-word; // 자동줄바꿈
+
+	strong {
+		font-weight: 800;
+	}
+	em {
+		font-style: italic;
+	}
 `;
 
 export default CommunityPost;

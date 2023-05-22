@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { KEY_ACCESS_TOKEN } from '../Constant';
 
 function UserInfo() {
 	const [postList, setPostList] = useState([]);
@@ -18,6 +19,8 @@ function UserInfo() {
 		const fetchUserData = async () => {
 			try {
 				// 사용자 정보 가져오기
+				const accessToken = localStorage.getItem(KEY_ACCESS_TOKEN);
+				axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 				const userResponse = await axios.get(
 					`${process.env.REACT_APP_API_URL}/api/members/${memberId}`,
 				);
@@ -28,7 +31,8 @@ function UserInfo() {
 				const postResponse = await axios.get(
 					`${process.env.REACT_APP_API_URL}/api/boards?memberId=${memberId}`,
 				);
-				setPostList(postResponse.data);
+				const latestPosts = postResponse.data.slice(0, 5);
+				setPostList(latestPosts);
 
 				// 사용자가 작성한 댓글 가져오기
 				const commentResponse = await axios.get(
@@ -50,8 +54,8 @@ function UserInfo() {
 				<ProfileContainer>
 					<Logo>
 						<img
-							src={`${process.env.PUBLIC_URL}/assets/Ellipse.png`}
-							alt="default profile.png"
+							src={`https://api.dicebear.com/6.x/thumbs/svg?seed=${username}&scale=90&size=60&shapeColor=0a5b83,1c799f,69d2e7,f1f4dc&backgroundColor=0a5b83,69d2e7,f1f4dc`}
+							alt="Profile"
 						/>
 					</Logo>
 					<DetailContainer>
@@ -70,22 +74,33 @@ function UserInfo() {
 				</ProfileContainer>
 				<ListContainer>
 					<PostListContainer>
-						<PostList>내가 작성한 게시글</PostList>
+						<PostList>내가 최근 작성한 게시글</PostList>
 						{postList.map((post) => (
-							<List key={post.b_id}>{post.b_title}</List>
+							<List key={post.b_id}>
+								<Link to={`/boards/${post.b_id}`}>{post.b_title}</Link>
+							</List>
 						))}
+						<List>1</List>
+						<List>1</List>
+						<List>1</List>
+						<List>1</List>
+						<List>1</List>
 					</PostListContainer>
 					<CommentListContainer>
-						<CommentList>내가 작성한 댓글</CommentList>
+						<CommentList>내가 최근 작성한 댓글</CommentList>
 						{commentList.map((comment) => (
-							<List key={comment.c_id}>{comment.c_content}</List>
+							<List key={comment.c_id}>
+								<Link to={`/comments/${comment.c_id}`}>
+									{comment.c_content}
+								</Link>
+							</List>
 						))}
+						<List>1</List>
+						<List>1</List>
+						<List>1</List>
+						<List>1</List>
+						<List>1</List>
 					</CommentListContainer>
-					<RequestContainer>
-						<RequestList>내가 요청한 위치 요청</RequestList>
-						<List>첫 번째</List>
-						<List>두 번째</List>
-					</RequestContainer>
 				</ListContainer>
 			</MyPageForm>
 		</MyPageContainer>
@@ -154,11 +169,12 @@ const ProfileContainer = styled.div`
 		height: 108px;
 	}
 `;
-/* 마이페이지 프로플 로고 */
+/* 마이페이지 프로필 로고 */
 const Logo = styled.div`
 	> img {
 		width: 120px;
 		height: 120px;
+		border-radius: 50%;
 	}
 	@media (max-width: 768px) {
 		> img {
@@ -284,30 +300,6 @@ const CommentList = styled.div`
 	}
 `;
 
-const RequestContainer = styled.div`
-	width: 440px;
-	height: 200px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	@media (max-width: 768px) {
-		width: 220px;
-		height: 200px;
-	}
-`;
-/* 마이페이지 위치 요청 리스트 */
-const RequestList = styled.div`
-	width: 440px;
-	height: 45px;
-	display: flex;
-	border-bottom: 1px solid #d9d9d9;
-	@media (max-width: 768px) {
-		width: 220px;
-		height: 20px;
-		font-size: 12px;
-	}
-`;
 /* 마이페이지 리스트 컨테이너 */
 const List = styled.div`
 	width: 440px;

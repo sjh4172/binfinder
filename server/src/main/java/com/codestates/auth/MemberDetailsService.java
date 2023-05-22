@@ -4,6 +4,7 @@ import com.codestates.exception.BusinessLogicException;
 import com.codestates.exception.ExceptionCode;
 import com.codestates.domain.member.entity.Member;
 import com.codestates.domain.member.repository.MemberRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 // DB에서 사용자의 크리덴셜을 조회한 후 그것을 AuthenticationManager에게 전달하는 클래스입니다.
 @Component
+@Slf4j
 public class MemberDetailsService implements UserDetailsService{
     private final MemberRepository memberRepository;
     private final CustomAuthorityUtils authorityUtils;
@@ -24,9 +26,10 @@ public class MemberDetailsService implements UserDetailsService{
         this.authorityUtils = authorityUtils;
     }
 
+
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Member> OptionalMember = memberRepository.findByEmail(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<Member> OptionalMember = memberRepository.findByEmail(email);
         Member findMember = OptionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         return new MemberDetails(findMember);
@@ -39,19 +42,22 @@ public class MemberDetailsService implements UserDetailsService{
             setEmail(member.getEmail());
             setPassword(member.getPassword());
             setRoles(member.getRoles());
-            // 왜 getUsername()이 없는지 확인
+            setUsername(member.getUsername());
         }
+
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
             return authorityUtils.createAuthorities(this.getRoles());
         }
-
         @Override
         public String getUsername() {
-            return getEmail();
+            return super.getUsername();
         }
-
+        @Override
+        public String getEmail() {
+            return super.getEmail();
+        }
         @Override
         public boolean isAccountNonExpired() {
             return true;
