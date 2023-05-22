@@ -23,11 +23,10 @@ public class Board extends BaseEntity {
 	private String b_title;
 	@Column
 	private String b_content;
-
 	@Column
 	private boolean checkLike;
 	// N : 1(Member) 양방향 매핑
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="MEMBER_ID")
 	private Member member;
 
