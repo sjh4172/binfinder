@@ -20,15 +20,25 @@ public class VoteController {
         this.voteService = voteService;
     }
 
-    // 좋아요, 싫어요 투표하기
-    @PostMapping("")
-    public ResponseEntity<VoteDto.Response> createVote(@Valid @RequestBody VoteDto.CreateRequest createRequest) {
+    @PostMapping
+    public ResponseEntity<VoteDto.Response> createVote(@RequestBody VoteDto.CreateRequest createRequest) {
+        // 투표 생성
         VoteDto.Response response = voteService.createVote(createRequest);
+        return ResponseEntity.ok(response);
+    }
 
-        // trashCanId 가져오기
-        response.setTrashCanId(createRequest.getTrashCanId());
+    @GetMapping("/likes/{trashCanId}")
+    public ResponseEntity<Long> getLikeCount(@PathVariable Long trashCanId) {
+        // 좋아요 개수 조회
+        Long likeCount = voteService.countLike(trashCanId);
+        return ResponseEntity.ok(likeCount);
+    }
 
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    @GetMapping("/dislikes/{trashCanId}")
+    public ResponseEntity<Long> getDislikeCount(@PathVariable Long trashCanId) {
+        // 싫어요 개수 조회
+        Long dislikeCount = voteService.countDislike(trashCanId);
+        return ResponseEntity.ok(dislikeCount);
     }
 
     // 투표 수정하기
@@ -37,26 +47,6 @@ public class VoteController {
         VoteDto.Response response = voteService.updateVote(createRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-//    @PostMapping("")
-//    public ResponseEntity<VoteDto.Response> createOrUpdateVote(
-//            @PathVariable Long id,
-//            @RequestBody VoteDto.CreateRequest createRequest,
-//            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//
-//        Long memberId = userDetails.getId();
-//        VoteDto.Response responseDto = voteMapper.voteToResponseDto(
-//                voteService.createOrUpdateVote(id, memberId, createRequest));
-//
-//        URI location = ServletUriComponentsBuilder
-//                .fromCurrentRequest()
-//                .replacePath("/api/v1/trash-cans/{id}/vote/{voteId}")
-//                .buildAndExpand(id, responseDto.getId())
-//                .toUri();
-//
-//        HttpStatus status = responseDto.isCreated() ? HttpStatus.CREATED : HttpStatus.OK;
-//        return ResponseEntity.status(status).location(location).body(responseDto);
-//    }
 
     // 투표 삭제하기
     @DeleteMapping("/{voteId}")

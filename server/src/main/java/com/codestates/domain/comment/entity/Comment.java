@@ -23,11 +23,11 @@ public class Comment extends BaseEntity {
 	private String c_content;
 
 	// N : 1(Member) 양방향 매핑
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="MEMBER_ID")
 	private Member member;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="B_ID")
 	private Board board;
 
