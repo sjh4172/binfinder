@@ -37,7 +37,8 @@ function UserInfo() {
 				const commentResponse = await axios.get(
 					`${process.env.REACT_APP_API_URL}/api/comments?memberId=${memberId}`,
 				);
-				setCommentList(commentResponse.data);
+				const latestComments = commentResponse.data.slice(0, 5);
+				setCommentList(latestComments);
 			} catch (error) {
 				console.error(error);
 			}
