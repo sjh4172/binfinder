@@ -34,8 +34,12 @@ export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }) {
 				<CloseIcon />
 			</CloseButton>
 			<SidebarContent>
-				<MyProfile userEmail={email} username={username} />
-				<SidebarList setIsSidebarOpen={setIsSidebarOpen} />
+				{isAuthenticated && <MyProfile userEmail={email} username={username} />}
+				{isAuthenticated || <NotProfile>BINFINDER</NotProfile>}
+				<SidebarList
+					setIsSidebarOpen={setIsSidebarOpen}
+					isAuthenticated={isAuthenticated}
+				/>
 			</SidebarContent>
 		</SidebarWrapper>
 	);
@@ -82,4 +86,15 @@ const SidebarContent = styled.div`
 	flex-direction: column;
 	align-items: flex-start;
 	height: 100%;
+`;
+
+const NotProfile = styled.p`
+	height: 60px;
+	width: 300px;
+	line-height: 60px;
+	font-size: 35px;
+	font-weight: 800;
+	color: var(--footer-color);
+	font-family: 'GFS Neohellenic', sans-serif;
+	text-align: center;
 `;
