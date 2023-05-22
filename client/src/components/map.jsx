@@ -158,6 +158,8 @@ function Map() {
 			<MapStyle>
 				<div id="map" className="map" />
 			</MapStyle>
+<<<<<<<<< Temporary merge branch 1
+=========
 			{/* {trashCans.length === 0 && (
 				<LoadingMessageContainer>
 					<LoadingMessage>
@@ -165,6 +167,7 @@ function Map() {
 					</LoadingMessage>
 				</LoadingMessageContainer>
 			)} */}
+>>>>>>>>> Temporary merge branch 2
 
 			{isModalOpen && (
 				<Modal

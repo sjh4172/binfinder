@@ -13,25 +13,40 @@ import { Button } from '../styles/Buttons';
 function Community() {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [currentPage, setCurrentPage] = useState(0);
-	const [totalPage] = useState(19);
+	const [totalPage, setTotalPage] = useState(19);
 	const location = useLocation();
 	const [data, setData] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-	const email = useSelector((state) => state.auth.email);
-	console.log(email);
 
 	useEffect(() => {
-		if (location.search) {
-			getPostList(location.search).then((res) => setData(res.data));
-			// TODO: data의 총 페이지수로 setTotalPage(총 페이지수) 추가하기(아직 데이터 구현x)
-		}
+		const fetchData = async () => {
+			if (location.search) {
+				try {
+					const res = await getPostList(location.search);
+					setData(res.data);
+					setTotalPage(res.headers.get('X-Total-Pages'));
+				} catch (error) {
+					// Handle error
+				}
+			}
+		};
+		fetchData();
 	}, [searchParams]);
 
+	// useEffect(() => {
+	// 	if (location.search) {
+	// 		getPostList(location.search).then((res) => {
+	// 			setData(res.data);
+	// 			setTotalPage(res.headers.get('X-Total-Pages'));
+	// 		});
+	// 	}
+	// });
 	const handleConfirm = () => {
 		setIsModalOpen(false);
 	};
 
+	console.log(totalPage);
 	return (
 		<CommunityPageContainer>
 			<div className="flex">
@@ -80,7 +95,7 @@ const CommunityPageContainer = styled.section`
 	padding-top: calc(var(--header-hight) + 50px);
 	width: 80vw;
 	max-width: 1000px;
-	height: calc(100vh - 228px);
+	height: calc(100% - 228px);
 	.flex {
 		display: flex;
 		justify-content: space-between;
