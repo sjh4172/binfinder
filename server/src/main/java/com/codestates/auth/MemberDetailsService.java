@@ -26,6 +26,7 @@ public class MemberDetailsService implements UserDetailsService{
         this.authorityUtils = authorityUtils;
     }
 
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<Member> OptionalMember = memberRepository.findByEmail(email);
@@ -43,6 +44,7 @@ public class MemberDetailsService implements UserDetailsService{
             setRoles(member.getRoles());
             setUsername(member.getUsername());
         }
+
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
