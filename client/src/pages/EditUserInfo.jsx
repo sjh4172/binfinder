@@ -19,7 +19,7 @@ function EditUserInfo() {
 		const fetchUserData = async () => {
 			try {
 				const response = await axios.get(
-					`${process.env.REACT_APP_API_URL}/members/${memberId}`,
+					`${process.env.REACT_APP_API_URL}/api/members/${memberId}`,
 				);
 				const userData = response.data;
 				setUsername(userData.username);
@@ -34,7 +34,7 @@ function EditUserInfo() {
 	const handleEditUser = async () => {
 		try {
 			const response = await axios.patch(
-				`${process.env.REACT_APP_API_URL}/members/${memberId}`,
+				`${process.env.REACT_APP_API_URL}/api/members/${memberId}`,
 				{
 					username,
 					password,
@@ -53,7 +53,7 @@ function EditUserInfo() {
 	const handleWithdrawUser = async () => {
 		try {
 			const response = await axios.delete(
-				`${process.env.REACT_APP_API_URL}/members/${memberId}`,
+				`${process.env.REACT_APP_API_URL}/api/members/${memberId}`,
 			);
 			if (response.status === 200) {
 				// 회원탈퇴 성공한 경우
@@ -230,7 +230,7 @@ const EditMyPageTitle = styled.div`
 	@media (max-width: 768px) {
 		width: 300px;
 		height: 40px;
-		font-size: 26px;
+		font-size: 23px;
 		font-weight: 700;
 	}
 `;
@@ -294,11 +294,11 @@ const InputTitle = styled.div`
 	display: flex;
 	align-items: center;
 	margin-right: 30px;
-	font-size: 17px;
+	font-size: 16px;
 	@media (max-width: 768px) {
 		width: 60px;
 		height: 34px;
-		font-size: 14px;
+		font-size: 12px;
 		margin-right: 0px;
 	}
 `;
@@ -310,14 +310,14 @@ const Input = styled.input`
 	border-bottom: 1px solid #d9d9d9;
 	display: flex;
 	align-items: center;
-	font-size: 17px;
+	font-size: 15px;
 	::placeholder {
 		color: #d9d9d9;
 	}
 	@media (max-width: 768px) {
 		width: 190px;
 		height: 34px;
-		font-size: 14px;
+		font-size: 12px;
 	}
 `;
 /* 수정페이지 버튼 폼  */
