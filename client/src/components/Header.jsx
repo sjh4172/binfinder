@@ -8,7 +8,7 @@ import useMediaQuery from '../hooks/useMediaQuery';
 import { HeaderButton } from '../styles/Buttons';
 import { Z_INDEX_STYLED_HEADER } from '../zIndex';
 import MOBILE_MAX_WIDTH from '../mediaQuery';
-import { URL_LOGIN, URL_MAP, URL_SIGNUP } from '../routesURL';
+import { URL_LOGIN, URL_MAP, URL_MYPAGE, URL_SIGNUP } from '../routesURL';
 import { KEY_ACCESS_TOKEN, KEY_REFRESH_TOKEN } from '../Constant';
 import { loginFailure } from '../store/UserSlice';
 
@@ -19,7 +19,7 @@ export default function Header({
 }) {
 	const dispatch = useDispatch();
 	const isMobile = useMediaQuery();
-	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+	const { isAuthenticated, username } = useSelector((state) => state.auth);
 	const handleLogout = () => {
 		localStorage.removeItem(KEY_ACCESS_TOKEN);
 		localStorage.removeItem(KEY_REFRESH_TOKEN);
@@ -39,6 +39,7 @@ export default function Header({
 			axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 		}
 	}, []);
+
 	return (
 		<StyledHeader>
 			<HeaderWrapper>
@@ -50,7 +51,7 @@ export default function Header({
 						src={`${process.env.PUBLIC_URL}/assets/logo.png`}
 						alt="로고 이미지"
 					/>
-					{!isMobile && <LogoText>Bin Finder</LogoText>}
+					{!isMobile && <LogoText>BINFINDER</LogoText>}
 				</LogoWrapper>
 				{!isAuthenticated ? (
 					<ButtonWrapper>
@@ -63,11 +64,12 @@ export default function Header({
 					</ButtonWrapper>
 				) : (
 					<ButtonWrapper>
-						<Profile
-							// 마이페이지로 링크
-							src={`${process.env.PUBLIC_URL}/assets/exprofile.png`}
-							alt="프로필"
-						/>
+						<Link to={URL_MYPAGE}>
+							<Profile
+								src={`https://api.dicebear.com/6.x/thumbs/svg?seed=${username}&scale=90&size=60&shapeColor=0a5b83,1c799f,69d2e7,f1f4dc&backgroundColor=0a5b83,69d2e7,f1f4dc`}
+								alt="Profile"
+							/>
+						</Link>
 						<HeaderButton type="button" onClick={handleLogout}>
 							<Link to={URL_MAP}>Log out</Link>
 						</HeaderButton>
