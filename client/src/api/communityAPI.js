@@ -4,7 +4,6 @@ import { apiUrl } from './AuthAPI';
 const Authorization = localStorage.getItem('accessToken');
 const headers = {
 	'Content-Type': 'application/json',
-	withCredentials: true,
 	Authorization,
 };
 

@@ -3,6 +3,7 @@ package com.codestates.domain.member.entity;
 import com.codestates.audit.BaseEntity;
 import com.codestates.domain.board.entity.Board;
 import com.codestates.domain.comment.entity.Comment;
+import com.codestates.domain.vote.Vote;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,11 +40,15 @@ public class Member extends BaseEntity {
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
 
     // N : 1(Member) 양방향 매핑()
+    // member가 삭제되면 해당 글, 댓글도 모두 삭제
      @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
      private List<Board> boards = new ArrayList<>();
 
      @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
      private List<Comment> comments = new ArrayList<>();
+
+     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+     private List<Vote> votes = new ArrayList<>();
 
     public void setComments(Comment comment) {
         comments.add(comment);
@@ -56,6 +61,12 @@ public class Member extends BaseEntity {
         boards.add(board);
         if(board.getMember()!=this){
             board.setMember(this);
+        }
+    }
+    public void setVote(Vote vote){
+        votes.add(vote);
+        if(vote.getMember()!=this){
+            vote.setMember(this);
         }
     }
 

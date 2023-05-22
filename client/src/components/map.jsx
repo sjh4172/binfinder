@@ -12,20 +12,40 @@ function Map() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [trashCans, setTrashCans] = useState([]);
 	const [, setTrashMarkers] = useState([]);
+
 	const mapUrl = process.env.REACT_APP_API_URL;
+
+	const getCurrentPosition = () => {
+		return new Promise((resolve, reject) => {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(
+					(position) => {
+						const { latitude, longitude } = position.coords;
+						resolve({ latitude, longitude });
+					},
+					(error) => {
+						reject(error);
+					},
+				);
+			} else {
+				reject(new Error('Geolocation is not supported by this browser.'));
+			}
+		});
+	};
 
 	// 쓰레기통 데이터를 가져오는 함수 + 필터링
 	const fetchTrashCans = useCallback(async () => {
 		try {
 			const response = await axios.get(`${mapUrl}/api/v1/trash-cans`);
+			const { latitude, longitude } = await getCurrentPosition();
 			const filteredTrashCans = response.data.filter((trashCan) => {
-				const lat = 37.49817126048722;
-				const lng = 127.0270164514336;
+				const lat = latitude;
+				const lng = longitude;
 				const distance =
 					Math.sqrt(
 						(lat - trashCan.Latitude) ** 2 + (lng - trashCan.Longitude) ** 2,
 					) * 100000;
-				return distance <= 700; // 700m 반경 내의 쓰레기통만 필터링
+				return distance <= 10000; // 700m 반경 내의 쓰레기통만 필터링
 			});
 			setTrashCans(filteredTrashCans);
 			setTrashMarkers([]);
@@ -56,63 +76,68 @@ function Map() {
 				() => {
 					const mapContainer = document.getElementById('map');
 					// 위치 초기 값을 강남역으로 설정
-					const lat = 37.49817126048722;
-					const lng = 127.0270164514336;
-					const options = {
-						center: new kakao.maps.LatLng(lat, lng),
-						level: 3,
-					};
-					// 지도 객체를 생성
-					const map = new kakao.maps.Map(mapContainer, options);
-					// 유저 마커
-					const userMarkerImage = new kakao.maps.MarkerImage(
-						`${process.env.PUBLIC_URL}/assets/myLocationIcon.png`,
-						new kakao.maps.Size(30),
-						{ offset: new kakao.maps.Point(12, 35) },
-					);
-					const markerPosition = new kakao.maps.LatLng(lat, lng);
-					const marker = new kakao.maps.Marker({
-						position: markerPosition,
-						image: userMarkerImage,
-					});
-					marker.setMap(map);
-					// 쓰레기통 마커
-					trashCans.forEach((trashCan) => {
-						if (!trashCan) return; // 쓰레기통이 없는 경우 건너뜀
+					navigator.geolocation.getCurrentPosition((position) => {
+						const lat = position.coords.latitude;
+						const lng = position.coords.longitude;
+						const options = {
+							center: new kakao.maps.LatLng(lat, lng),
+							level: 3,
+						};
 
-						// 500m 반경 내의 쓰레기통만 표시
-						const trashMarkerPosition = new kakao.maps.LatLng(
-							trashCan.Latitude,
-							trashCan.Longitude,
+						// 지도 객체를 생성
+						const map = new kakao.maps.Map(mapContainer, options);
+						// 유저 마커
+						const userMarkerImage = new kakao.maps.MarkerImage(
+							`${process.env.PUBLIC_URL}/assets/myLocationIcon.png`,
+							new kakao.maps.Size(30),
+							{ offset: new kakao.maps.Point(12, 35) },
 						);
-						const trashCanMarkerImage =
-							trashCan.canType === '재활용'
-								? new kakao.maps.MarkerImage(
-										`${process.env.PUBLIC_URL}/assets/RecycleIcon.png`,
-										new kakao.maps.Size(30),
-										{ offset: new kakao.maps.Point(12, 35) },
-								  )
-								: new kakao.maps.MarkerImage(
-										`${process.env.PUBLIC_URL}/assets/TrashCanIcon.png`,
-										new kakao.maps.Size(30),
-										{ offset: new kakao.maps.Point(12, 35) },
-								  );
-						const trashMarker = new kakao.maps.Marker({
-							position: trashMarkerPosition,
-							image: trashCanMarkerImage,
+						const markerPosition = new kakao.maps.LatLng(lat, lng);
+						const marker = new kakao.maps.Marker({
+							position: markerPosition,
+							image: userMarkerImage,
 						});
 
-						// 클릭 이벤트 등록
-						kakao.maps.event.addListener(trashMarker, 'click', () => {
-							const root = document.getElementById('modal-root');
-							ReactDOM.createRoot(root).render(
-								<TrashCanModal
-									trashCan={trashCan} // 쓰레기통 데이터 전달
-								/>,
+						marker.setMap(map);
+						// 쓰레기통 마커
+
+						trashCans.forEach((trashCan) => {
+							if (!trashCan) return; // 쓰레기통이 없는 경우 건너뜀
+
+							// 500m 반경 내의 쓰레기통만 표시
+							const trashMarkerPosition = new kakao.maps.LatLng(
+								trashCan.Latitude,
+								trashCan.Longitude,
 							);
+							const trashCanMarkerImage =
+								trashCan.canType === '재활용'
+									? new kakao.maps.MarkerImage(
+											`${process.env.PUBLIC_URL}/assets/RecycleIcon.png`,
+											new kakao.maps.Size(30),
+											{ offset: new kakao.maps.Point(12, 35) },
+									  )
+									: new kakao.maps.MarkerImage(
+											`${process.env.PUBLIC_URL}/assets/TrashCanIcon.png`,
+											new kakao.maps.Size(30),
+											{ offset: new kakao.maps.Point(12, 35) },
+									  );
+							const trashMarker = new kakao.maps.Marker({
+								position: trashMarkerPosition,
+								image: trashCanMarkerImage,
+							});
+
+							// 클릭 이벤트 등록
+							kakao.maps.event.addListener(trashMarker, 'click', () => {
+								const root = document.getElementById('modal-root');
+								ReactDOM.createRoot(root).render(
+									<TrashCanModal
+										trashCan={trashCan} // 쓰레기통 데이터 전달
+									/>,
+								);
+							});
+							trashMarker.setMap(map);
+							setTrashMarkers((prevState) => [...prevState, trashMarker]);
 						});
-						trashMarker.setMap(map);
-						setTrashMarkers((prevState) => [...prevState, trashMarker]);
 					});
 				},
 				(error) => {
@@ -137,13 +162,13 @@ function Map() {
 			<MapStyle>
 				<div id="map" className="map" />
 			</MapStyle>
-			{trashCans.length === 0 && (
+			{/* {trashCans.length === 0 && (
 				<LoadingMessageContainer>
 					<LoadingMessage>
 						주변 쓰레기통 찾는 중{isLoading ? '...' : '..'}
 					</LoadingMessage>
 				</LoadingMessageContainer>
-			)}
+			)} */}
 
 			{isModalOpen && (
 				<Modal

@@ -15,6 +15,7 @@ function CommunityEdit() {
 	const [contentBind] = useInput(location.state && location.state.b_content);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [message, setMessage] = useState('');
+	console.log(location.state);
 	const writePost = () => {
 		if (!titleBind.value) {
 			setMessage('제목을 작성해주세요.');
@@ -24,20 +25,22 @@ function CommunityEdit() {
 			setIsModalOpen(true);
 		} else if (location.state) {
 			postCommunity(
-				`/boards/${location.state.id}`,
+				`/boards/${location.state.b_id}`,
 				{
 					b_title: titleBind.value,
 					b_content: contentBind.value,
 				},
 				'patch',
 			);
-			navigate(`${URL_POST}/${location.state.id}`);
+			navigate(`${URL_POST}/${location.state.b_id}`);
+			navigate(0);
 		} else {
 			postCommunity('/boards', {
 				b_title: titleBind.value,
 				b_content: contentBind.value,
 			});
 			navigate(URL_POST);
+			navigate(0);
 			// TODO: 응답에서 postid 받으면 navigate 작성글로 변경
 		}
 	};
