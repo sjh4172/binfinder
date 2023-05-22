@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import { IoClose } from 'react-icons/io5';
+import { useSelector } from 'react-redux';
 import SidebarList from './SidebarList';
 import MyProfile from './MyProfile';
 import { Z_INDEX_STYLED_SIDEBAR } from '../zIndex';
@@ -24,13 +25,16 @@ const slideOutLeft = keyframes`
 `;
 
 export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }) {
+	const { isAuthenticated, email, username } = useSelector(
+		(state) => state.auth,
+	);
 	return (
 		<SidebarWrapper isOpen={isSidebarOpen}>
 			<CloseButton onClick={() => setIsSidebarOpen(false)}>
 				<CloseIcon />
 			</CloseButton>
 			<SidebarContent>
-				<MyProfile />
+				<MyProfile userEmail={email} username={username} />
 				<SidebarList setIsSidebarOpen={setIsSidebarOpen} />
 			</SidebarContent>
 		</SidebarWrapper>
