@@ -8,11 +8,13 @@ import {
 	URL_POST,
 	URL_SIGNUP,
 } from '../routesURL';
+import useMediaQuery from '../hooks/useMediaQuery';
 
 export default function Footer() {
 	const { pathname } = useLocation();
 	if (pathname === URL_SIGNUP) return null;
 	if (pathname === URL_LOGIN) return null;
+	const mediaQuery = useMediaQuery('(min-width: 1090px)');
 	const memberList = [
 		{
 			name: '최승원',
@@ -57,7 +59,7 @@ export default function Footer() {
 	];
 	return (
 		<FooterWrapper>
-			<SectionWrapper>
+			<SectionWrapper className="wrapper1">
 				<SectionTitle>[팀 정보]</SectionTitle>
 				<SectionList>
 					<li>팀명: 에배레스트</li>
@@ -74,20 +76,22 @@ export default function Footer() {
 				<Line />
 				<p>Copyright © 2023 by 에배레스트</p>
 			</SectionWrapper>
-			<SectionWrapper>
-				<SectionTitle>[서비스 목적과 가치]</SectionTitle>
-				<SectionList>
-					<li>
-						<p>쓰레기통 위치 정보를 제공하여 환경 보호에 기여합니다.</p>
-					</li>
-					<li>
-						<p>
-							사용자들이 더욱 효율적으로 쓰레기 처리를 할 수 있도록 돕습니다.
-						</p>
-					</li>
-				</SectionList>
-			</SectionWrapper>
-			<SectionWrapper>
+			{mediaQuery && (
+				<SectionWrapper className="wrapper2">
+					<SectionTitle>[서비스 목적과 가치]</SectionTitle>
+					<SectionList>
+						<li>
+							<p>쓰레기통 위치 정보를 제공하여 환경 보호에 기여합니다.</p>
+						</li>
+						<li>
+							<p>
+								사용자들이 더욱 효율적으로 쓰레기 처리를 할 수 있도록 돕습니다.
+							</p>
+						</li>
+					</SectionList>
+				</SectionWrapper>
+			)}
+			<SectionWrapper className="wrapper3">
 				<SectionTitle>[Site map]</SectionTitle>
 				<SectionList>
 					<Link to={URL_MAP}>Map</Link>
@@ -96,9 +100,9 @@ export default function Footer() {
 					<Link to={URL_NOTICE}>Notice</Link>
 				</SectionList>
 			</SectionWrapper>
-			<SectionWrapper>
+			<SectionWrapper className="wrapper4">
 				<SectionTitle>[개발자 정보 (GitHub)]</SectionTitle>
-				<SectionList>
+				<SectionList className="member">
 					<div>
 						{memberList.slice(0, 4).map((el) => (
 							<li key={el.name}>
@@ -134,7 +138,31 @@ const FooterWrapper = styled.footer`
 	justify-content: space-around;
 	gap: 20px;
 	background-color: var(--footer-color);
-	padding: 40px 0;
+	padding: 40px 10px;
+	.wrapper1 {
+		flex: 0 250px auto;
+	}
+	.wrapper2 {
+		flex: 0 100px auto;
+		line-height: 1.5;
+	}
+	.wrapper3 {
+		flex: 0 50px auto;
+		a {
+			margin-bottom: 15px;
+		}
+	}
+	.wrapper4 {
+		flex: 0 225px auto;
+		.member {
+			display: flex;
+			flex-direction: row;
+		}
+		div > * {
+			margin-bottom: 10px;
+			margin-right: 20px;
+		}
+	}
 `;
 
 const SectionWrapper = styled.section`
@@ -153,7 +181,7 @@ const SectionList = styled.ul`
 	flex-direction: column;
 	> * {
 		font-size: var(--small);
-		margin-bottom: 10px;
+		margin-bottom: 5px;
 	}
 `;
 
