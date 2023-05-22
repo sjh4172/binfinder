@@ -31,6 +31,7 @@ function TrashCanModal({ trashCan }) {
 		event.preventDefault(); // 새로고침 방지
 		// POST 요청 보내기
 		const data = {
+			memberId: 1,
 			trashCanId: trashCan.id,
 			voteType: 'LIKE',
 		};
