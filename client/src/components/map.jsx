@@ -161,17 +161,13 @@ function Map() {
 			<MapStyle>
 				<div id="map" className="map" />
 			</MapStyle>
-<<<<<<<<< Temporary merge branch 1
-=========
-			{/* {trashCans.length === 0 && (
+			{trashCans.length === 0 && (
 				<LoadingMessageContainer>
 					<LoadingMessage>
 						주변 쓰레기통 찾는 중{isLoading ? '...' : '..'}
 					</LoadingMessage>
 				</LoadingMessageContainer>
-			)} */}
->>>>>>>>> Temporary merge branch 2
-
+			)}
 			{isModalOpen && (
 				<Modal
 					message="GPS 기능이 꺼져 있으면 현재 위치를 가져올 수 없습니다. 
