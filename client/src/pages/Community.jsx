@@ -26,12 +26,11 @@ function Community() {
 				setTotalPage(res.headers.get('X-Total-Pages'));
 			});
 		}
-	});
+	}, [searchParams]);
+
 	const handleConfirm = () => {
 		setIsModalOpen(false);
 	};
-
-	console.log(totalPage);
 	return (
 		<CommunityPageContainer>
 			<div className="flex">
