@@ -45,7 +45,7 @@ function Map() {
 					Math.sqrt(
 						(lat - trashCan.Latitude) ** 2 + (lng - trashCan.Longitude) ** 2,
 					) * 100000;
-				return distance <= 5000; // 5km 반경 내의 쓰레기통만 필터링
+				return distance <= 10000; // 700m 반경 내의 쓰레기통만 필터링
 			});
 			setTrashCans(filteredTrashCans);
 			setTrashMarkers([]);

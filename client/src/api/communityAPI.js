@@ -17,12 +17,9 @@ const getPostList = (page = '?page=0') => {
 };
 
 const getPost = (postId) => {
-	if (Authorization) {
-		return axios(`${apiUrl}/api/boards/${postId}`, {
-			headers,
-		});
-	}
-	return axios(`${apiUrl}/api/boards/${postId}`);
+	return axios(`${apiUrl}/api/boards/${postId}`, {
+		headers,
+	});
 };
 
 const postCommunity = (url, data, method = 'post') => {
