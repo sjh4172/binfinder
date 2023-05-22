@@ -20,33 +20,17 @@ function Community() {
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
 	useEffect(() => {
-		const fetchData = async () => {
-			if (location.search) {
-				try {
-					const res = await getPostList(location.search);
-					setData(res.data);
-					setTotalPage(res.headers.get('X-Total-Pages'));
-				} catch (error) {
-					// Handle error
-				}
-			}
-		};
-		fetchData();
+		if (location.search) {
+			getPostList(location.search).then((res) => {
+				setData(res.data);
+				setTotalPage(res.headers.get('X-Total-Pages'));
+			});
+		}
 	}, [searchParams]);
 
-	// useEffect(() => {
-	// 	if (location.search) {
-	// 		getPostList(location.search).then((res) => {
-	// 			setData(res.data);
-	// 			setTotalPage(res.headers.get('X-Total-Pages'));
-	// 		});
-	// 	}
-	// });
 	const handleConfirm = () => {
 		setIsModalOpen(false);
 	};
-
-	console.log(totalPage);
 	return (
 		<CommunityPageContainer>
 			<div className="flex">

@@ -22,6 +22,7 @@ const userSlice = createSlice({
 			state.isAuthenticated = false;
 			state.email = null;
 			state.memberId = null;
+			state.username = null;
 		},
 	},
 });
