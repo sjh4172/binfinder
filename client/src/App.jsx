@@ -1,6 +1,8 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { Route, Routes } from 'react-router-dom';
 import { useState } from 'react';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import GlobalStyles from './styles/index';
 import MapPage from './pages/mapPage';
 import Login from './pages/login';
@@ -29,7 +31,7 @@ import {
 	URL_INTRODUCTION,
 } from './routesURL';
 import useMediaQuery from './hooks/useMediaQuery';
-import store from './store/UserSlice';
+import { store, persistor } from './store/UserSlice';
 
 function App() {
 	const isMobile = useMediaQuery();
@@ -38,33 +40,35 @@ function App() {
 
 	return (
 		<Provider store={store}>
-			<GlobalStyles />
-			<Header
-				isSidebarOpen={isSidebarOpen}
-				setIsSidebarOpen={setIsSidebarOpen}
-				setIsSidebarOpeFirst={setIsSidebarOpeFirst}
-			/>
-			{!isSidebarOpeFirst && (
-				<Sidebar
+			<PersistGate loading={null} persistor={persistor}>
+				<GlobalStyles />
+				<Header
 					isSidebarOpen={isSidebarOpen}
 					setIsSidebarOpen={setIsSidebarOpen}
+					setIsSidebarOpeFirst={setIsSidebarOpeFirst}
 				/>
-			)}
-			<Routes>
-				<Route path={URL_MAP} element={<MapPage />} />
-				<Route path={URL_LOGIN} element={<Login />} />
-				<Route path={URL_SIGNUP} element={<Signup />} />
-				<Route path={URL_MYPAGE} element={<UserInfo />} />
-				<Route path={URL_EDITMYPAGE} element={<EditUserInfo />} />
-				<Route path={URL_POST} element={<Community />} />
-				<Route path={URL_POSTDETAIL} element={<CommunityDetail />} />
-				<Route path={URL_WRITEPOST} element={<CommunityEdit />} />
-				<Route path={URL_PLOGGING} element={<Prepare />} />
-				<Route path={URL_NOTICE} element={<Prepare />} />
-				<Route path={URL_INTRODUCTION} element={<Prepare />} />
-				<Route path="*" element={<NotFound />} />
-			</Routes>
-			{!isMobile && <Footer />}
+				{!isSidebarOpeFirst && (
+					<Sidebar
+						isSidebarOpen={isSidebarOpen}
+						setIsSidebarOpen={setIsSidebarOpen}
+					/>
+				)}
+				<Routes>
+					<Route path={URL_MAP} element={<MapPage />} />
+					<Route path={URL_LOGIN} element={<Login />} />
+					<Route path={URL_SIGNUP} element={<Signup />} />
+					<Route path={URL_MYPAGE} element={<UserInfo />} />
+					<Route path={URL_EDITMYPAGE} element={<EditUserInfo />} />
+					<Route path={URL_POST} element={<Community />} />
+					<Route path={URL_POSTDETAIL} element={<CommunityDetail />} />
+					<Route path={URL_WRITEPOST} element={<CommunityEdit />} />
+					<Route path={URL_PLOGGING} element={<Prepare />} />
+					<Route path={URL_NOTICE} element={<Prepare />} />
+					<Route path={URL_INTRODUCTION} element={<Prepare />} />
+					<Route path="*" element={<NotFound />} />
+				</Routes>
+				{!isMobile && <Footer />}
+			</PersistGate>
 		</Provider>
 	);
 }
