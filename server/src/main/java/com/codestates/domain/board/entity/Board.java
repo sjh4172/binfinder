@@ -26,10 +26,13 @@ public class Board extends BaseEntity {
 	@Column
 	private boolean checkLike;
 	// N : 1(Member) 양방향 매핑
-	@ManyToOne(cascade = CascadeType.ALL)
+	// todo 질문이 삭제 될 때, 질문에 달린 답변도 삭제되어야 함으로, 질문 엔티티에 cascade 설정이 되어있어야 한다.
+
+	@ManyToOne
 	@JoinColumn(name="MEMBER_ID")
 	private Member member;
 
+	// todo 게시글이 삭제 될 때, 게시글에 달린 댓글도 삭제되어야 함으로, Board 엔티티에 cascade 설정이 되어있어야 한다.
 	@OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
 	List<Comment> comments = new ArrayList<>();
 
