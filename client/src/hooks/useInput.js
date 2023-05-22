@@ -1,12 +1,13 @@
 import { useState, useCallback } from 'react';
 
-export default function useInput(initialValue = '') {
+export default function useInput(initialValue = '', isEditor = false) {
 	const [value, setValue] = useState(initialValue);
 
 	const bind = {
 		value,
 		onChange: useCallback((e) => {
-			setValue(e.target.value);
+			const chageValue = isEditor ? e : e.target.value;
+			setValue(chageValue);
 		}, []),
 	};
 

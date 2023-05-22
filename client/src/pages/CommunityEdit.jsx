@@ -12,15 +12,18 @@ function CommunityEdit() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const [titleBind] = useInput(location.state && location.state.b_title);
-	const [contentBind] = useInput(location.state && location.state.b_content);
+	const [contentBind] = useInput(
+		location.state && location.state.b_content,
+		true,
+	);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [message, setMessage] = useState('');
-	console.log(location.state);
+	console.log(contentBind.value);
 	const writePost = () => {
 		if (!titleBind.value) {
 			setMessage('제목을 작성해주세요.');
 			setIsModalOpen(true);
-		} else if (!contentBind.value) {
+		} else if (!contentBind.value || contentBind.value === '<p><br></p>') {
 			setMessage('내용을 작성해주세요.');
 			setIsModalOpen(true);
 		} else if (location.state) {
@@ -71,9 +74,8 @@ const EditPageContainer = styled.section`
 	width: 80vw;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: var(--header-hight);
-	padding: 50px 0px 100px 0px;
-
+	padding-top: calc(var(--header-hight) + 50px);
+	height: calc(100vh - 228px);
 	.flex {
 		display: flex;
 		justify-content: space-between;
@@ -86,7 +88,7 @@ const EditPageContainer = styled.section`
 	}
 
 	@media (max-width: 768px) {
-		padding-top: 30px;
+		padding-top: calc(var(--header-hight) + 30px);
 		.bt {
 			width: 80px;
 		}

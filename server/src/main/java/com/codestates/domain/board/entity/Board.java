@@ -21,7 +21,7 @@ public class Board extends BaseEntity {
 	private long b_id;
 	@Column
 	private String b_title;
-	@Column
+	@Column(columnDefinition = "TEXT")
 	private String b_content;
 	@Column
 	private boolean checkLike;

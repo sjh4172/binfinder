@@ -13,18 +13,18 @@ import { Button } from '../styles/Buttons';
 function Community() {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [currentPage, setCurrentPage] = useState(0);
-	const [totalPage] = useState(19);
+	const [totalPage, setTotalPage] = useState(19);
 	const location = useLocation();
 	const [data, setData] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-	const email = useSelector((state) => state.auth.email);
-	console.log(email);
 
 	useEffect(() => {
 		if (location.search) {
-			getPostList(location.search).then((res) => setData(res.data));
-			// TODO: data의 총 페이지수로 setTotalPage(총 페이지수) 추가하기(아직 데이터 구현x)
+			getPostList(location.search).then((res) => {
+				setData(res.data);
+				setTotalPage(res.headers.get('X-Total-Pages'));
+			});
 		}
 	}, [searchParams]);
 

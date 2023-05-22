@@ -1,5 +1,9 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-param-reassign */
 import { createSlice, configureStore } from '@reduxjs/toolkit';
+import { combineReducers } from 'redux';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
 const initialState = {
 	isAuthenticated: false,
@@ -25,12 +29,21 @@ const userSlice = createSlice({
 		},
 	},
 });
-const store = configureStore({
-	reducer: {
-		auth: userSlice.reducer,
-	},
+
+const persistConfig = {
+	key: 'root',
+	storage,
+};
+
+const rootReducer = combineReducers({
+	auth: persistReducer(persistConfig, userSlice.reducer),
 });
 
-export const { loginSuccess, loginFailure } = userSlice.actions;
+const store = configureStore({
+	reducer: rootReducer,
+});
 
-export default store;
+const persistor = persistStore(store);
+
+export { store, persistor };
+export const { loginSuccess, loginFailure } = userSlice.actions;
