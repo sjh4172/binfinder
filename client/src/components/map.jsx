@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import REACT_APP_KAKAO_MAP_API_KEY from './KakaoMap';
 import Modal from './Modal';
 import TrashCanModal from './TrashCanModal';
@@ -12,6 +13,10 @@ function Map() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [trashCans, setTrashCans] = useState([]);
 	const [, setTrashMarkers] = useState([]);
+	const [data, setData] = useState([]);
+
+	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+	const memberId1 = useSelector((state) => state.auth.memberId);
 
 	const mapUrl = process.env.REACT_APP_API_URL;
 
@@ -51,6 +56,7 @@ function Map() {
 			setTrashCans(filteredTrashCans);
 			setTrashMarkers([]);
 			setIsLoading(false);
+			setData(response.data);
 		} catch (error) {
 			console.error(error);
 			setIsLoading(false);
@@ -61,13 +67,13 @@ function Map() {
 		fetchTrashCans();
 	}, [fetchTrashCans]);
 	// 쓰레기통 로딩 중
-	useEffect(() => {
-		const timer = setInterval(() => {
-			setIsLoading((prevLoading) => !prevLoading);
-		}, 450);
+	// useEffect(() => {
+	// 	const timer = setInterval(() => {
+	// 		setIsLoading((prevLoading) => !prevLoading);
+	// 	}, 450);
 
-		return () => clearInterval(timer);
-	}, []);
+	// 	return () => clearInterval(timer);
+	// }, []);
 
 	const loadKakaoMap = useCallback(() => {
 		// 카카오맵 스크립트 읽어오기
@@ -130,7 +136,9 @@ function Map() {
 								const root = document.getElementById('modal-root');
 								ReactDOM.createRoot(root).render(
 									<TrashCanModal
-										trashCan={trashCan} // 쓰레기통 데이터 전달
+										trashCan={trashCan}
+										isAuthenticated={isAuthenticated}
+										memberId1={memberId1} // 쓰레기통 데이터 전달
 									/>,
 								);
 							});
@@ -161,13 +169,6 @@ function Map() {
 			<MapStyle>
 				<div id="map" className="map" />
 			</MapStyle>
-			{trashCans.length === 0 && (
-				<LoadingMessageContainer>
-					<LoadingMessage>
-						주변 쓰레기통 찾는 중{isLoading ? '...' : '..'}
-					</LoadingMessage>
-				</LoadingMessageContainer>
-			)}
 			{isModalOpen && (
 				<Modal
 					message="GPS 기능이 꺼져 있으면 현재 위치를 가져올 수 없습니다. 
@@ -176,7 +177,7 @@ function Map() {
 					handleCancel={handleModalConfirm}
 				/>
 			)}
-			{trashCans.length === 0 && (
+			{data.length === 0 && (
 				<LoadingMessageContainer>
 					<LoadingMessage>
 						주변 쓰레기통 찾는 중{isLoading ? '...' : '..'}
