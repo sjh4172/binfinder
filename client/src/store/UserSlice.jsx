@@ -33,6 +33,7 @@ const userSlice = createSlice({
 const persistConfig = {
 	key: 'root',
 	storage,
+	whitelist: ['isAuthenticated', 'email', 'memberId', 'username'],
 };
 
 const rootReducer = combineReducers({
