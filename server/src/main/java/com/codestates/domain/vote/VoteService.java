@@ -21,6 +21,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 public class VoteService {
     private final VoteRepository voteRepository;
@@ -60,9 +61,37 @@ public class VoteService {
         vote.setVoteType(voteTypeEnum);
         vote = voteRepository.save(vote);
 
+        // 투표 타입에 따라 카운트 증가
+        if (voteTypeEnum == VoteDto.VoteTypeEnum.LIKE) {
+            increaseLikeCount(trashCan.getId());
+        } else if (voteTypeEnum == VoteDto.VoteTypeEnum.DISLIKE) {
+            increaseDislikeCount(trashCan.getId());
+        }
 
         VoteDto.Response response = voteMapper.voteToResponseDto(vote);
         return response;
+    }
+
+    // 좋아요 개수 증가
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
+    public void increaseLikeCount(Long trashCanId) {
+        TrashCan trashCan = trashCanRepository.findById(trashCanId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.TRASH_CAN_NOT_FOUND));
+
+        int likeCount = trashCan.getLikeCount();
+        trashCan.setLikeCount(likeCount + 1);
+        trashCanRepository.save(trashCan);
+    }
+
+    // 싫어요 개수 증가
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
+    public void increaseDislikeCount(Long trashCanId) {
+        TrashCan trashCan = trashCanRepository.findById(trashCanId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.TRASH_CAN_NOT_FOUND));
+
+        int dislikeCount = trashCan.getDislikeCount();
+        trashCan.setDislikeCount(dislikeCount + 1);
+        trashCanRepository.save(trashCan);
     }
 
     // 투표 수정

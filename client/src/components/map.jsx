@@ -36,6 +36,7 @@ function Map() {
 	// 쓰레기통 데이터를 가져오는 함수 + 필터링
 	const fetchTrashCans = useCallback(async () => {
 		try {
+			setIsLoading(true);
 			const response = await axios.get(`${mapUrl}/api/v1/trash-cans`);
 			const { latitude, longitude } = await getCurrentPosition();
 			const filteredTrashCans = response.data.filter((trashCan) => {
@@ -49,8 +50,10 @@ function Map() {
 			});
 			setTrashCans(filteredTrashCans);
 			setTrashMarkers([]);
+			setIsLoading(false);
 		} catch (error) {
 			console.error(error);
+			setIsLoading(false);
 		}
 	}, []);
 
