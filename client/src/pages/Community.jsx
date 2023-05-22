@@ -20,18 +20,33 @@ function Community() {
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
 	useEffect(() => {
-		if (location.search) {
-			getPostList(location.search).then((res) => {
-				setData(res.data);
-				setTotalPage(res.headers.get('X-Total-Pages'));
-			});
-		}
+		const fetchData = async () => {
+			if (location.search) {
+				try {
+					const res = await getPostList(location.search);
+					setData(res.data);
+					setTotalPage(res.headers.get('X-Total-Pages'));
+				} catch (error) {
+					// Handle error
+				}
+			}
+		};
+		fetchData();
 	}, [searchParams]);
 
+	// useEffect(() => {
+	// 	if (location.search) {
+	// 		getPostList(location.search).then((res) => {
+	// 			setData(res.data);
+	// 			setTotalPage(res.headers.get('X-Total-Pages'));
+	// 		});
+	// 	}
+	// });
 	const handleConfirm = () => {
 		setIsModalOpen(false);
 	};
 
+	console.log(totalPage);
 	return (
 		<CommunityPageContainer>
 			<div className="flex">
@@ -80,7 +95,7 @@ const CommunityPageContainer = styled.section`
 	padding-top: calc(var(--header-hight) + 50px);
 	width: 80vw;
 	max-width: 1000px;
-	height: calc(100vh - 228px);
+	height: calc(100% - 228px);
 	.flex {
 		display: flex;
 		justify-content: space-between;
