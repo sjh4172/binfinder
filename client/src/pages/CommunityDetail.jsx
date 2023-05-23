@@ -39,6 +39,7 @@ function CommunityDetail() {
 		closeModalPost();
 		deleteCommunity(`/boards/${data.b_id}`);
 		navigate(URL_POST);
+		navigate(0);
 	};
 
 	const handleDelecteConfirmComment = () => {
