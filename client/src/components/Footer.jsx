@@ -3,7 +3,7 @@ import { useLocation, Link } from 'react-router-dom';
 import {
 	URL_LOGIN,
 	URL_MAP,
-	URL_NOTICE,
+	URL_RECYCLE,
 	URL_PLOGGING,
 	URL_POST,
 	URL_SIGNUP,
@@ -97,7 +97,7 @@ export default function Footer() {
 					<Link to={URL_MAP}>Map</Link>
 					<Link to={URL_POST}>Community</Link>
 					<Link to={URL_PLOGGING}>Plogging</Link>
-					<Link to={URL_NOTICE}>Notice</Link>
+					<Link to={URL_RECYCLE}>Recycle</Link>
 				</SectionList>
 			</SectionWrapper>
 			<SectionWrapper className="wrapper4">

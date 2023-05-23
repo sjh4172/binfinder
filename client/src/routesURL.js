@@ -7,5 +7,5 @@ export const URL_POST = '/boards';
 export const URL_POSTDETAIL = '/boards/:postId';
 export const URL_WRITEPOST = '/boards/write';
 export const URL_PLOGGING = '/plogging';
-export const URL_NOTICE = '/notice';
+export const URL_RECYCLE = '/recycle';
 export const URL_INTRODUCTION = '/introduction';

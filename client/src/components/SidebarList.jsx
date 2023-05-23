@@ -5,7 +5,7 @@ import {
 	URL_MYPAGE,
 	URL_POST,
 	URL_PLOGGING,
-	URL_NOTICE,
+	URL_RECYCLE,
 	URL_INTRODUCTION,
 } from '../routesURL';
 
@@ -18,7 +18,7 @@ export default function SidebarList({ setIsSidebarOpen, isAuthenticated }) {
 				{ url: URL_MAP, name: 'Map' },
 				{ url: URL_POST, name: 'Community' },
 				{ url: URL_PLOGGING, name: 'Plogging' },
-				{ url: URL_NOTICE, name: 'How To Recycle' },
+				{ url: URL_RECYCLE, name: 'How To Recycle' },
 				{ url: URL_MYPAGE, name: 'My page' },
 		  ]
 		: [
@@ -26,7 +26,7 @@ export default function SidebarList({ setIsSidebarOpen, isAuthenticated }) {
 				{ url: URL_MAP, name: 'Map' },
 				{ url: URL_POST, name: 'Community' },
 				{ url: URL_PLOGGING, name: 'Plogging' },
-				{ url: URL_NOTICE, name: 'How to Recycle' },
+				{ url: URL_RECYCLE, name: 'How to Recycle' },
 		  ];
 	return (
 		<List>

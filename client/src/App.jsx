@@ -27,11 +27,12 @@ import {
 	URL_POSTDETAIL,
 	URL_WRITEPOST,
 	URL_PLOGGING,
-	URL_NOTICE,
 	URL_INTRODUCTION,
+	URL_RECYCLE,
 } from './routesURL';
 import useMediaQuery from './hooks/useMediaQuery';
 import { store, persistor } from './store/UserSlice';
+import Recycle from './pages/Recycle';
 
 function App() {
 	const isMobile = useMediaQuery();
@@ -64,7 +65,7 @@ function App() {
 					<Route path="/comments/:commentId" element={<CommunityDetail />} />
 					<Route path={URL_WRITEPOST} element={<CommunityEdit />} />
 					<Route path={URL_PLOGGING} element={<Prepare />} />
-					<Route path={URL_NOTICE} element={<Prepare />} />
+					<Route path={URL_RECYCLE} element={<Recycle />} />
 					<Route path={URL_INTRODUCTION} element={<Prepare />} />
 					<Route path="*" element={<NotFound />} />
 				</Routes>
