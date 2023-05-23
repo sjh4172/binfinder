@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useLocation, Link } from 'react-router-dom';
 import {
+	URL_INTRODUCTION,
 	URL_LOGIN,
 	URL_MAP,
 	URL_RECYCLE,
@@ -14,6 +15,7 @@ export default function Footer() {
 	const { pathname } = useLocation();
 	if (pathname === URL_SIGNUP) return null;
 	if (pathname === URL_LOGIN) return null;
+	if (pathname === URL_INTRODUCTION) return null;
 	const mediaQuery = useMediaQuery('(min-width: 1090px)');
 	const memberList = [
 		{
