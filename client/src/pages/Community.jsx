@@ -26,7 +26,7 @@ function Community() {
 				setTotalPage(res.headers.get('X-Total-Pages'));
 			});
 		}
-	});
+	}, [searchParams]);
 	const handleConfirm = () => {
 		setIsModalOpen(false);
 	};
