@@ -7,6 +7,7 @@ public enum ExceptionCode {
   	MEMBER_NOT_FOUND(404, "Member not found"),
 
 	MEMBER_EXISTS(409, "Member exists"),
+	USERNAME_EXISTS(409, "Username alrady exists"),
 	MEMBER_NOT_VALID(403,"Member not valid"),
 	MEMBER_UNAUTHORIZED(401, "Member Unauthorized"),
 	LOGIN_FAIL(401, "Member Unauthorized(Login Fail)"),
