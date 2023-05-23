@@ -46,11 +46,11 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration{
-    @Value("${spring.security.oauth2.client.registration.google.clientId}")  // application.yml
-    private String clientId;
-
-    @Value("${spring.security.oauth2.client.registration.google.clientSecret}") // application.yml
-    private String clientSecret;
+//    @Value("${spring.security.oauth2.client.registration.google.clientId}")  // application.yml
+//    private String clientId;
+//
+//    @Value("${spring.security.oauth2.client.registration.google.clientSecret}") // application.yml
+//    private String clientSecret;
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
 
