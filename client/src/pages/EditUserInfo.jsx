@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import useModal from '../hooks/useModal';
 import { URL_MAP, URL_MYPAGE } from '../routesURL';
+import { loginFailure } from '../store/UserSlice';
 
 function EditUserInfo() {
 	const navigate = useNavigate();
@@ -36,8 +37,8 @@ function EditUserInfo() {
 			const response = await axios.patch(
 				`${process.env.REACT_APP_API_URL}/api/members/${memberId}`,
 				{
-					username,
-					password,
+					username: username || undefined,
+					password: password || undefined,
 				},
 			);
 			if (response.status === 200) {
@@ -55,8 +56,9 @@ function EditUserInfo() {
 			const response = await axios.delete(
 				`${process.env.REACT_APP_API_URL}/api/members/${memberId}`,
 			);
-			if (response.status === 200) {
+			if (response.status === 204 && response.data === undefined) {
 				// 회원탈퇴 성공한 경우
+				loginFailure();
 				navigate(URL_MAP);
 			} else {
 				// 회원탈퇴 실패한 경우
