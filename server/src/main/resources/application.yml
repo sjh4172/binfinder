@@ -1,13 +1,13 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/MYDB?createdDatabaseIfNotExist=true&useUnicode=true&characterSetResults=UTF-8&useSSL=true
-    username: username
-    password: { PASSWORD }
+    url: jdbc:mysql://localhost:3306/test?createdDatabaseIfNotExist=true&useUnicode=true&characterSetResults=UTF-8&useSSL=true
+    username: root
+    password: sjha782800!
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: false
     properties:
       hibernate:

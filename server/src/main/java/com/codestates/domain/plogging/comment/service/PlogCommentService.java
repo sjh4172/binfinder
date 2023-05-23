@@ -45,7 +45,7 @@ public class PlogCommentService {
     public void deletePlogComment(long plogCommentId){
        PlogComment plogComment = plogCommentRepository.findById(plogCommentId)
                .orElseThrow(()->new NoSuchElementException("댓글이 없습니다."));
-        decreaseCommentCount(plogComment.getPlogging().getPlogId());
+        decreaseCommentCount(plogComment.getPlogging().getP_id());
         plogCommentRepository.delete(plogComment);
     }
     public PlogComment findVerifiedPlogComment(long plogCommentId){
@@ -56,14 +56,14 @@ public class PlogCommentService {
     private void increaseCommentCount(Long plogId) {
         Plogging plogging = plogRepository.findById(plogId)
                 .orElseThrow(() -> new EntityNotFoundException("Cannot find PlogPost with ID: " + plogId));
-        plogging.setPlogCommentCount(plogging.getPlogCommentCount() + 1);
+        plogging.setP_commentCount(plogging.getP_commentCount() + 1);
         plogRepository.save(plogging);
     }
 
     private void decreaseCommentCount(Long plogId) {
         Plogging plogging = plogRepository.findById(plogId)
                 .orElseThrow(() -> new EntityNotFoundException("Cannot find PlogPost with ID: " + plogId));
-        plogging.setPlogCommentCount(plogging.getPlogCommentCount() - 1);
+        plogging.setP_commentCount(plogging.getP_commentCount() - 1);
         plogRepository.save(plogging);
     }
 }

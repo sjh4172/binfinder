@@ -1,5 +1,6 @@
 package com.codestates.domain.plogging.dto;
 
+import com.codestates.domain.member.entity.Member;
 import com.codestates.domain.plogging.comment.dto.PlogCommentResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,4 +24,7 @@ public class PlogDetailDto {
     private LocalDateTime modifiedAt;
     private Integer p_commentCount;
     private List<PlogCommentResponseDto> comments;
+    public void setMember(Member member){this.memberId= member.getMemberId();}
+
+
 }
