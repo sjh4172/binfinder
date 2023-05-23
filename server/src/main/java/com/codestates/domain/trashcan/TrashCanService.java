@@ -1,5 +1,7 @@
 package com.codestates.domain.trashcan;
 
+import com.codestates.domain.vote.VoteDto;
+import com.codestates.domain.vote.VoteRepository;
 import com.codestates.domain.vote.VoteService;
 import com.codestates.exception.BusinessLogicException;
 import com.codestates.exception.ExceptionCode;
@@ -9,7 +11,6 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
