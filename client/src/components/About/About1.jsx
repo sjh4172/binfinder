@@ -97,6 +97,38 @@ const AboutComponentContainer = styled.section`
 		font-weight: 800;
 		font-size: var(--sub-title);
 	}
+	@media (max-width: 910px) {
+		flex-direction: column;
+		padding: 100px 30px 100px 50px;
+		.imgWrapper {
+			width: 100%;
+			height: 50%;
+			overflow: hidden;
+			animation: ${imgUp} 1s cubic-bezier(0, 0, 0.2, 1) forwards;
+		}
+		.desktopImg {
+			background-image: url(${mapImage});
+			width: 70%;
+			height: 63%;
+			border-radius: 10px;
+			background-repeat: no-repeat;
+			background-size: 100%;
+			box-shadow: 5px 5px 10px #3260a2, -1px -1px 1px #e9eef5;
+			position: absolute;
+			top: 100px;
+			left: 50px;
+		}
+		.mobileImg {
+			background-image: url(${mapMobileImage});
+			width: 50%;
+			height: 70%;
+			border-radius: 10px;
+			background-repeat: no-repeat;
+			background-size: 100%;
+			box-shadow: 5px 5px 10px #3260a2, -2px -2px 5px #4a90f2;
+			position: absolute;
+		}
+	}
 `;
 
 export default AboutComponent1;
