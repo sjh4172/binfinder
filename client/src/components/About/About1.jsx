@@ -108,20 +108,20 @@ const AboutComponentContainer = styled.section`
 		}
 		.desktopImg {
 			background-image: url(${mapImage});
-			width: 70%;
-			height: 63%;
+			width: 310px;
+			height: 175px;
 			border-radius: 10px;
 			background-repeat: no-repeat;
 			background-size: 100%;
 			box-shadow: 5px 5px 10px #3260a2, -1px -1px 1px #e9eef5;
 			position: absolute;
-			top: 100px;
+			top: 120px;
 			left: 50px;
 		}
 		.mobileImg {
 			background-image: url(${mapMobileImage});
-			width: 50%;
-			height: 70%;
+			width: 120px;
+			height: 225px;
 			border-radius: 10px;
 			background-repeat: no-repeat;
 			background-size: 100%;

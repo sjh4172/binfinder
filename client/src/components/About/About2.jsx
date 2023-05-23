@@ -92,6 +92,29 @@ const AboutComponentContainer = styled.section`
 		font-weight: 800;
 		font-size: var(--sub-title);
 	}
+	@media (max-width: 910px) {
+		flex-direction: column;
+		padding: 100px 30px 100px 50px;
+		justify-content: center;
+		align-items: center;
+		.img {
+			width: 300px;
+			height: 300px;
+			background-position: center;
+		}
+		.imgWrapper {
+			height: 500px;
+			top: 0px;
+		}
+		@media (max-width: 775px) {
+			.img {
+				display: none;
+			}
+		}
+		.contentWrapper {
+			margin-right: 20px;
+		}
+	}
 `;
 
 export default AboutComponent2;
