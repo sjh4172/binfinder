@@ -156,7 +156,6 @@ const Table = styled.table`
 		text-align: center;
 		color: #b3b3b3;
 		padding: 154px 0px;
-		border-bottom: 1px solid #d9d9d9;
 	}
 
 	// 반응형
