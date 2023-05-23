@@ -139,6 +139,7 @@ const FooterWrapper = styled.footer`
 	gap: 20px;
 	background-color: var(--footer-color);
 	padding: 40px 10px;
+	margin-top: 80px;
 	.wrapper1 {
 		flex: 0 250px auto;
 	}
