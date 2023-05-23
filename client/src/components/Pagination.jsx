@@ -49,7 +49,7 @@ function Pagination({
 
 const PagesContainer = styled.div`
 	display: flex;
-	margin: 60px 0px;
+	margin: 30px 0px 20px 0px;
 	justify-content: center;
 `;
 
