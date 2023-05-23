@@ -29,7 +29,6 @@ public class VoteService {
     private final TrashCanRepository trashCanRepository;
     private final VoteMapper voteMapper;
 
-
     public VoteService(VoteRepository voteRepository, MemberRepository memberRepository, TrashCanRepository trashCanRepository, VoteMapper voteMapper) {
         this.voteRepository = voteRepository;
         this.memberRepository = memberRepository;
@@ -41,9 +40,9 @@ public class VoteService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    // 좋아요, 싫어요 투표하기
+    // 좋아요/싫어요 투표하기
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
-    public VoteDto.Response createVote(VoteDto.CreateRequest createRequest) {
+    public VoteDto.Response createOrUpdateVote(VoteDto.CreateRequest createRequest) {
         // 사용자 인증
         verifyAuthorizedMember();
         Member member = verifyExistingMember(getAuthentication().getName());
@@ -54,30 +53,58 @@ public class VoteService {
 
         VoteDto.VoteTypeEnum voteTypeEnum = createRequest.getVoteType();
 
-        // 게시글 작성자 설정
-        Vote vote = new Vote();
-        vote.setMember(member);
-        vote.setTrashCan(trashCan);
-        vote.setVoteType(voteTypeEnum);
-        vote = voteRepository.save(vote);
+        // 기존 투표 조회
+        List<Vote> existingVotes = voteRepository.findByMemberAndTrashCan(member, trashCan);
 
-        // 투표 타입에 따라 카운트 증가
-        if (voteTypeEnum == VoteDto.VoteTypeEnum.LIKE) {
-            increaseLikeCount(trashCan.getId());
-        } else if (voteTypeEnum == VoteDto.VoteTypeEnum.DISLIKE) {
-            increaseDislikeCount(trashCan.getId());
+        if (existingVotes.isEmpty()) {
+            // 새로운 투표 생성
+            Vote vote = new Vote();
+            vote.setMember(member);
+            vote.setTrashCan(trashCan);
+            vote.setVoteType(voteTypeEnum);
+            vote = voteRepository.save(vote);
+
+            // 투표 타입에 따라 카운트 증가
+            if (voteTypeEnum == VoteDto.VoteTypeEnum.LIKE) {
+                increaseLikeCount(trashCan);
+            } else if (voteTypeEnum == VoteDto.VoteTypeEnum.DISLIKE) {
+                increaseDislikeCount(trashCan);
+            }
+
+            VoteDto.Response response = voteMapper.voteToResponseDto(vote);
+            return response;
+        } else {
+            // 기존 투표 수정
+            Vote existingVote = existingVotes.get(0); // 첫 번째 투표를 가져옴
+            VoteDto.VoteTypeEnum existingVoteType = existingVote.getVoteType();
+
+            // 이미 같은 유형의 투표를 한 경우, 투표를 삭제하고 투표 개수 감소
+            if (existingVoteType == voteTypeEnum) {
+                deleteVote(existingVote);
+                decreaseVoteCount(trashCan, existingVoteType);
+                return null; // 투표 취소된 경우 응답 없음
+            } else {
+                // 다른 유형으로 투표 수정
+                deleteVote(existingVote);
+                decreaseVoteCount(trashCan, existingVoteType);
+                increaseVoteCount(trashCan, voteTypeEnum);
+
+                // 수정된 투표 정보 저장
+                Vote newVote = new Vote();
+                newVote.setMember(member);
+                newVote.setTrashCan(trashCan);
+                newVote.setVoteType(voteTypeEnum);
+                newVote = voteRepository.save(newVote);
+
+                VoteDto.Response response = voteMapper.voteToResponseDto(newVote);
+                return response;
+            }
         }
-
-        VoteDto.Response response = voteMapper.voteToResponseDto(vote);
-        return response;
     }
 
     // 좋아요 개수 증가
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
-    public void increaseLikeCount(Long trashCanId) {
-        TrashCan trashCan = trashCanRepository.findById(trashCanId)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.TRASH_CAN_NOT_FOUND));
-
+    public void increaseLikeCount(TrashCan trashCan) {
         int likeCount = trashCan.getLikeCount();
         trashCan.setLikeCount(likeCount + 1);
         trashCanRepository.save(trashCan);
@@ -85,47 +112,37 @@ public class VoteService {
 
     // 싫어요 개수 증가
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
-    public void increaseDislikeCount(Long trashCanId) {
-        TrashCan trashCan = trashCanRepository.findById(trashCanId)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.TRASH_CAN_NOT_FOUND));
-
+    public void increaseDislikeCount(TrashCan trashCan) {
         int dislikeCount = trashCan.getDislikeCount();
         trashCan.setDislikeCount(dislikeCount + 1);
         trashCanRepository.save(trashCan);
     }
 
-    // 투표 수정
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
-    public VoteDto.Response updateVote(VoteDto.CreateRequest createRequest) {
-
-        verifyAuthorizedMember();
-        Member member = verifyExistingMember(getAuthentication().getName());
-
-        // 쓰레기통 정보 조회
-        TrashCan trashCan = trashCanRepository.findById(createRequest.getTrashCanId())
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.TRASH_CAN_NOT_FOUND));
-
-        VoteDto.VoteTypeEnum voteTypeEnum = createRequest.getVoteType();
-
-        // 게시글 작성자 설정
-        Vote vote = new Vote();
-        vote.setMember(member);
-        vote.setTrashCan(trashCan);
-        vote.setVoteType(voteTypeEnum);
-        vote = voteRepository.save(vote);
-
-        VoteDto.Response response = voteMapper.voteToResponseDto(vote);
-        return response;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
-    // 로그인 한 사람만 삭제!
-    public void deleteVote(Long voteId)  {
-
-//        verifyAuthorizedMember();
-        Vote vote = findVerifiedVote(voteId);
+    // 투표 삭제
+    private void deleteVote(Vote vote) {
         voteRepository.delete(vote);
     }
+
+    // 투표 개수 감소
+    private void decreaseVoteCount(TrashCan trashCan, VoteDto.VoteTypeEnum voteType) {
+        if (voteType == VoteDto.VoteTypeEnum.LIKE) {
+            trashCan.setLikeCount(trashCan.getLikeCount() - 1);
+        } else if (voteType == VoteDto.VoteTypeEnum.DISLIKE) {
+            trashCan.setDislikeCount(trashCan.getDislikeCount() - 1);
+        }
+        trashCanRepository.save(trashCan);
+    }
+
+    // 투표 개수 증가
+    private void increaseVoteCount(TrashCan trashCan, VoteDto.VoteTypeEnum voteType) {
+        if (voteType == VoteDto.VoteTypeEnum.LIKE) {
+            trashCan.setLikeCount(trashCan.getLikeCount() + 1);
+        } else if (voteType == VoteDto.VoteTypeEnum.DISLIKE) {
+            trashCan.setDislikeCount(trashCan.getDislikeCount() + 1);
+        }
+        trashCanRepository.save(trashCan);
+    }
+
 
     public List<VoteDto.Response> getVotesByMember(Long memberId) {
         verifyAuthorizedMember();
@@ -194,32 +211,5 @@ public class VoteService {
     private Authentication getAuthentication(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth;
-    }
-
-    // trashCan id 별로 LIKE enum 카운트하는 메서드(쿼리문 사용)
-    public Long countLike(long trashCanId){
-
-        VoteDto.VoteTypeEnum voteType = VoteDto.VoteTypeEnum.LIKE;
-
-        String jpql = "SELECT COUNT(v) FROM Vote v WHERE v.voteType = :voteType AND v.trashCan.id = :trashCanId";
-        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
-        query.setParameter("voteType", voteType);
-        query.setParameter("trashCanId", trashCanId);
-
-        return query.getSingleResult();
-
-    }
-
-    // 싫어요 세기
-    public Long countDislike(long trashCanId){
-
-        VoteDto.VoteTypeEnum voteType = VoteDto.VoteTypeEnum.DISLIKE;
-
-        String jpql = "SELECT COUNT(v) FROM Vote v WHERE v.voteType = :voteType AND v.trashCan.id = :trashCanId";
-        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
-        query.setParameter("voteType", voteType);
-        query.setParameter("trashCanId", trashCanId);
-
-        return query.getSingleResult();
     }
 }

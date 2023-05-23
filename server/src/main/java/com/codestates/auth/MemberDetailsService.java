@@ -1,5 +1,6 @@
 package com.codestates.auth;
 
+import antlr.StringUtils;
 import com.codestates.exception.BusinessLogicException;
 import com.codestates.exception.ExceptionCode;
 import com.codestates.domain.member.entity.Member;
@@ -32,6 +33,10 @@ public class MemberDetailsService implements UserDetailsService{
         Optional<Member> OptionalMember = memberRepository.findByEmail(email);
         Member findMember = OptionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
+        // 아이디(이메일)의 대소문자를 구분하여 일치하는지 확인
+        if(!findMember.getEmail().equals(email)){
+            throw new BusinessLogicException(ExceptionCode.LOGIN_FAIL);
+        }
         return new MemberDetails(findMember);
     }
 

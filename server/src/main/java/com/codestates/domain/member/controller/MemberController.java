@@ -5,7 +5,9 @@ import com.codestates.domain.member.entity.Member;
 import com.codestates.domain.member.mapper.MemberMapper;
 import com.codestates.domain.member.dto.MemberPatchDto;
 import com.codestates.domain.member.service.MemberService;
+import com.codestates.exception.BusinessLogicException;
 import com.codestates.exception.ErrorResponse;
+import com.codestates.exception.ExceptionCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,17 +37,32 @@ public class MemberController {
         this.mapper = mapper;
     }
     @PostMapping
-    public ResponseEntity postMember(@Valid @RequestBody MemberPostDto requestBody){
-        Member member = memberService.createMember(mapper.memberPostDtoToMember(requestBody));
+    public ResponseEntity postMember(@Valid @RequestBody MemberPostDto requestBody) {
+        try {
+            Member member = memberService.createMember(mapper.memberPostDtoToMember(requestBody));
 
-        URI uri = UriComponentsBuilder.newInstance()
-                .path("/api/members/" + member.getMemberId())
-                .build().toUri();
+            URI uri = UriComponentsBuilder.newInstance()
+                    .path("/api/members/" + member.getMemberId())
+                    .build().toUri();
 
-        log.info("##uri 주소는 다음과 같습니다:{} ##", uri);
+            log.info("##uri 주소는 다음과 같습니다:{} ##", uri);
 
-        return ResponseEntity.created(uri).build();
+            return ResponseEntity.created(uri).build();
+
+        } catch (BusinessLogicException ex) {
+            ErrorResponse errorResponse;
+            if (ex.getExceptionCode() == ExceptionCode.MEMBER_EXISTS) {
+                errorResponse = ErrorResponse.of(ExceptionCode.MEMBER_EXISTS);
+            } else if (ex.getExceptionCode() == ExceptionCode.USERNAME_EXISTS) {
+                errorResponse = ErrorResponse.of(ExceptionCode.USERNAME_EXISTS);
+            } else {
+                // Handle other exceptions if needed
+                errorResponse = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+        }
     }
+
     @PatchMapping("/{memberId}")
     public ResponseEntity patchMember(@PathVariable @Positive long memberId,
                                       @Valid @RequestBody MemberPatchDto requestBody) {

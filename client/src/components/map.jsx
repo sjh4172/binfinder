@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import styled from 'styled-components';
@@ -7,73 +6,29 @@ import { useSelector } from 'react-redux';
 import REACT_APP_KAKAO_MAP_API_KEY from './KakaoMap';
 import Modal from './Modal';
 import TrashCanModal from './TrashCanModal';
+import getCurrentPosition from './GeolocationUtils';
+import TrashCansFetcher from './TrashCansFetcher';
 
 function Map() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [isLoading, setIsLoading] = useState(true);
+	const [, setIsLoading] = useState(true);
 	const [trashCans, setTrashCans] = useState([]);
 	const [, setTrashMarkers] = useState([]);
-	const [data, setData] = useState([]);
+	const [, setData] = useState([]);
 
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 	const memberId1 = useSelector((state) => state.auth.memberId);
 
 	const mapUrl = process.env.REACT_APP_API_URL;
 
-	const getCurrentPosition = () => {
-		return new Promise((resolve, reject) => {
-			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(
-					(position) => {
-						const { latitude, longitude } = position.coords;
-						resolve({ latitude, longitude });
-					},
-					(error) => {
-						reject(error);
-					},
-				);
-			} else {
-				reject(new Error('Geolocation is not supported by this browser.'));
-			}
-		});
-	};
-
-	// 쓰레기통 데이터를 가져오는 함수 + 필터링
-	const fetchTrashCans = useCallback(async () => {
-		try {
-			setIsLoading(true);
-			const response = await axios.get(`${mapUrl}/api/v1/trash-cans`);
-			const { latitude, longitude } = await getCurrentPosition();
-			const filteredTrashCans = response.data.filter((trashCan) => {
-				const lat = latitude;
-				const lng = longitude;
-				const distance =
-					Math.sqrt(
-						(lat - trashCan.Latitude) ** 2 + (lng - trashCan.Longitude) ** 2,
-					) * 100000;
-				return distance <= 10000; // 700m 반경 내의 쓰레기통만 필터링
-			});
-			setTrashCans(filteredTrashCans);
-			setTrashMarkers([]);
-			setIsLoading(false);
-			setData(response.data);
-		} catch (error) {
-			console.error(error);
-			setIsLoading(false);
-		}
-	}, []);
-
-	useEffect(() => {
-		fetchTrashCans();
-	}, [fetchTrashCans]);
 	// 쓰레기통 로딩 중
-	// useEffect(() => {
-	// 	const timer = setInterval(() => {
-	// 		setIsLoading((prevLoading) => !prevLoading);
-	// 	}, 450);
+	useEffect(() => {
+		const timer = setInterval(() => {
+			setIsLoading((prevLoading) => !prevLoading);
+		}, 450);
 
-	// 	return () => clearInterval(timer);
-	// }, []);
+		return () => clearInterval(timer);
+	}, []);
 
 	const loadKakaoMap = useCallback(() => {
 		// 카카오맵 스크립트 읽어오기
@@ -169,6 +124,14 @@ function Map() {
 			<MapStyle>
 				<div id="map" className="map" />
 			</MapStyle>
+			<TrashCansFetcher
+				mapUrl={mapUrl}
+				getCurrentPosition={getCurrentPosition}
+				setTrashCans={setTrashCans}
+				setTrashMarkers={setTrashMarkers}
+				setIsLoading={setIsLoading}
+				setData={setData}
+			/>
 			{isModalOpen && (
 				<Modal
 					message="GPS 기능이 꺼져 있으면 현재 위치를 가져올 수 없습니다. 
@@ -177,17 +140,17 @@ function Map() {
 					handleCancel={handleModalConfirm}
 				/>
 			)}
-			{data.length === 0 && (
+			{/* {data.length > 0 && (
 				<LoadingMessageContainer>
 					<LoadingMessage>
 						주변 쓰레기통 찾는 중{isLoading ? '...' : '..'}
 					</LoadingMessage>
 				</LoadingMessageContainer>
-			)}
+			)} */}
 		</>
 	);
 }
-// 맵사이즈
+// 맵사이즈 sssß
 const MapStyle = styled.div`
 	height: 100vh;
 	width: calc(100vw - 18.7em);
@@ -203,25 +166,25 @@ const MapStyle = styled.div`
 	}
 `;
 // 로딩 메시지
-const LoadingMessage = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 200px;
-	font-size: 18px;
-	font-weight: bold;
-`;
-const LoadingMessageContainer = styled.div`
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	z-index: 9999;
-	background-color: rgba(255, 255, 255, 0.9);
-`;
+// const LoadingMessage = styled.div`
+// 	display: flex;
+// 	justify-content: center;
+// 	align-items: center;
+// 	height: 200px;
+// 	font-size: 18px;
+// 	font-weight: bold;
+// `;
+// const LoadingMessageContainer = styled.div`
+// 	position: fixed;
+// 	top: 0;
+// 	left: 0;
+// 	width: 100%;
+// 	height: 100%;
+// 	display: flex;
+// 	align-items: center;
+// 	justify-content: center;
+// 	z-index: 9999;
+// 	background-color: rgba(255, 255, 255, 0.9);
+// `;
 
 export default Map;
