@@ -27,6 +27,10 @@ public class ErrorResponse {
     private ErrorResponse(String reason) {
         this.reason = reason;
     }
+    public static ErrorResponse of(List<FieldError> fieldErrors, List<ConstraintViolationError> violationErrors, String reason) {
+        return new ErrorResponse(fieldErrors, violationErrors, reason);
+    }
+
     public static ErrorResponse of(BindingResult bindingResult) {
         return new ErrorResponse(FieldError.of(bindingResult), null);}
     public static ErrorResponse of(Set<ConstraintViolation<?>> constraintViolations) {
