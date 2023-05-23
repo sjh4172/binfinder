@@ -18,7 +18,7 @@ function CommunityEdit() {
 	);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [message, setMessage] = useState('');
-	console.log(contentBind.value);
+
 	const writePost = () => {
 		if (!titleBind.value) {
 			setMessage('제목을 작성해주세요.');

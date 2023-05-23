@@ -70,8 +70,6 @@ function CommunityDetail() {
 				setTotalLike(res.data.likes),
 			);
 			setIsLike(!isLike);
-		} else {
-			// alert('회원만 가능한 기능입니다.');
 		}
 	};
 	return (
