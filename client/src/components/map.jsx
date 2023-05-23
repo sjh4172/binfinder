@@ -150,7 +150,7 @@ function Map() {
 		</>
 	);
 }
-// 맵사이즈
+// 맵사이즈 sssß
 const MapStyle = styled.div`
 	height: 100vh;
 	width: calc(100vw - 18.7em);
