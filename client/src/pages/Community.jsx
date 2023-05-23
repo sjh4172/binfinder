@@ -22,7 +22,7 @@ function Community() {
 	useEffect(() => {
 		if (location.search) {
 			getPostList(location.search).then((res) => {
-				setData(res.data);
+				setData(res.data.reverse());
 				setTotalPage(res.headers.get('X-Total-Pages'));
 			});
 		}
