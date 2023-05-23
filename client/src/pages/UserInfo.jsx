@@ -31,17 +31,21 @@ function UserInfo() {
 				const postResponse = await axios.get(
 					`${process.env.REACT_APP_API_URL}/api/boards?memberId=${memberId}`,
 				);
-				const latestPosts = postResponse.data.slice(0, 5);
+				const sortedPosts = postResponse.data.sort((a, b) => {
+					return new Date(b.createdAt) - new Date(a.createdAt);
+				});
+				const latestPosts = sortedPosts.slice(0, 5);
 				setPostList(latestPosts);
 
 				// 사용자가 작성한 댓글 가져오기
 				const commentResponse = await axios.get(
 					`${process.env.REACT_APP_API_URL}/api/comments?memberId=${memberId}&sort=-createdAt&limit=5`,
 				);
-
-
-				// const latestComments = commentResponse.data.slice(0, 5);
-				setCommentList(commentResponse.data);
+				const sortedComments = commentResponse.data.sort((a, b) => {
+					return new Date(b.createdAt) - new Date(a.createdAt);
+				});
+				const latestComments = sortedComments.slice(0, 5);
+				setCommentList(latestComments);
 
 			} catch (error) {
 				console.error(error);

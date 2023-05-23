@@ -38,8 +38,8 @@ function EditUserInfo() {
 			const response = await axios.patch(
 				`${process.env.REACT_APP_API_URL}/api/members/${memberId}`,
 				{
-					username,
-					password,
+					username: username || undefined,
+					password: password || undefined,
 				},
 			);
 			if (response.status === 200) {
@@ -57,6 +57,7 @@ function EditUserInfo() {
 			const response = await axios.delete(
 				`${process.env.REACT_APP_API_URL}/api/members/${memberId}`,
 			);
+
 			if (response.status === 204) {
 				// 회원탈퇴 성공한 경우
 				dispatch(loginFailure());
