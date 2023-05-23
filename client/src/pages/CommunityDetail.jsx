@@ -23,6 +23,7 @@ function CommunityDetail() {
 	const [textareaBind] = useInput();
 	const [isLike, setIsLike] = useState(true);
 	const [totalLike, setTotalLike] = useState(null);
+	const [commentId, setCommentId] = useState(null);
 
 	useEffect(() => {
 		getPost(postId).then((res) => {
@@ -40,7 +41,8 @@ function CommunityDetail() {
 
 	const handleDelecteConfirmComment = () => {
 		closeModalComment();
-		deleteCommunity(`/comments/${data.comments[0].c_id}`);
+		deleteCommunity(`/comments/${commentId}`);
+		console.log(data.comments);
 		navigate(0);
 	};
 
@@ -114,6 +116,7 @@ function CommunityDetail() {
 								<CommunityComment
 									setIsCModalOpen={openModalComment}
 									commentData={el}
+									setCommentId={setCommentId}
 								/>
 							</li>
 						))}

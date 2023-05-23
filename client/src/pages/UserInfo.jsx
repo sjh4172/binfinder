@@ -39,13 +39,14 @@ function UserInfo() {
 
 				// 사용자가 작성한 댓글 가져오기
 				const commentResponse = await axios.get(
-					`${process.env.REACT_APP_API_URL}/api/comments?memberId=${memberId}`,
+					`${process.env.REACT_APP_API_URL}/api/comments?memberId=${memberId}&sort=-createdAt&limit=5`,
 				);
 				const sortedComments = commentResponse.data.sort((a, b) => {
 					return new Date(b.createdAt) - new Date(a.createdAt);
 				});
 				const latestComments = sortedComments.slice(0, 5);
 				setCommentList(latestComments);
+
 			} catch (error) {
 				console.error(error);
 			}
@@ -92,9 +93,7 @@ function UserInfo() {
 						<CommentList>내가 최근 작성한 댓글</CommentList>
 						{commentList.map((comment) => (
 							<List key={comment.c_id}>
-								<Link to={`/comments/${comment.c_id}`}>
-									{comment.c_content}
-								</Link>
+								<Link to={`/boards/${comment.b_id}`}>{comment.c_content}</Link>
 							</List>
 						))}
 					</CommentListContainer>

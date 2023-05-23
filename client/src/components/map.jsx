@@ -161,7 +161,13 @@ function Map() {
 			<MapStyle>
 				<div id="map" className="map" />
 			</MapStyle>
-
+			{trashCans.length === 0 && (
+				<LoadingMessageContainer>
+					<LoadingMessage>
+						주변 쓰레기통 찾는 중{isLoading ? '...' : '..'}
+					</LoadingMessage>
+				</LoadingMessageContainer>
+			)}
 			{isModalOpen && (
 				<Modal
 					message="GPS 기능이 꺼져 있으면 현재 위치를 가져올 수 없습니다. 
