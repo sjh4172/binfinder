@@ -8,10 +8,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class PlogResponseDto {
-    private Long plogId;
-    private String title;
-    private String content;
-    private String memberName;
+    private Long p_id;
+    private String p_title;
+    private String p_content;
+    private String userName;
     private Integer likes;
-    private Integer plogCommentCount;
+    private Integer p_commentCount;
 }

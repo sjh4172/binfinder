@@ -10,6 +10,7 @@ import com.codestates.domain.plogging.service.PlogService;
 import com.codestates.exception.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -40,7 +41,7 @@ public class PlogController {
     public ResponseEntity postPlog(@RequestBody PlogPostDto plogPostDto) {
         Plogging plogging = plogService.createPlog (plogMapper.plogPostDtoToPlogging(plogPostDto));
         URI uri = UriComponentsBuilder.newInstance()
-                .path("/api/plogs/"+ plogging.getPlogId())
+                .path("/api/plogs/"+ plogging.getP_id())
                 .build().toUri();
 
         return ResponseEntity.created(uri).build();
@@ -48,9 +49,9 @@ public class PlogController {
 
 
     // 게시글 상세 조회
-    @GetMapping("/{plogId}")
-    public ResponseEntity findPlog(@PathVariable("plogId") Long plogId) {
-        Plogging plogging = plogService.findPlog(plogId);
+    @GetMapping("/{p_id}")
+    public ResponseEntity findPlog(@PathVariable("p_id") Long p_id) {
+        Plogging plogging = plogService.findPlog(p_id);
         if (plogging == null) {
             return ResponseEntity.notFound().build();
         }
@@ -62,40 +63,45 @@ public class PlogController {
     @GetMapping
     public ResponseEntity findPlogs(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "20") int size
     ) {
         Page<Plogging> plogPage = plogService.findPlogs(page, size);
-        List<PlogResponseDto> plogResponseDtoList = plogPage.getContent()
+        List<PlogResponseDto> response = plogPage.getContent()
                 .stream()
                 .map(plogMapper::ploggingToPlogResponseDto)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(plogResponseDtoList);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Total-Pages", String.valueOf(plogService.getTotalPages(size)));
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(response);
+
     }
 
     // 게시글 수정
-    @PatchMapping("/{plogId}")
-    public ResponseEntity patchPlog(@PathVariable("plogId") Long plogId, @RequestBody PlogPatchDto plogPatchDto) {
-        plogPatchDto.setPlogId(plogId);
+    @PatchMapping("/{p_id}")
+    public ResponseEntity patchPlog(@PathVariable("p_id") Long p_id, @RequestBody PlogPatchDto plogPatchDto) {
+        plogPatchDto.setP_id(p_id);
         Plogging plogging = plogMapper.plogPatchDtoToPlogging(plogPatchDto);
         Plogging updatedPlog = plogService.updatePlog(plogging);
         PlogResponseDto plogResponseDto = plogMapper.ploggingToPlogResponseDto(updatedPlog);
         return ResponseEntity.ok(plogResponseDto);
     }
     // 게시글 삭제
-    @DeleteMapping("/{plogId}")
-    public ResponseEntity deletePlog(@PathVariable("plogId") Long plogId) {
-        plogService.deletePlog(plogId);
+    @DeleteMapping("/{p_id}")
+    public ResponseEntity deletePlog(@PathVariable("p_id") Long p_id) {
+        plogService.deletePlog(p_id);
         return ResponseEntity.noContent().build();
     }
-    @PostMapping("/like/{plogId}/{memberId}")
-    public ResponseEntity postLike(@PathVariable("plogId") long plogId, @PathVariable("memberId") long memberId) {
-        Plogging response = plogService.like(plogId, memberId);
+    @PostMapping("/like/{p_id}/{m_id}")
+    public ResponseEntity postLike(@PathVariable("p_id") long p_id, @PathVariable("m_id") long m_id) {
+        Plogging response = plogService.like(p_id, m_id);
 
         return new ResponseEntity<>(plogMapper.ploggingToPlogResponseDto(response), HttpStatus.OK);
     }
-    @PostMapping("/unlike/{plogId}/{memberId}")
-    public ResponseEntity deleteLike(@PathVariable("plogId") long plogId, @PathVariable("memberId") long memberId) {
-        Plogging response = plogService.unLike(plogId, memberId);
+    @PostMapping("/unlike/{p_id}/{m_id}")
+    public ResponseEntity deleteLike(@PathVariable("p_id") long p_id, @PathVariable("m_id") long m_id) {
+        Plogging response = plogService.unLike(p_id, m_id);
 
         return new ResponseEntity<>(plogMapper.ploggingToPlogResponseDto(response), HttpStatus.OK);
     }

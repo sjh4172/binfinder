@@ -11,7 +11,7 @@ import org.mapstruct.Mapper;
 public interface PlogMapper {
 
     Plogging plogPostDtoToPlogging(PlogPostDto plogPostDto);
-//    @Mapping(target = "plogId", source = "plogPatchDto.plogId")
+//    @Mapping(target = "p_id", source = "plogPatchDto.p_id")
 //    @Mapping(target = "member", ignore = true)
     Plogging plogPatchDtoToPlogging(PlogPatchDto plogPatchDto);
     PlogResponseDto ploggingToPlogResponseDto(Plogging plogging);

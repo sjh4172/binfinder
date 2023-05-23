@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface PlogRepository extends JpaRepository<Plogging,Long> {
-    @Query("SELECT p FROM Plogging p LEFT JOIN FETCH p.comments WHERE p.plogId = :plogId")
-    Optional<Plogging> findPlogWithComments(@Param("plogId") Long plogId);
+    @Query("SELECT p FROM Plogging p LEFT JOIN FETCH p.p_comments WHERE p.p_id = :p_id")
+    Optional<Plogging> findPlogWithComments(@Param("p_id") Long p_id);
 }
