@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import Title from '../styles/Title';
 import CommunityPost from '../components/CommunityPost';
 import CommunityComment from '../components/CommunityComment';
@@ -24,6 +25,7 @@ function CommunityDetail() {
 	const [isLike, setIsLike] = useState(true);
 	const [totalLike, setTotalLike] = useState(null);
 	const [commentId, setCommentId] = useState(null);
+	const memberId = useSelector((state) => state.auth.memberId);
 
 	useEffect(() => {
 		getPost(postId).then((res) => {
@@ -42,7 +44,6 @@ function CommunityDetail() {
 	const handleDelecteConfirmComment = () => {
 		closeModalComment();
 		deleteCommunity(`/comments/${commentId}`);
-		console.log(data.comments);
 		navigate(0);
 	};
 
@@ -59,13 +60,13 @@ function CommunityDetail() {
 	const likeUpDown = () => {
 		const Authorization = localStorage.getItem('accessToken');
 		if (isLike && Authorization) {
-			postCommunity(`/boards/unlike/${data.b_id}/${data.memberId}`, null).then(
+			postCommunity(`/boards/unlike/${data.b_id}/${memberId}`, null).then(
 				(res) => setTotalLike(res.data.likes),
 			);
 			setIsLike(!isLike);
 		} else if (Authorization) {
-			postCommunity(`/boards/like/${data.b_id}/${data.memberId}`, null).then(
-				(res) => setTotalLike(res.data.likes),
+			postCommunity(`/boards/like/${data.b_id}/${memberId}`, null).then((res) =>
+				setTotalLike(res.data.likes),
 			);
 			setIsLike(!isLike);
 		} else {

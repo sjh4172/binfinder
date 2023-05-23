@@ -27,11 +27,10 @@ function Community() {
 			});
 		}
 	}, [searchParams]);
+
 	const handleConfirm = () => {
 		setIsModalOpen(false);
 	};
-
-	console.log(totalPage);
 	return (
 		<CommunityPageContainer>
 			<div className="flex">

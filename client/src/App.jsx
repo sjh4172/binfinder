@@ -32,6 +32,7 @@ import {
 } from './routesURL';
 import useMediaQuery from './hooks/useMediaQuery';
 import { store, persistor } from './store/UserSlice';
+import About from './pages/AboutPage';
 
 function App() {
 	const isMobile = useMediaQuery();
@@ -65,7 +66,7 @@ function App() {
 					<Route path={URL_WRITEPOST} element={<CommunityEdit />} />
 					<Route path={URL_PLOGGING} element={<Prepare />} />
 					<Route path={URL_NOTICE} element={<Prepare />} />
-					<Route path={URL_INTRODUCTION} element={<Prepare />} />
+					<Route path={URL_INTRODUCTION} element={<About />} />
 					<Route path="*" element={<NotFound />} />
 				</Routes>
 				{!isMobile && <Footer />}
