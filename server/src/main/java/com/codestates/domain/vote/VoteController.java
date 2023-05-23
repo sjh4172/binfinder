@@ -1,5 +1,6 @@
 package com.codestates.domain.vote;
 
+import com.codestates.exception.BusinessLogicException;
 import com.codestates.exception.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/trash-cans/{id}/vote")
+@RequestMapping("/votes")
 public class VoteController {
     private final VoteService voteService;
 
@@ -21,38 +22,16 @@ public class VoteController {
     }
 
     @PostMapping
-    public ResponseEntity<VoteDto.Response> createVote(@RequestBody VoteDto.CreateRequest createRequest) {
-        // 투표 생성
-        VoteDto.Response response = voteService.createVote(createRequest);
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/likes/{trashCanId}")
-    public ResponseEntity<Long> getLikeCount(@PathVariable Long trashCanId) {
-        // 좋아요 개수 조회
-        Long likeCount = voteService.countLike(trashCanId);
-        return ResponseEntity.ok(likeCount);
-    }
-
-    @GetMapping("/dislikes/{trashCanId}")
-    public ResponseEntity<Long> getDislikeCount(@PathVariable Long trashCanId) {
-        // 싫어요 개수 조회
-        Long dislikeCount = voteService.countDislike(trashCanId);
-        return ResponseEntity.ok(dislikeCount);
-    }
-
-    // 투표 수정하기
-    @PutMapping("/{voteId}")
-    public ResponseEntity<VoteDto.Response> updateVote(@PathVariable Long voteId, @Valid @RequestBody VoteDto.CreateRequest createRequest) {
-        VoteDto.Response response = voteService.updateVote(createRequest);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    // 투표 삭제하기
-    @DeleteMapping("/{voteId}")
-    public ResponseEntity<Void> deleteVote(@PathVariable Long voteId) {
-        voteService.deleteVote(voteId);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<VoteDto.Response> createOrUpdateVote(@RequestBody VoteDto.CreateRequest createRequest) {
+        try {
+            VoteDto.Response response = voteService.createOrUpdateVote(createRequest);
+            if (response == null) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(response);
+        } catch (BusinessLogicException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @GetMapping("/members/{memberId}")
@@ -81,7 +60,6 @@ public class VoteController {
                                 error.getDefaultMessage()))
                         .collect(Collectors.toList());
 
-//		return new ResponseEntity<>(new ErrorResponse(errors), HttpStatus.BAD_REQUEST);
         return ResponseEntity.badRequest().body(ErrorResponse.of(e.getBindingResult()));
     }
 }

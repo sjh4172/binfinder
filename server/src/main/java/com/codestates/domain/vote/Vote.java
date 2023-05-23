@@ -17,11 +17,9 @@ public class Vote extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 회원이 삭제되면 vote도 없어지도록 cascade 설정 추가
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
-
 
     @ManyToOne
     @JoinColumn(name = "trash_can_id", nullable = false)

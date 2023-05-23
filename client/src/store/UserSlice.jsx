@@ -26,6 +26,7 @@ const userSlice = createSlice({
 			state.isAuthenticated = false;
 			state.email = null;
 			state.memberId = null;
+			state.username = null;
 		},
 	},
 });
@@ -33,6 +34,7 @@ const userSlice = createSlice({
 const persistConfig = {
 	key: 'root',
 	storage,
+	whitelist: ['isAuthenticated', 'email', 'memberId', 'username'],
 };
 
 const rootReducer = combineReducers({

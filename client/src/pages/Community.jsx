@@ -31,7 +31,6 @@ function Community() {
 	const handleConfirm = () => {
 		setIsModalOpen(false);
 	};
-
 	return (
 		<CommunityPageContainer>
 			<div className="flex">
@@ -80,7 +79,7 @@ const CommunityPageContainer = styled.section`
 	padding-top: calc(var(--header-hight) + 50px);
 	width: 80vw;
 	max-width: 1000px;
-	height: calc(100vh - 228px);
+	height: calc(100% - 228px);
 	.flex {
 		display: flex;
 		justify-content: space-between;

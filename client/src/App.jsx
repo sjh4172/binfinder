@@ -61,6 +61,7 @@ function App() {
 					<Route path={URL_EDITMYPAGE} element={<EditUserInfo />} />
 					<Route path={URL_POST} element={<Community />} />
 					<Route path={URL_POSTDETAIL} element={<CommunityDetail />} />
+					<Route path="/comments/:commentId" element={<CommunityDetail />} />
 					<Route path={URL_WRITEPOST} element={<CommunityEdit />} />
 					<Route path={URL_PLOGGING} element={<Prepare />} />
 					<Route path={URL_NOTICE} element={<Prepare />} />

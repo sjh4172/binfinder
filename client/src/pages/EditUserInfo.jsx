@@ -3,15 +3,17 @@ import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import useModal from '../hooks/useModal';
 import { URL_MAP, URL_MYPAGE } from '../routesURL';
+import { loginFailure } from '../store/UserSlice';
 
 function EditUserInfo() {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	const [isListHover, setIsListHover] = useState(false);
+	// const [isListHover, setIsListHover] = useState(false);
 	const [isOpenModal, openModal, closeModal] = useModal(false);
 	const { memberId } = useSelector((state) => state.auth);
 
@@ -19,7 +21,7 @@ function EditUserInfo() {
 		const fetchUserData = async () => {
 			try {
 				const response = await axios.get(
-					`${process.env.REACT_APP_API_URL}/members/${memberId}`,
+					`${process.env.REACT_APP_API_URL}/api/members/${memberId}`,
 				);
 				const userData = response.data;
 				setUsername(userData.username);
@@ -34,7 +36,7 @@ function EditUserInfo() {
 	const handleEditUser = async () => {
 		try {
 			const response = await axios.patch(
-				`${process.env.REACT_APP_API_URL}/members/${memberId}`,
+				`${process.env.REACT_APP_API_URL}/api/members/${memberId}`,
 				{
 					username,
 					password,
@@ -53,10 +55,11 @@ function EditUserInfo() {
 	const handleWithdrawUser = async () => {
 		try {
 			const response = await axios.delete(
-				`${process.env.REACT_APP_API_URL}/members/${memberId}`,
+				`${process.env.REACT_APP_API_URL}/api/members/${memberId}`,
 			);
-			if (response.status === 200) {
+			if (response.status === 204) {
 				// 회원탈퇴 성공한 경우
+				dispatch(loginFailure());
 				navigate(URL_MAP);
 			} else {
 				// 회원탈퇴 실패한 경우
@@ -76,10 +79,10 @@ function EditUserInfo() {
 			<EditMyPageTitle>회원정보 수정</EditMyPageTitle>
 			<EditMyPageForm>
 				<Logo
-					onMouseOver={() => setIsListHover(true)}
-					onMouseOut={() => setIsListHover(false)}
+				// onMouseOver={() => setIsListHover(true)}
+				// onMouseOut={() => setIsListHover(false)}
 				>
-					{isListHover && (
+					{/* {isListHover && (
 						<img
 							src={`${process.env.PUBLIC_URL}/assets/Ellipse 5.png`}
 							alt="HoverKakaodefaultprofile.png "
@@ -90,7 +93,11 @@ function EditUserInfo() {
 							src={`${process.env.PUBLIC_URL}/assets/Ellipse.png`}
 							alt="default profile.png"
 						/>
-					)}
+					)} */}
+					<img
+						src={`https://api.dicebear.com/6.x/thumbs/svg?seed=${username}&scale=90&size=60&shapeColor=0a5b83,1c799f,69d2e7,f1f4dc&backgroundColor=0a5b83,69d2e7,f1f4dc`}
+						alt="Profile"
+					/>
 				</Logo>
 				<InputTitleContainer>
 					<InputContainer>
@@ -230,7 +237,7 @@ const EditMyPageTitle = styled.div`
 	@media (max-width: 768px) {
 		width: 300px;
 		height: 40px;
-		font-size: 26px;
+		font-size: 23px;
 		font-weight: 700;
 	}
 `;
@@ -255,6 +262,7 @@ const Logo = styled.div`
 	> img {
 		width: 120px;
 		height: 120px;
+		border-radius: 50%;
 		@media (max-width: 768px) {
 			> img {
 				width: 80px;
@@ -294,11 +302,11 @@ const InputTitle = styled.div`
 	display: flex;
 	align-items: center;
 	margin-right: 30px;
-	font-size: 17px;
+	font-size: 16px;
 	@media (max-width: 768px) {
 		width: 60px;
 		height: 34px;
-		font-size: 14px;
+		font-size: 12px;
 		margin-right: 0px;
 	}
 `;
@@ -310,14 +318,14 @@ const Input = styled.input`
 	border-bottom: 1px solid #d9d9d9;
 	display: flex;
 	align-items: center;
-	font-size: 17px;
+	font-size: 15px;
 	::placeholder {
 		color: #d9d9d9;
 	}
 	@media (max-width: 768px) {
 		width: 190px;
 		height: 34px;
-		font-size: 14px;
+		font-size: 12px;
 	}
 `;
 /* 수정페이지 버튼 폼  */
