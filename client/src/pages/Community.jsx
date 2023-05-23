@@ -31,6 +31,7 @@ function Community() {
 	const handleConfirm = () => {
 		setIsModalOpen(false);
 	};
+
 	return (
 		<CommunityPageContainer>
 			<Title className="cummunityTitle">Community</Title>
@@ -73,13 +74,8 @@ function Community() {
 const CommunityPageContainer = styled.section`
 	position: relative;
 	top: 80px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	padding: 50px 0px 30px 0px;
-	width: 100vw;
-	max-height: 1000px;
+	padding: 80px;
+	width: 100%;
 	background-image: url('https://www.tfmedia.co.kr/data/photos/20200728/art_15942253142942_524c96.png');
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -91,6 +87,8 @@ const CommunityPageContainer = styled.section`
 		background-color: white;
 		max-width: 1200px;
 		border-radius: 5px;
+		margin-left: auto;
+		margin-right: auto;
 	}
 	.postWrite {
 		height: 30px;
@@ -132,7 +130,7 @@ const CommunityPageContainer = styled.section`
 		}
 		.cummunityTitle {
 			margin-top: 30px;
-			margin-bottom: 0px;
+			margin-bottom: 10px;
 			font-size: 50px;
 		}
 		.title {
