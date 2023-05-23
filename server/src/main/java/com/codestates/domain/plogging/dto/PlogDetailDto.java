@@ -2,6 +2,7 @@ package com.codestates.domain.plogging.dto;
 
 import com.codestates.domain.member.entity.Member;
 import com.codestates.domain.plogging.comment.dto.PlogCommentResponseDto;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,12 +13,13 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class PlogDetailDto {
     private Long p_id;
     private String p_title;
     private String p_content;
-    private Long memberId;
     private String userName;
+    private Long memberId;
     private boolean checkLike;
     private Integer likes;
     private LocalDateTime createdAt;
