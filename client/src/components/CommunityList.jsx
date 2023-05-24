@@ -28,24 +28,24 @@ function CommunityList({ data }) {
 					{data.map((el) => (
 						<tr key={el.b_id}>
 							<th title={el.b_title} className="title">
-								{isAuthenticated && (
-									<div className="titleWraper">
-										<img
-											src={`https://api.dicebear.com/6.x/thumbs/svg?seed=${el.username}&scale=90&size=60&shapeColor=0a5b83,1c799f,69d2e7,f1f4dc&backgroundColor=0a5b83,69d2e7,f1f4dc`}
-											alt="Profile"
-										/>
+								<div className="titleWraper">
+									<img
+										src={`https://api.dicebear.com/6.x/thumbs/svg?seed=${el.username}&scale=90&size=60&shapeColor=0a5b83,1c799f,69d2e7,f1f4dc&backgroundColor=0a5b83,69d2e7,f1f4dc`}
+										alt="Profile"
+									/>
+									{isAuthenticated && (
 										<Link to={`${URL_POST}/${el.b_id}`}>{el.b_title}</Link>
-									</div>
-								)}
-								{isAuthenticated || (
-									<button
-										type="button"
-										className="memberModalOpen"
-										onClick={() => setIsModalOpen(true)}
-									>
-										{el.b_title}
-									</button>
-								)}
+									)}
+									{isAuthenticated || (
+										<button
+											type="button"
+											className="memberModalOpen titleWraper"
+											onClick={() => setIsModalOpen(true)}
+										>
+											{el.b_title}
+										</button>
+									)}
+								</div>
 							</th>
 							<th className="none">{el.username}</th>
 							<th className="none">
@@ -141,9 +141,12 @@ const Table = styled.table`
 
 	//하트랑 댓글 색상
 	span {
-		color: var(--main-color);
 		font-weight: 800;
 		font-size: 30px;
+	}
+
+	p:last-child {
+		font-size: var(--large) !important;
 	}
 
 	.memberModalOpen {
@@ -195,6 +198,7 @@ const Table = styled.table`
 			margin-top: 10px;
 			display: flex;
 			justify-content: right;
+			align-items: center;
 			margin-left: auto;
 			margin-right: 20px;
 		}
