@@ -48,7 +48,7 @@ export default function Header({
 				</Menu>
 				<LogoWrapper to={URL_MAP}>
 					<LogoImage
-						src={`${process.env.PUBLIC_URL}/assets/logo.png`}
+						src={`${process.env.PUBLIC_URL}/assets/HeaderLogo.png`}
 						alt="로고 이미지"
 					/>
 					{!isMobile && <LogoText>BINFINDER</LogoText>}
@@ -56,10 +56,27 @@ export default function Header({
 				{!isAuthenticated ? (
 					<ButtonWrapper>
 						<HeaderButton type="button">
-							<Link to={URL_SIGNUP}>Sign up</Link>
+							<Link to={URL_SIGNUP}>
+								<div>
+									<span>S</span>
+									<span>i</span>
+									<span>g</span>
+									<span>n</span>
+									<span>U</span>
+									<span>p</span>
+								</div>
+							</Link>
 						</HeaderButton>
 						<HeaderButton type="button">
-							<Link to={URL_LOGIN}>Log in</Link>
+							<Link to={URL_LOGIN}>
+								<div>
+									<span>L</span>
+									<span>o</span>
+									<span>g</span>
+									<span>I</span>
+									<span>n</span>
+								</div>
+							</Link>
 						</HeaderButton>
 					</ButtonWrapper>
 				) : (
@@ -108,7 +125,7 @@ const HeaderWrapper = styled.div`
 
 const Menu = styled.button`
 	display: flex;
-	flex: 1;
+	flex: ;
 	justify-content: flex-start;
 	border: none;
 	background-color: transparent;
