@@ -1,12 +1,15 @@
 /* eslint-disable no-console */
 import axios from 'axios';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Button } from '../styles/Buttons';
 
 function TrashCanModal({ trashCan }) {
 	const [TrashCanModalOpen, setTrashCanModalOpen] = useState(true);
 	const mapUrl = process.env.REACT_APP_API_URL;
+	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+	const memberId = useSelector((state) => state.auth.memberId);
 
 	const handleLoadDirections = () => {
 		const startLat = 37.497942; // 출발지 위도
@@ -26,41 +29,34 @@ function TrashCanModal({ trashCan }) {
 	const handleCloseTrashCanModal = () => {
 		setTrashCanModalOpen(false);
 	};
+	const handleVote = (event, voteType) => {
+		event.preventDefault(); // 새로고침 방지
+		// POST 요청 보내기
+		if (isAuthenticated) {
+			const data = {
+				memberId,
+				trashCanId: trashCan.id,
+				voteType,
+			};
+			axios
+				.post(`${mapUrl}/votes`, data)
+				.then((response) => {
+					console.log('POST 요청 성공:', response.data);
+				})
+				.catch((error) => {
+					console.error('POST 요청 실패:', error);
+				});
+		}
+	};
+
 	// 좋아요
 	const handleLikeCount = (event) => {
-		event.preventDefault(); // 새로고침 방지
-		// POST 요청 보내기
-		const data = {
-			memberId: 1,
-			trashCanId: 1,
-			voteType: 'LIKE',
-		};
-		axios
-			.post(`${mapUrl}/vote`, data)
-			.then((response) => {
-				console.log('POST 요청 성공:', response.data);
-			})
-			.catch((error) => {
-				console.error('POST 요청 실패:', error);
-			});
+		handleVote(event, 'LIKE');
 	};
-	// 안 좋아요
-	const handleDisLikeCount = (event) => {
-		event.preventDefault(); // 새로고침 방지
-		// POST 요청 보내기
-		const data = {
-			memberId: 1,
-			trashCanId: trashCan.id,
-			voteType: 'DISLIKE',
-		};
-		axios
-			.post(`${mapUrl}/vote`, data)
-			.then((response) => {
-				console.log('POST 요청 성공:', response.data);
-			})
-			.catch((error) => {
-				console.error('POST 요청 실패:', error);
-			});
+
+	// 싫어요
+	const handleDislikeCount = (event) => {
+		handleVote(event, 'DISLIKE');
 	};
 
 	// 로드뷰
@@ -92,7 +88,7 @@ function TrashCanModal({ trashCan }) {
 						<LikeButton type="button" onClick={handleLikeCount}>
 							좋아요 : {trashCan.likeCount}
 						</LikeButton>
-						<DislikeButton type="button" onClick={handleDisLikeCount}>
+						<DislikeButton type="button" onClick={handleDislikeCount}>
 							싫어요 : {trashCan.dislikeCount}
 						</DislikeButton>
 					</LikeDislikeContainer>

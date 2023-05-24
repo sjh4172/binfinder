@@ -2,12 +2,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import REACT_APP_KAKAO_MAP_API_KEY from './KakaoMap';
 import Modal from './Modal';
 import TrashCanModal from './TrashCanModal';
 import getCurrentPosition from './GeolocationUtils';
 import TrashCansFetcher from './TrashCansFetcher';
+import { store } from '../store/UserSlice';
 
 function Map() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,7 +18,7 @@ function Map() {
 	const [, setData] = useState([]);
 
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-	const memberId1 = useSelector((state) => state.auth.memberId);
+	const memberId = useSelector((state) => state.auth.memberId);
 
 	const mapUrl = process.env.REACT_APP_API_URL;
 
@@ -90,11 +91,14 @@ function Map() {
 							kakao.maps.event.addListener(trashMarker, 'click', () => {
 								const root = document.getElementById('modal-root');
 								ReactDOM.createRoot(root).render(
-									<TrashCanModal
-										trashCan={trashCan}
-										isAuthenticated={isAuthenticated}
-										memberId1={memberId1} // 쓰레기통 데이터 전달
-									/>,
+									<Provider store={store}>
+										<TrashCanModal
+											trashCan={trashCan}
+											isAuthenticated={isAuthenticated}
+											memberId={memberId}
+										/>
+										,
+									</Provider>,
 								);
 							});
 							trashMarker.setMap(map);
