@@ -12,6 +12,7 @@ import useModal from '../hooks/useModal';
 import { getPost, deleteCommunity, postCommunity } from '../api/communityAPI';
 import { URL_POST } from '../routesURL';
 import useInput from '../hooks/useInput';
+import backgroundImg from '../image/communityBG.png';
 
 function CommunityDetail() {
 	const navigate = useNavigate();
@@ -149,7 +150,7 @@ const DetailPageContainer = styled.section`
 	top: 80px;
 	width: 100%;
 	padding: 80px;
-	background-image: url('https://www.tfmedia.co.kr/data/photos/20200728/art_15942253142942_524c96.png');
+	background-image: url(${backgroundImg});
 	background-repeat: no-repeat;
 	background-size: cover;
 	.backGround {

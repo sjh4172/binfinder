@@ -70,6 +70,11 @@ const Button = styled.button`
 		height: 30px;
 		padding: 5px 0px;
 	}
+	@media (max-width: 400px) {
+		font-size: var(--small);
+		width: 20px;
+		height: 20px;
+	}
 `;
 
 export default Pagination;

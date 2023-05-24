@@ -17,6 +17,7 @@ import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
 import Prepare from './pages/Prepare';
 import NotFound from './pages/NotFound';
+import MainPage from './pages/MianPage';
 import {
 	URL_MAP,
 	URL_LOGIN,
@@ -29,6 +30,7 @@ import {
 	URL_PLOGGING,
 	URL_INTRODUCTION,
 	URL_RECYCLE,
+	URL_MAIN,
 } from './routesURL';
 import useMediaQuery from './hooks/useMediaQuery';
 import { store, persistor } from './store/UserSlice';
@@ -67,8 +69,8 @@ function App() {
 					<Route path={URL_WRITEPOST} element={<CommunityEdit />} />
 					<Route path={URL_PLOGGING} element={<Prepare />} />
 					<Route path={URL_RECYCLE} element={<Recycle />} />
-					<Route path={URL_INTRODUCTION} element={<Prepare />} />
 					<Route path={URL_INTRODUCTION} element={<About />} />
+					<Route path={URL_MAIN} element={<MainPage />} />
 					<Route path="*" element={<NotFound />} />
 				</Routes>
 				{!isMobile && <Footer />}

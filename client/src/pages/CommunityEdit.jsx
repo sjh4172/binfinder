@@ -8,6 +8,7 @@ import useInput from '../hooks/useInput';
 import { URL_POST } from '../routesURL';
 import Modal from '../components/Modal';
 import Title from '../styles/Title';
+import backgroundImg from '../image/communityBG.png';
 
 function CommunityEdit() {
 	const navigate = useNavigate();
@@ -82,7 +83,7 @@ const EditPageContainer = styled.section`
 	top: 80px;
 	width: 100%;
 	padding: 80px;
-	background-image: url('https://www.tfmedia.co.kr/data/photos/20200728/art_15942253142942_524c96.png');
+	background-image: url(${backgroundImg});
 	background-repeat: no-repeat;
 	background-size: cover;
 	.backGround {
