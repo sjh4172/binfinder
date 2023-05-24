@@ -14,11 +14,10 @@ import java.util.prefs.BackingStoreException;
 @Setter
 @NoArgsConstructor
 public class PlogPostDto {
-    @Positive
-    private long plogId;
+
     @NotBlank(message = "title not null")
-    private String title;
+    private String p_title;
     @NotBlank(message = "content not null")
-    private String content;
+    private String p_content;
 
 }

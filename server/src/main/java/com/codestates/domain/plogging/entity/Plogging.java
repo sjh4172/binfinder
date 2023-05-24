@@ -17,30 +17,39 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 public class Plogging extends BaseEntity {
-
-    //private Long memberId;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "plog_id")
-    private Long plogId;
+    @Column
+    private Long p_id;
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
     @Column(length = 100)
     @NotBlank
-    private String title;
-    @Column
+    private String p_title;
+    @Column(columnDefinition = "TEXT")
     @NotBlank
-    private String content;
+    private String p_content;
     @Column(nullable = false)
     private Integer likes;
+    @Column
+    private boolean checkParticipation;
+
     @OneToMany(mappedBy = "plogging",cascade = CascadeType.ALL)
-    private List<PlogComment> comments = new ArrayList<>();
+    private List<PlogComment> p_comments = new ArrayList<>();
+
     @ElementCollection
     private List<Long> likedUserIds;
+
+    @Column
+    private int p_commentCount;
+
     public Plogging(){
         this.likes = 0;
     }
-    @Column
-    private int plogCommentCount;
+
+    public void addP_comment(PlogComment plogComment){
+        p_comments.add(plogComment);
+    }
+    public String getUsername(){return member.getUsername();}
 }

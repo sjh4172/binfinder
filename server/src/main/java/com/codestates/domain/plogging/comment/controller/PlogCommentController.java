@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,10 +29,12 @@ public class PlogCommentController {
         this.mapper = mapper;
         this.plogCommentService = plogCommentService;
     }
-    @PostMapping("/{plogId}")
-    public ResponseEntity postPlogComment(@PathVariable Long plogId, @RequestBody PlogCommentPostDto commentPostDto){
-        PlogComment plogComment = plogCommentService.createPlogComment(plogId, mapper.plogCommentPostDtoToPlogComment(commentPostDto));
-        URI uri = UriComponentsBuilder.newInstance().path("/api/pcomments"+plogComment.getPlogCommentId())
+    @PostMapping
+    public ResponseEntity postPlogComment(@Valid @RequestBody PlogCommentPostDto postDto){
+        PlogComment plogComment = plogCommentService.createPlogComment(mapper.plogCommentPostDtoToPlogComment(postDto));
+
+        URI uri = UriComponentsBuilder.newInstance()
+                .path("/api/pcomments/"+plogComment.getPlogCommentId())
                 .build().toUri();
         return ResponseEntity.created(uri).build();
     }
