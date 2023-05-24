@@ -72,7 +72,7 @@ public class PlogService {
         plogRepository.delete(plogging);
     }
     //작성자만 게시글 삭제가 가능해야 함
-    public Plogging findPlog(long p_id){
+    public Plogging findPlogWithComments(long p_id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!authentication.isAuthenticated()) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
@@ -82,7 +82,7 @@ public class PlogService {
         // 로그인한 사용자 정보로 멤버 확인
         Member member = verifyExistingMember(loginEmail);
 
-        Optional<Plogging> optionalPlog = plogRepository.findPlogWithUserComments(p_id);
+        Optional<Plogging> optionalPlog = plogRepository.findPlogWithComments(p_id);
 
         if(optionalPlog.isPresent()) {
             Plogging plogging = optionalPlog.get();

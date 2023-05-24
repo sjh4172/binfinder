@@ -2,6 +2,7 @@ package com.codestates.domain.plogging.comment.entity;
 import com.codestates.audit.BaseEntity;
 import com.codestates.domain.member.entity.Member;
 import com.codestates.domain.plogging.entity.Plogging;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class PlogComment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

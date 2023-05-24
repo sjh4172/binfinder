@@ -5,7 +5,6 @@ import com.codestates.domain.plogging.dto.PlogPatchDto;
 import com.codestates.domain.plogging.dto.PlogPostDto;
 import com.codestates.domain.plogging.dto.PlogResponseDto;
 import com.codestates.domain.plogging.entity.Plogging;
-import com.codestates.domain.plogging.mapper.CustomMapper;
 import com.codestates.domain.plogging.mapper.PlogMapper;
 import com.codestates.domain.plogging.service.PlogService;
 import com.codestates.exception.ErrorResponse;
@@ -31,11 +30,11 @@ public class PlogController {
 
     private final PlogService plogService;
     private final PlogMapper plogMapper;
-    private final CustomMapper customMapper;
-    public PlogController(PlogService plogService, PlogMapper plogMapper, CustomMapper customMapper) {
+
+    public PlogController(PlogService plogService, PlogMapper plogMapper) {
         this.plogService = plogService;
         this.plogMapper = plogMapper;
-        this.customMapper = customMapper;
+
     }
 
     // 게시글 생성
@@ -53,11 +52,11 @@ public class PlogController {
     // 게시글 상세 조회
     @GetMapping("/{p_id}")
     public ResponseEntity<PlogDetailDto> findPlog(@PathVariable("p_id") Long p_id) {
-        Plogging plogging = plogService.findPlog(p_id);
+        Plogging plogging = plogService.findPlogWithComments(p_id);
         if (plogging == null) {
             return ResponseEntity.notFound().build();
         }
-        PlogDetailDto plogDetailDto = customMapper.ploggingToPlogDetailDto(plogging);
+        PlogDetailDto plogDetailDto = plogMapper.ploggingToPlogDetailDto(plogging);
         return ResponseEntity.ok(plogDetailDto);
     }
 

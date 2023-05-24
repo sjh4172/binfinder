@@ -6,6 +6,7 @@ import com.codestates.domain.plogging.dto.PlogPostDto;
 import com.codestates.domain.plogging.dto.PlogResponseDto;
 import com.codestates.domain.plogging.entity.Plogging;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface PlogMapper {
@@ -14,7 +15,9 @@ public interface PlogMapper {
 //    @Mapping(target = "p_id", source = "plogPatchDto.p_id")
 //    @Mapping(target = "member", ignore = true)
     Plogging plogPatchDtoToPlogging(PlogPatchDto plogPatchDto);
+
     PlogResponseDto ploggingToPlogResponseDto(Plogging plogging);
+    @Mapping(target = "comments", source = "p_comments")
     PlogDetailDto ploggingToPlogDetailDto(Plogging plogging);
 
 
