@@ -22,30 +22,23 @@ function CommunityList({ data }) {
 					<th className="none">좋아요</th>
 				</tr>
 			</thead>
-			<Line />
 			{data && (
 				<tbody>
 					{data.map((el) => (
 						<tr key={el.b_id}>
 							<th title={el.b_title} className="title">
-								<div className="titleWraper">
-									<img
-										src={`https://api.dicebear.com/6.x/thumbs/svg?seed=${el.username}&scale=90&size=60&shapeColor=0a5b83,1c799f,69d2e7,f1f4dc&backgroundColor=0a5b83,69d2e7,f1f4dc`}
-										alt="Profile"
-									/>
-									{isAuthenticated && (
-										<Link to={`${URL_POST}/${el.b_id}`}>{el.b_title}</Link>
-									)}
-									{isAuthenticated || (
-										<button
-											type="button"
-											className="memberModalOpen titleWraper"
-											onClick={() => setIsModalOpen(true)}
-										>
-											{el.b_title}
-										</button>
-									)}
-								</div>
+								{isAuthenticated && (
+									<Link to={`${URL_POST}/${el.b_id}`}>{el.b_title}</Link>
+								)}
+								{isAuthenticated || (
+									<button
+										type="button"
+										className="memberModalOpen"
+										onClick={() => setIsModalOpen(true)}
+									>
+										{el.b_title}
+									</button>
+								)}
 							</th>
 							<th className="none">{el.username}</th>
 							<th className="none">
@@ -90,7 +83,6 @@ function CommunityList({ data }) {
 			{(!data || data.length === 0) && (
 				<p className="empty">게시물이 없습니다.</p>
 			)}
-			<Line />
 			{ismodalOpen && (
 				<Modal
 					message="회원만 읽을 수 있습니다."
@@ -104,23 +96,21 @@ function CommunityList({ data }) {
 
 const Table = styled.table`
 	width: 100%;
-	max-width: 1024px;
-	font-size: var(--large);
+	font-size: var(--base);
 	table-layout: fixed;
 	min-height: 371px;
+
 	// 테이블 항목
 	thead {
-		font-size: 19px;
+		border-top: 1px solid black;
+		border-bottom: 1px solid black;
 		font-weight: 800;
-		color: var(--main-color);
-		line-height: 35px;
 	}
 
 	// 기본뷰 테이블 열 비율
 	tr {
 		display: flex;
-		padding: 15px 10px;
-		align-items: center;
+		padding: 12px 0px;
 	}
 
 	tr th:nth-child(1) {
@@ -130,7 +120,7 @@ const Table = styled.table`
 		overflow: hidden;
 	}
 	tr th:nth-child(2) {
-		flex: 3;
+		flex: 2;
 	}
 	tr th:nth-child(3) {
 		flex: 2;
@@ -139,14 +129,20 @@ const Table = styled.table`
 		flex: 2;
 	}
 
-	//하트랑 댓글 색상
-	span {
-		font-weight: 800;
-		font-size: 30px;
+	// 데이블 행 커서 및 밑줄
+	tbody tr {
+		border-bottom: 1px solid #d9d9d9;
 	}
 
-	p:last-child {
-		font-size: var(--large) !important;
+	// 테이블 행 hover
+	tbody tr:hover {
+		color: #575757;
+	}
+
+	//하트랑 댓글 색상
+	span {
+		color: var(--main-color);
+		font-weight: 800;
 	}
 
 	.memberModalOpen {
@@ -159,29 +155,12 @@ const Table = styled.table`
 		text-align: center;
 		color: #b3b3b3;
 		padding: 154px 0px;
+		border-bottom: 1px solid #d9d9d9;
 	}
 
 	// 반응형
 	.bottom {
 		display: none;
-	}
-
-	.titleWraper {
-		display: flex;
-		font-size: var(--sub-title);
-		font-weight: 800;
-		align-items: center;
-		> * {
-			margin: 10px 0px 10px 40px;
-		}
-	}
-	.titleWraper:hover {
-		transform: translateY(-5px);
-		color: var(--main-color);
-	}
-
-	img {
-		border-radius: 50%;
 	}
 	@media (max-width: 768px) {
 		.none {
@@ -198,28 +177,12 @@ const Table = styled.table`
 			margin-top: 10px;
 			display: flex;
 			justify-content: right;
-			align-items: center;
-			margin-left: auto;
-			margin-right: 20px;
 		}
 		.bottom th {
 			flex: 0 1 auto !important;
 			margin-left: 15px;
 		}
-		.titleWraper {
-			> * {
-				margin: 10px 0px 10px 20px;
-			}
-		}
 	}
-`;
-
-const Line = styled.div`
-	height: 1px;
-	width: 95%;
-	background-color: #d9d9d9;
-	margin-left: auto;
-	margin-right: auto;
 `;
 
 export default CommunityList;

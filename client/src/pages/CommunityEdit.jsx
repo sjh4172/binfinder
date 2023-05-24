@@ -55,7 +55,6 @@ function CommunityEdit() {
 
 	return (
 		<EditPageContainer>
-			<Title className="cummunityTitle">Community</Title>
 			<div className="backGround">
 				<CommunityEditor contentBind={contentBind} titleBind={titleBind} />
 				<div className="flex">
@@ -80,19 +79,17 @@ function CommunityEdit() {
 
 const EditPageContainer = styled.section`
 	position: relative;
-	top: 80px;
+	top: 50px;
 	width: 100%;
 	padding: 80px;
-	background-image: url(${backgroundImg});
-	background-repeat: no-repeat;
-	background-size: cover;
 	.backGround {
 		background-color: white;
 		border-radius: 5px;
 		max-width: 1000px;
 		margin-left: auto;
 		margin-right: auto;
-		padding: 30px 40px;
+		padding: 50px 100px;
+		border: 1px solid var(--line-color);
 	}
 	.flex {
 		display: flex;
@@ -102,7 +99,7 @@ const EditPageContainer = styled.section`
 
 	.bt {
 		font-size: var(--base);
-		height: 35px;
+		padding: 15px 30px;
 	}
 
 	.cummunityTitle {
@@ -126,7 +123,8 @@ const EditPageContainer = styled.section`
 			padding: 20px;
 		}
 		.bt {
-			width: 80px;
+			width: 140px;
+			text-align: center;
 		}
 	}
 `;

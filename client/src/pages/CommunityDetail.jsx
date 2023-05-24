@@ -75,23 +75,28 @@ function CommunityDetail() {
 	};
 	return (
 		<DetailPageContainer>
-			<Title className="cummunityTitle">Community</Title>
 			<div className="backGround">
 				<section>
 					<Title className="title">{data && data.b_title}</Title>
 					<MyProfile username={data && data.username} marginNone />
 					<CommunityPost setIsPModalOpen={openModalPost} data={data} />
-					<Button
-						type="button"
-						className="bt list"
-						onClick={() => navigate(URL_POST)}
-					>
-						목록 보기
-					</Button>
-					<Button type="button" className="bt" onClick={() => likeUpDown()}>
-						{data && isLike && `♥ ${totalLike}`}
-						{data && (isLike || `♡ ${totalLike}`)}
-					</Button>
+					<div className="buttonWrapper">
+						<Button
+							type="button"
+							className="bt"
+							onClick={() => navigate(URL_POST)}
+						>
+							목록 보기
+						</Button>
+						<Button
+							type="button"
+							className="bt heart"
+							onClick={() => likeUpDown()}
+						>
+							{data && isLike && `♥ ${totalLike}`}
+							{data && (isLike || `♡ ${totalLike}`)}
+						</Button>
+					</div>
 				</section>
 				<section>
 					<h1 className="visually-hidden">댓글</h1>
@@ -147,12 +152,9 @@ function CommunityDetail() {
 
 const DetailPageContainer = styled.section`
 	position: relative;
-	top: 80px;
+
 	width: 100%;
-	padding: 80px;
-	background-image: url(${backgroundImg});
-	background-repeat: no-repeat;
-	background-size: cover;
+	padding: 50px;
 	.backGround {
 		background-color: white;
 		border-radius: 5px;
@@ -174,10 +176,23 @@ const DetailPageContainer = styled.section`
 	}
 	.bt {
 		margin: 30px 30px 30px 0px;
+		padding: 15px 30px;
+		width: 150px;
+		text-align: center;
 		font-size: var(--base);
-		height: 35px;
+	}
+	.heart {
+		color: var(--main-color);
+		border-color: var(--main-color);
 	}
 
+	.heart:hover {
+		background: #5cabda40;
+	}
+
+	.buttonWrapper {
+		display: flex;
+	}
 	label {
 		font-size: 0px;
 	}
@@ -194,13 +209,15 @@ const DetailPageContainer = styled.section`
 	}
 
 	.wbt {
-		margin: 10px 0px 20px calc(100% - 100px);
+		margin-left: auto;
+		margin-right: 0px;
 	}
 	@media (max-width: 768px) {
 		padding: 10px;
 		top: 70px;
 		.wbt {
-			margin: 10px 0px 20px calc(100% - 60px);
+			margin-left: auto;
+			margin-right: 0px;
 		}
 		.list {
 			width: 80px;
