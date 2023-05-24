@@ -132,7 +132,6 @@ public class PlogService {
                 .orElseThrow(()-> new RuntimeException("게시글을 찾을 수 없습니다"));
         List<Long> likedMember = plogging.getLikedUserIds();
         if (likedMember.remove(m_id)) {
-            likedMember.add(m_id);
             plogging.setLikedUserIds(likedMember);
             plogging.setLikes(plogging.getLikes() - 1);
             plogging.setCheckParticipation(false);
