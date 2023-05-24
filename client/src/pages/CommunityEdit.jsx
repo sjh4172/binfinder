@@ -7,6 +7,7 @@ import { postCommunity } from '../api/communityAPI';
 import useInput from '../hooks/useInput';
 import { URL_POST } from '../routesURL';
 import Modal from '../components/Modal';
+import Title from '../styles/Title';
 
 function CommunityEdit() {
 	const navigate = useNavigate();
@@ -18,7 +19,7 @@ function CommunityEdit() {
 	);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [message, setMessage] = useState('');
-	console.log(contentBind.value);
+
 	const writePost = () => {
 		if (!titleBind.value) {
 			setMessage('제목을 작성해주세요.');
@@ -53,29 +54,45 @@ function CommunityEdit() {
 
 	return (
 		<EditPageContainer>
-			<CommunityEditor contentBind={contentBind} titleBind={titleBind} />
-			<div className="flex">
-				<Button type="button" className="bt" onClick={() => navigate(-1)}>
-					작성 취소
-				</Button>
-				<WarningButton className="bt" onClick={() => writePost()}>
-					작성 완료
-				</WarningButton>
+			<Title className="cummunityTitle">Community</Title>
+			<div className="backGround">
+				<CommunityEditor contentBind={contentBind} titleBind={titleBind} />
+				<div className="flex">
+					<Button type="button" className="bt" onClick={() => navigate(-1)}>
+						작성 취소
+					</Button>
+					<WarningButton className="bt" onClick={() => writePost()}>
+						작성 완료
+					</WarningButton>
+				</div>
+				{isModalOpen && (
+					<Modal
+						message={message}
+						handleConfirm={handleConfirm}
+						cancel={false}
+					/>
+				)}
 			</div>
-			{isModalOpen && (
-				<Modal message={message} handleConfirm={handleConfirm} cancel={false} />
-			)}
 		</EditPageContainer>
 	);
 }
 
 const EditPageContainer = styled.section`
-	max-width: 1024px;
-	width: 80vw;
-	margin-left: auto;
-	margin-right: auto;
-	padding-top: calc(var(--header-hight) + 50px);
-	height: calc(100vh - 228px);
+	position: relative;
+	top: 80px;
+	width: 100%;
+	padding: 80px;
+	background-image: url('https://www.tfmedia.co.kr/data/photos/20200728/art_15942253142942_524c96.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+	.backGround {
+		background-color: white;
+		border-radius: 5px;
+		max-width: 1000px;
+		margin-left: auto;
+		margin-right: auto;
+		padding: 30px 40px;
+	}
 	.flex {
 		display: flex;
 		justify-content: space-between;
@@ -87,8 +104,26 @@ const EditPageContainer = styled.section`
 		height: 35px;
 	}
 
+	.cummunityTitle {
+		width: 100%;
+		text-align: center;
+		font-size: 70px;
+		color: white;
+		text-shadow: 2px 1px 1px rgba(0, 0, 0, 0.25);
+		margin-bottom: 80px;
+	}
+
 	@media (max-width: 768px) {
-		padding-top: calc(var(--header-hight) + 30px);
+		padding: 10px;
+		top: 70px;
+		.cummunityTitle {
+			margin-top: 30px;
+			margin-bottom: 10px;
+			font-size: 50px;
+		}
+		.backGround {
+			padding: 20px;
+		}
 		.bt {
 			width: 80px;
 		}

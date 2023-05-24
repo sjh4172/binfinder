@@ -1,5 +1,6 @@
 package com.codestates.domain.vote;
 
+import com.codestates.exception.BusinessLogicException;
 import com.codestates.exception.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
