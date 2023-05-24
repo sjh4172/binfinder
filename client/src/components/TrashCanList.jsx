@@ -92,7 +92,7 @@ const ListWapper = styled.div`
 		padding-right: 20px;
 	}
 	@media (max-width: 768px) {
-		top: calc(100% - 300px);
+		top: calc(100% - 200px);
 		width: 100%;
 	}
 `;

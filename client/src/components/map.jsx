@@ -23,13 +23,13 @@ function Map() {
 	const mapUrl = process.env.REACT_APP_API_URL;
 
 	// 쓰레기통 로딩 중
-	useEffect(() => {
-		const timer = setInterval(() => {
-			setIsLoading((prevLoading) => !prevLoading);
-		}, 450);
+	// useEffect(() => {
+	// 	const timer = setInterval(() => {
+	// 		setIsLoading((prevLoading) => !prevLoading);
+	// 	}, 450);
 
-		return () => clearInterval(timer);
-	}, []);
+	// 	return () => clearInterval(timer);
+	// }, []);
 
 	const loadKakaoMap = useCallback(() => {
 		// 카카오맵 스크립트 읽어오기
@@ -144,7 +144,7 @@ function Map() {
 					handleCancel={handleModalConfirm}
 				/>
 			)}
-			{/* {data.length > 0 && (
+			{/* {trashCans.length > 0 && (
 				<LoadingMessageContainer>
 					<LoadingMessage>
 						주변 쓰레기통 찾는 중{isLoading ? '...' : '..'}
@@ -154,7 +154,7 @@ function Map() {
 		</>
 	);
 }
-// 맵사이즈 sssß
+// 맵사이즈
 const MapStyle = styled.div`
 	height: 100vh;
 	width: calc(100vw - 18.7em);
@@ -166,7 +166,7 @@ const MapStyle = styled.div`
 	}
 	@media (max-width: 768px) {
 		width: 100vw;
-		height: 60vh;
+		height: 65vh;
 	}
 `;
 // 로딩 메시지
