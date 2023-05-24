@@ -17,13 +17,19 @@ public class PlogComment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long plogCommentId;
+
     @Column(nullable = false)
     @NotBlank
     private String plogComment;
+
     @ManyToOne
-    @JoinColumn(name = "plog_id")
+    @JoinColumn(name = "p_id")
     private Plogging plogging;
+
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public long getP_id(){return plogging.getP_id();}
+    public String getUsername(){return member.getUsername();}
 }

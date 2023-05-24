@@ -12,12 +12,12 @@ public class CustomMapper {
 		}
 
 		PlogDetailDto plogDetailDto = new PlogDetailDto();
-		plogDetailDto.setUserName(plogging.getUsername());
+		plogDetailDto.setUsername(plogging.getUsername());
 		plogDetailDto.setMember( plogging.getMember() );
 		plogDetailDto.setP_id( plogging.getP_id() );
 		plogDetailDto.setP_title( plogging.getP_title() );
 		plogDetailDto.setP_content( plogging.getP_content() );
-		plogDetailDto.setCheckLike( plogging.isCheckLike() );
+		plogDetailDto.setCheckParticipation( plogging.isCheckParticipation() );
 		plogDetailDto.setLikes( plogging.getLikes() );
 		plogDetailDto.setCreatedAt( plogging.getCreatedAt() );
 		plogDetailDto.setModifiedAt( plogging.getModifiedAt() );

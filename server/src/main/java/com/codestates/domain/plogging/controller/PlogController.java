@@ -52,7 +52,7 @@ public class PlogController {
 
     // 게시글 상세 조회
     @GetMapping("/{p_id}")
-    public ResponseEntity findPlog(@PathVariable("p_id") Long p_id) {
+    public ResponseEntity<PlogDetailDto> findPlog(@PathVariable("p_id") Long p_id) {
         Plogging plogging = plogService.findPlog(p_id);
         if (plogging == null) {
             return ResponseEntity.notFound().build();

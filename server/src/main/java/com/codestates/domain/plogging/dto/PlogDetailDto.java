@@ -18,9 +18,9 @@ public class PlogDetailDto {
     private Long p_id;
     private String p_title;
     private String p_content;
-    private String userName;
     private Long memberId;
-    private boolean checkLike;
+    private String username;
+    private boolean checkParticipation;;
     private Integer likes;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;

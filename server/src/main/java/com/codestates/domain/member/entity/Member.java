@@ -52,9 +52,10 @@ public class Member extends BaseEntity {
      @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
      private List<Vote> votes = new ArrayList<>();
 
-     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
      private List<Plogging> plogs = new ArrayList<>();
-     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+
+     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
      private List<PlogComment> p_comments = new ArrayList<>();
 
     public void setComments(Comment comment) {

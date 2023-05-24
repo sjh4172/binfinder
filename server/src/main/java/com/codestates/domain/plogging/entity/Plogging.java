@@ -17,13 +17,11 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 public class Plogging extends BaseEntity {
-
-    //private Long memberId;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long p_id;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
     @Column(length = 100)
@@ -35,16 +33,21 @@ public class Plogging extends BaseEntity {
     @Column(nullable = false)
     private Integer likes;
     @Column
-    private boolean checkLike;
+    private boolean checkParticipation;
+
     @OneToMany(mappedBy = "plogging",cascade = CascadeType.ALL)
     private List<PlogComment> p_comments = new ArrayList<>();
+
     @ElementCollection
     private List<Long> likedUserIds;
+
+    @Column
+    private int p_commentCount;
+
     public Plogging(){
         this.likes = 0;
     }
-    @Column
-    private int p_commentCount;
+
     public void addP_comment(PlogComment plogComment){
         p_comments.add(plogComment);
     }

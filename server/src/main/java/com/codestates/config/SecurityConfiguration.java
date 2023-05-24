@@ -92,6 +92,20 @@ public class SecurityConfiguration{
                         .antMatchers(HttpMethod.PATCH, "/comments/**").hasAnyRole("ADMIN","USER") // 불량 댓글일 경우 관리자가 수정, 회원 댓글 수정
                         .antMatchers(HttpMethod.DELETE, "/comments/**").hasAnyRole("ADMIN","USER") // 불량 게시판 댓글일 경우 관리자가 삭제, 회원 댓글 삭제
 
+                        .antMatchers(HttpMethod.GET, "/plogs").permitAll() // 플로깅 게시판 목록 조회는 로그인 없이도 가능
+                        .antMatchers(HttpMethod.GET, "/plogs/**").hasAnyRole("ADMIN", "USER") // 특정 게시글 조회는 관리자, 회원만 가능
+                        .antMatchers(HttpMethod.POST, "/plogs").hasAnyRole("USER")
+                        .antMatchers(HttpMethod.PATCH, "/plogs/**").hasAnyRole("ADMIN","USER") // 불량 게시판 글일 경우 관리자가 수정, 회원 본인 글 수정
+                        .antMatchers(HttpMethod.DELETE, "/plogs/**").hasAnyRole("ADMIN","USER") // 불량 게시판 글일 경우 관리자가 삭제, 회원 본인 글 삭제
+
+                        .antMatchers(HttpMethod.GET, "/pcomments").hasAnyRole("ADMIN","USER")
+                        .antMatchers(HttpMethod.GET, "/pcomments/").hasAnyRole("ADMIN","USER") // 전체 댓글 조회는 관리자와 회원만 가능
+                        .antMatchers(HttpMethod.GET, "/pcomments/**").hasAnyRole("ADMIN", "USER")
+                        .antMatchers(HttpMethod.POST, "/pcomments").hasRole("USER") // 댓글 작성은 회원만 가능
+                        .antMatchers(HttpMethod.PATCH, "/pcomments/**").hasAnyRole("ADMIN","USER") // 불량 댓글일 경우 관리자가 수정, 회원 댓글 수정
+                        .antMatchers(HttpMethod.DELETE, "/pcomments/**").hasAnyRole("ADMIN","USER") // 불량 게시판 댓글일 경우 관리자가 삭제, 회원 댓글 삭제
+
+
                         .antMatchers(HttpMethod.GET,"/trash-cans/**").hasAnyRole("ADMIN","USER")
                         .antMatchers(HttpMethod.GET,"/vote/members/**").hasAnyRole("ADMIN","USER")
                         .antMatchers(HttpMethod.POST,"/vote").hasRole("USER") // 쓰레기통 좋아요, 싫어요 투표는 유저만 가능
@@ -99,7 +113,6 @@ public class SecurityConfiguration{
                         .antMatchers(HttpMethod.DELETE,"/vote/**").hasAnyRole("ADMIN","USER") // 투표 삭제는 관리자, 유저만 가능
 
                         .anyRequest().permitAll()); // 서버 측으로 들어오는 모든 request 접근 허용
-
         return http.build();
     }
 

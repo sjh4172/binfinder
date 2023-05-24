@@ -134,6 +134,7 @@ public class CommentService {
 	private Board verifyExistingBoard(Board board){
 		return boardService.findVerifiedBoard(board.getB_id());
 	}
+
 	public Member verifyExistingMember(String loginEmail) {
 		// 사용자 관리 서비스를 통해 로그인한 사용자의 이메일을 검사하고, 사용자 정보를 가져오는 로직을 구현합니다.
 		Optional<Member> OptionalMember = memberRepository.findByEmail(loginEmail);

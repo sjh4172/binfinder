@@ -52,11 +52,6 @@ public class BoardController {
 				.build().toUri();
 
 		return ResponseEntity.created(uri).build();
-
-//		Board board = mapper.boardPostDtoToBoard(postDto);
-//		Board response = boardService.createBoard(board);
-//
-//		return new ResponseEntity<>(mapper.boardToBoardResponseDto(response), HttpStatus.CREATED);
 	}
 
 	@PatchMapping("/{id}")

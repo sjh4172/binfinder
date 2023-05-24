@@ -14,6 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -32,7 +34,7 @@ public class PlogService {
         this.memberService = memberService;
         this.memberRepository = memberRepository;
     }
-
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     public Plogging createPlog (Plogging plogging) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -52,7 +54,9 @@ public class PlogService {
             throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
         }
     }//멤버만 게시글 쓸 수 있어야 함
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     public Plogging updatePlog(Plogging plogging) {
+
         verifyAuthorizedMember(plogging.getP_id());
         Plogging findPlog = findVerifiedPlog(plogging.getP_id());
         findPlog.setP_title(plogging.getP_title());
@@ -60,6 +64,7 @@ public class PlogService {
         return plogRepository.save(findPlog);
     }
     //작성자만 게시글 수정을 할 수 있어야 함
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     public void deletePlog(Long p_id){
         verifyAuthorizedMember(p_id);
         Plogging plogging = plogRepository.findById(p_id)
@@ -72,21 +77,23 @@ public class PlogService {
         if (!authentication.isAuthenticated()) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
         }
+
         String loginEmail = authentication.getName();
         // 로그인한 사용자 정보로 멤버 확인
         Member member = verifyExistingMember(loginEmail);
 
-        Optional<Plogging> optionalPlog = plogRepository.findPlogWithComments(p_id);
+        Optional<Plogging> optionalPlog = plogRepository.findPlogWithUserComments(p_id);
+
         if(optionalPlog.isPresent()) {
             Plogging plogging = optionalPlog.get();
             List<Long> likedUserIds = plogging.getLikedUserIds();
-            plogging.setCheckLike(likedUserIds.contains(member.getMemberId()));
+            plogging.setCheckParticipation(likedUserIds.contains(member.getMemberId()));
             return plogging;
         } else {
             throw new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND);
-
         }
     }
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     public Page<Plogging> findPlogs(int page, int size){
         return plogRepository.findAll(PageRequest.of(page,size));
     }
@@ -104,19 +111,23 @@ public class PlogService {
         return findPlog;
     }
     public Plogging like(long p_id, long m_id){
+        memberService.verifyAuthorizedMember(m_id);
         Plogging plogging = plogRepository.findById(p_id)
                 .orElseThrow(()-> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
         List<Long> likedMember = plogging.getLikedUserIds();
+
         if (!likedMember.contains(m_id)) {
             likedMember.add(m_id);
             plogging.setLikedUserIds(likedMember);
             plogging.setLikes(plogging.getLikes() + 1);
-            plogging.setCheckLike(true);
+            plogging.setCheckParticipation(true);
         }
         return plogRepository.save(plogging);
     }
     public Plogging unLike(long p_id, long m_id){
-        memberService.verifyAuthorizedMember(p_id);
+
+        memberService.verifyAuthorizedMember(m_id);
+
         Plogging plogging = plogRepository.findById(p_id)
                 .orElseThrow(()-> new RuntimeException("게시글을 찾을 수 없습니다"));
         List<Long> likedMember = plogging.getLikedUserIds();
@@ -124,7 +135,7 @@ public class PlogService {
             likedMember.add(m_id);
             plogging.setLikedUserIds(likedMember);
             plogging.setLikes(plogging.getLikes() - 1);
-            plogging.setCheckLike(false);
+            plogging.setCheckParticipation(false);
         }
         return plogRepository.save(plogging);
     }
