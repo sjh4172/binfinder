@@ -130,7 +130,7 @@ const Table = styled.table`
 		overflow: hidden;
 	}
 	tr th:nth-child(2) {
-		flex: 2;
+		flex: 3;
 	}
 	tr th:nth-child(3) {
 		flex: 2;
@@ -165,10 +165,11 @@ const Table = styled.table`
 
 	.titleWraper {
 		display: flex;
+		font-size: var(--sub-title);
+		font-weight: 800;
 		align-items: center;
 		> * {
 			margin: 10px 0px 10px 40px;
-			font-weight: 800;
 		}
 	}
 	.titleWraper:hover {
