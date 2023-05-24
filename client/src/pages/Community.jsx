@@ -9,6 +9,7 @@ import { URL_WRITEPOST } from '../routesURL';
 import { getPostList } from '../api/communityAPI';
 import Modal from '../components/Modal';
 import { Button } from '../styles/Buttons';
+import backgroundImg from '../image/communityBG.png';
 
 function Community() {
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -76,7 +77,7 @@ const CommunityPageContainer = styled.section`
 	top: 80px;
 	padding: 80px;
 	width: 100%;
-	background-image: url('https://www.tfmedia.co.kr/data/photos/20200728/art_15942253142942_524c96.png');
+	background-image: url(${backgroundImg});
 	background-repeat: no-repeat;
 	background-size: cover;
 	.flex {
