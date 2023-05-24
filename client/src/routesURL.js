@@ -1,4 +1,4 @@
-export const URL_MAP = '/';
+export const URL_MAP = '/map';
 export const URL_LOGIN = '/login';
 export const URL_SIGNUP = '/signup';
 export const URL_MYPAGE = '/mypage';
@@ -9,3 +9,4 @@ export const URL_WRITEPOST = '/boards/write';
 export const URL_PLOGGING = '/plogging';
 export const URL_RECYCLE = '/recycle';
 export const URL_INTRODUCTION = '/introduction';
+export const URL_MAIN = '/';
