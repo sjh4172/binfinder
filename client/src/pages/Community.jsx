@@ -22,7 +22,7 @@ function Community() {
 	useEffect(() => {
 		if (location.search) {
 			getPostList(location.search).then((res) => {
-				setData(res.data);
+				setData(res.data.reverse());
 				setTotalPage(res.headers.get('X-Total-Pages'));
 			});
 		}
@@ -31,10 +31,12 @@ function Community() {
 	const handleConfirm = () => {
 		setIsModalOpen(false);
 	};
+
 	return (
 		<CommunityPageContainer>
+			<Title className="cummunityTitle">Community</Title>
 			<div className="flex">
-				<Title>게시판</Title>
+				<CommunityList data={data} />
 				{isAuthenticated && (
 					<Link to={URL_WRITEPOST} className="postWrite">
 						글 작성
@@ -49,47 +51,50 @@ function Community() {
 						글 작성
 					</Button>
 				)}
+				{totalPage >= 0 && (
+					<Pagination
+						currentPage={currentPage}
+						setCurrentPage={setCurrentPage}
+						totalPage={totalPage}
+						setSearchParams={setSearchParams}
+					/>
+				)}
+				{isModalOpen && (
+					<Modal
+						message="회원만 작성 가능합니다."
+						cancel={false}
+						handleConfirm={handleConfirm}
+					/>
+				)}
 			</div>
-			<CommunityList data={data} />
-			{totalPage >= 0 && (
-				<Pagination
-					currentPage={currentPage}
-					setCurrentPage={setCurrentPage}
-					totalPage={totalPage}
-					setSearchParams={setSearchParams}
-				/>
-			)}
-			{isModalOpen && (
-				<Modal
-					message="회원만 작성 가능합니다."
-					cancel={false}
-					handleConfirm={handleConfirm}
-				/>
-			)}
 		</CommunityPageContainer>
 	);
 }
 
 const CommunityPageContainer = styled.section`
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	margin-left: auto;
-	margin-right: auto;
-	padding-top: calc(var(--header-hight) + 50px);
-	width: 80vw;
-	max-width: 1000px;
-	height: calc(100% - 228px);
+	position: relative;
+	top: 80px;
+	padding: 80px;
+	width: 100%;
+	background-image: url('https://www.tfmedia.co.kr/data/photos/20200728/art_15942253142942_524c96.png');
+	background-repeat: no-repeat;
+	background-size: cover;
 	.flex {
 		display: flex;
-		justify-content: space-between;
-		margin-bottom: 20px;
-		align-items: end;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		background-color: white;
+		max-width: 1200px;
+		border-radius: 5px;
+		margin-left: auto;
+		margin-right: auto;
 	}
 	.postWrite {
 		height: 30px;
 		width: 100px;
 		padding: 3px;
+		margin: 20px 30px 20px auto;
 		background-color: var(--main-color);
 		color: var(--text-white-color);
 		box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.25),
@@ -107,12 +112,29 @@ const CommunityPageContainer = styled.section`
 		box-shadow: 0px 2px 0px rgba(255, 255, 255, 0.25),
 			inset 0px 2px 0px rgba(0, 0, 0, 0.25);
 	}
+	.cummunityTitle {
+		width: 100%;
+		text-align: center;
+		font-size: 70px;
+		color: white;
+		text-shadow: 2px 1px 1px rgba(0, 0, 0, 0.25);
+		margin-bottom: 80px;
+	}
 	@media (max-width: 768px) {
-		padding-top: 30px;
+		top: 70px;
+		padding: 10px;
 		.postWrite {
 			width: 80px;
 			height: 30px;
 			font-size: var(--base);
+		}
+		.cummunityTitle {
+			margin-top: 30px;
+			margin-bottom: 10px;
+			font-size: 50px;
+		}
+		.title {
+			margin-right: auto;
 		}
 	}
 `;

@@ -3,9 +3,12 @@ package com.codestates.domain.member.service;
 import com.codestates.auth.CustomAuthorityUtils;
 import com.codestates.domain.member.entity.Member;
 import com.codestates.exception.BusinessLogicException;
+import com.codestates.exception.ErrorResponse;
 import com.codestates.exception.ExceptionCode;
 import com.codestates.domain.member.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,9 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.server.ResponseStatusException;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +45,9 @@ public class MemberService {
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     public Member createMember(Member member) {
+
         verifyExistsEmail(member.getEmail());
+        verifyExistsUsername(member.getUsername());
 
         // 패스워드 암호화
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
@@ -101,10 +111,19 @@ public class MemberService {
                 new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
+    // 이미 존재하는 회원입니다
     private void verifyExistsEmail(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
-        if (member.isPresent())
+        if (member.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+        }
+    }
+    // 이미 존재하는 유저네임입니다.
+    private void verifyExistsUsername(String username){
+        Optional<Member> member = memberRepository.findByUsername(username);
+        if (member.isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.USERNAME_EXISTS);
+        }
     }
 
     // 로그인한 사용자가 회원 본인인지 또는 관리자인지 확인하는 메서드이다.
@@ -149,5 +168,14 @@ public class MemberService {
     private boolean isOwner(String email, Long memberId) {
         Member member = findVerifiedMember(memberId);
         return email.equals(member.getEmail());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity handleException(MethodArgumentNotValidException e) {
+        // (1)
+        final List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
+
+        // (2)
+        return new ResponseEntity<>(fieldErrors, HttpStatus.BAD_REQUEST);
     }
 }

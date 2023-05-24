@@ -70,12 +70,12 @@ const GlobalStyles = createGlobalStyle`
     border-radius: 0 0 0.2rem 0.2rem;
     }
     .ql-editor {
-    height: 30vh !important;
+    height: 50vh !important;
     min-height: 210px;
     }
     .ql-editor,
     input {
-    font-size: var(--base);
+    font-size: var(--large);
     }
     .quill {
         strong {

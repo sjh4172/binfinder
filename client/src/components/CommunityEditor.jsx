@@ -13,7 +13,7 @@ function CommunityEditor({ contentBind, titleBind }) {
 					{...titleBind}
 				/>
 			</label>
-			<Editor value={contentBind} />
+			<Editor value={contentBind} placeholder="내용을 입력해주세요" />
 		</EditorContainer>
 	);
 }

@@ -1,5 +1,7 @@
 package com.codestates.domain.trashcan;
 
+import com.codestates.domain.vote.VoteDto;
+import com.codestates.domain.vote.VoteRepository;
 import com.codestates.domain.vote.VoteService;
 import com.codestates.exception.BusinessLogicException;
 import com.codestates.exception.ExceptionCode;
@@ -9,7 +11,6 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,12 +20,14 @@ public class TrashCanService {
     private final TrashCanRepository trashCanRepository;
     private final TrashCanMapper trashCanMapper;
     private final VoteService voteService;
+    private final VoteRepository voteRepository;
 
     @Autowired
-    public TrashCanService(TrashCanRepository trashCanRepository, TrashCanMapper trashCanMapper, VoteService voteService) {
+    public TrashCanService(TrashCanRepository trashCanRepository, TrashCanMapper trashCanMapper, VoteService voteService, VoteRepository voteRepository) {
         this.trashCanRepository = trashCanRepository;
         this.trashCanMapper = trashCanMapper;
         this.voteService = voteService;
+        this.voteRepository = voteRepository;
     }
 
     // 쓰레기통 생성?
@@ -44,26 +47,22 @@ public class TrashCanService {
 
     // 특정 쓰레기통 조회
     public TrashCan getTrashCan(Long id) {
-
         TrashCan findTrashCan = findVerifiedTrashCan(id);
 
-        findTrashCan.setLikeCount(voteService.countLike(id).intValue());
-        findTrashCan.setDislikeCount(voteService.countDislike(id).intValue());
+        int likeCount = voteRepository.countVotesByTrashCanAndVoteType(findTrashCan, VoteDto.VoteTypeEnum.LIKE);
+        int dislikeCount = voteRepository.countVotesByTrashCanAndVoteType(findTrashCan, VoteDto.VoteTypeEnum.DISLIKE);
+
+        findTrashCan.setLikeCount(likeCount);
+        findTrashCan.setDislikeCount(dislikeCount);
 
         return findTrashCan;
-
-
-
-        //return trashCanRepository.findById(id)
-        //        .orElseThrow(() -> new EntityNotFoundException("TrashCan not found with id: " + id));
     }
+
 
     // 쓰레기통 정보 업데이트
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     public TrashCan updateTrashCan(Long id, TrashCan updatedTrashCan) {
 
-//        TrashCan existingTrashCan = trashCanRepository.findById(id)
-//                .orElseThrow(() -> new EntityNotFoundException("TrashCan not found with id: " + id));
 
         TrashCan existingTrashCan = findVerifiedTrashCan(id);
 
@@ -91,7 +90,6 @@ public class TrashCanService {
                 new BusinessLogicException(ExceptionCode.TRASH_CAN_NOT_FOUND));
     }
 
-    // Vote에서 좋아요, 싫어요 가져와서 TrashCan DB에 저장하는 메서드
 
 }
 
