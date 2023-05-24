@@ -30,6 +30,7 @@ public class VoteDto {
         private LocalDateTime modifiedAt;
 
         public void setMember(Member member){this.memberId= member.getMemberId();}
+        public void setTrashCan(TrashCan trashCan){this.trashCanId = trashCan.getId();}
     }
 
     public enum VoteTypeEnum {
