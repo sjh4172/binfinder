@@ -12,7 +12,7 @@ import EditUserInfo from './pages/EditUserInfo';
 import Community from './pages/Community';
 import CommunityDetail from './pages/CommunityDetail';
 import CommunityEdit from './pages/CommunityEdit';
-import Header from './components/Header';
+import Header2 from './components/Header2';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
 import Prepare from './pages/Prepare';
@@ -42,7 +42,7 @@ function App() {
 		<Provider store={store}>
 			<PersistGate loading={null} persistor={persistor}>
 				<GlobalStyles />
-				<Header
+				<Header2
 					isSidebarOpen={isSidebarOpen}
 					setIsSidebarOpen={setIsSidebarOpen}
 					setIsSidebarOpeFirst={setIsSidebarOpeFirst}
