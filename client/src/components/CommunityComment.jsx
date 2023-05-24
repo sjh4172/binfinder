@@ -6,7 +6,7 @@ import MyProfile from './MyProfile';
 import { postCommunity } from '../api/communityAPI';
 import useDate from '../hooks/useDate';
 
-function CommunityComment({ setIsCModalOpen, commentData }) {
+function CommunityComment({ setIsCModalOpen, commentData, setCommentId }) {
 	const [textareaBind] = useInput(commentData.c_content);
 	const [isEdit, setIsEdit] = useState(false);
 	const textareaRef = useRef(null);
@@ -67,7 +67,13 @@ function CommunityComment({ setIsCModalOpen, commentData }) {
 								수정
 							</button>
 						)}
-						<button type="button" onClick={() => setIsCModalOpen(true)}>
+						<button
+							type="button"
+							onClick={() => {
+								setIsCModalOpen(true);
+								setCommentId(commentData.c_id);
+							}}
+						>
 							삭제
 						</button>
 					</ButtonWrapper>

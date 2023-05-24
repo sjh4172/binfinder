@@ -5,22 +5,29 @@ import {
 	URL_MYPAGE,
 	URL_POST,
 	URL_PLOGGING,
-	URL_NOTICE,
+	URL_RECYCLE,
 	URL_INTRODUCTION,
 } from '../routesURL';
 
-const navigations = [
-	{ url: URL_INTRODUCTION, name: 'Introduction' },
-	{ url: URL_MAP, name: 'Map' },
-	{ url: URL_POST, name: 'Community' },
-	{ url: URL_PLOGGING, name: 'Plogging' },
-	{ url: URL_NOTICE, name: 'Notice' },
-	{ url: URL_MYPAGE, name: 'My page' },
-];
-
-export default function SidebarList({ setIsSidebarOpen }) {
+export default function SidebarList({ setIsSidebarOpen, isAuthenticated }) {
 	const location = useLocation();
 	const path = location.pathname.split('/')[1];
+	const navigations = isAuthenticated
+		? [
+				{ url: URL_INTRODUCTION, name: 'About' },
+				{ url: URL_MAP, name: 'Map' },
+				{ url: URL_POST, name: 'Community' },
+				{ url: URL_PLOGGING, name: 'Plogging' },
+				{ url: URL_RECYCLE, name: 'How To Recycle' },
+				{ url: URL_MYPAGE, name: 'My page' },
+		  ]
+		: [
+				{ url: URL_INTRODUCTION, name: 'About' },
+				{ url: URL_MAP, name: 'Map' },
+				{ url: URL_POST, name: 'Community' },
+				{ url: URL_PLOGGING, name: 'Plogging' },
+				{ url: URL_RECYCLE, name: 'How to Recycle' },
+		  ];
 	return (
 		<List>
 			{navigations.map((el) => (

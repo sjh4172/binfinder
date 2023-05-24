@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import { IoClose } from 'react-icons/io5';
+import { useSelector } from 'react-redux';
 import SidebarList from './SidebarList';
 import MyProfile from './MyProfile';
 import { Z_INDEX_STYLED_SIDEBAR } from '../zIndex';
@@ -24,14 +25,21 @@ const slideOutLeft = keyframes`
 `;
 
 export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }) {
+	const { isAuthenticated, email, username } = useSelector(
+		(state) => state.auth,
+	);
 	return (
 		<SidebarWrapper isOpen={isSidebarOpen}>
 			<CloseButton onClick={() => setIsSidebarOpen(false)}>
 				<CloseIcon />
 			</CloseButton>
 			<SidebarContent>
-				<MyProfile />
-				<SidebarList setIsSidebarOpen={setIsSidebarOpen} />
+				{isAuthenticated && <MyProfile userEmail={email} username={username} />}
+				{isAuthenticated || <NotProfile>BINFINDER</NotProfile>}
+				<SidebarList
+					setIsSidebarOpen={setIsSidebarOpen}
+					isAuthenticated={isAuthenticated}
+				/>
 			</SidebarContent>
 		</SidebarWrapper>
 	);
@@ -78,4 +86,15 @@ const SidebarContent = styled.div`
 	flex-direction: column;
 	align-items: flex-start;
 	height: 100%;
+`;
+
+const NotProfile = styled.p`
+	height: 60px;
+	width: 300px;
+	line-height: 60px;
+	font-size: 35px;
+	font-weight: 800;
+	color: var(--footer-color);
+	font-family: 'GFS Neohellenic', sans-serif;
+	text-align: center;
 `;

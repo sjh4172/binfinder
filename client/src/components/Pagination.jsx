@@ -49,7 +49,7 @@ function Pagination({
 
 const PagesContainer = styled.div`
 	display: flex;
-	margin: 60px 0px;
+	margin: 30px 0px 20px 0px;
 	justify-content: center;
 `;
 
@@ -69,6 +69,11 @@ const Button = styled.button`
 		width: 30px;
 		height: 30px;
 		padding: 5px 0px;
+	}
+	@media (max-width: 400px) {
+		font-size: var(--small);
+		width: 20px;
+		height: 20px;
 	}
 `;
 

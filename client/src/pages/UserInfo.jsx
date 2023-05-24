@@ -31,14 +31,21 @@ function UserInfo() {
 				const postResponse = await axios.get(
 					`${process.env.REACT_APP_API_URL}/api/boards?memberId=${memberId}`,
 				);
-				const latestPosts = postResponse.data.slice(0, 5);
+				const sortedPosts = postResponse.data.sort((a, b) => {
+					return new Date(b.createdAt) - new Date(a.createdAt);
+				});
+				const latestPosts = sortedPosts.slice(0, 5);
 				setPostList(latestPosts);
 
 				// 사용자가 작성한 댓글 가져오기
 				const commentResponse = await axios.get(
-					`${process.env.REACT_APP_API_URL}/api/comments?memberId=${memberId}`,
+					`${process.env.REACT_APP_API_URL}/api/comments?memberId=${memberId}&sort=-createdAt&limit=5`,
 				);
-				setCommentList(commentResponse.data);
+				const sortedComments = commentResponse.data.sort((a, b) => {
+					return new Date(b.createdAt) - new Date(a.createdAt);
+				});
+				const latestComments = sortedComments.slice(0, 5);
+				setCommentList(latestComments);
 			} catch (error) {
 				console.error(error);
 			}
@@ -80,26 +87,14 @@ function UserInfo() {
 								<Link to={`/boards/${post.b_id}`}>{post.b_title}</Link>
 							</List>
 						))}
-						<List>1</List>
-						<List>1</List>
-						<List>1</List>
-						<List>1</List>
-						<List>1</List>
 					</PostListContainer>
 					<CommentListContainer>
 						<CommentList>내가 최근 작성한 댓글</CommentList>
 						{commentList.map((comment) => (
 							<List key={comment.c_id}>
-								<Link to={`/comments/${comment.c_id}`}>
-									{comment.c_content}
-								</Link>
+								<Link to={`/boards/${comment.b_id}`}>{comment.c_content}</Link>
 							</List>
 						))}
-						<List>1</List>
-						<List>1</List>
-						<List>1</List>
-						<List>1</List>
-						<List>1</List>
 					</CommentListContainer>
 				</ListContainer>
 			</MyPageForm>

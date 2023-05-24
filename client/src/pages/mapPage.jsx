@@ -1,12 +1,16 @@
-// import styled from 'styled-components';
+/* eslint-disable import/no-extraneous-dependencies */
 import styled from 'styled-components';
+// import { useEffect, useState } from 'react';
+// import { useGesture } from 'react-use-gesture';
 import Map from '../components/map';
 import NearbyTrashCanList from '../components/TrashCanList';
 
 function MapPage() {
 	return (
 		<MapPageWrapper>
-			<NearbyTrashCanList />
+			<ScrollableTrashCanList>
+				<NearbyTrashCanList />
+			</ScrollableTrashCanList>
 			<Map />
 		</MapPageWrapper>
 	);
@@ -21,4 +25,10 @@ const MapPageWrapper = styled.div`
 	}
 `;
 
+const ScrollableTrashCanList = styled.div`
+	@media (max-width: 768px) {
+		overflow-y: scroll;
+		max-height: 30vh; /* 원하는 높이 설정 */
+	}
+`;
 export default MapPage;

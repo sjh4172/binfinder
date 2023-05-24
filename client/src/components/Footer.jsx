@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { useLocation, Link } from 'react-router-dom';
 import {
+	URL_INTRODUCTION,
 	URL_LOGIN,
 	URL_MAP,
-	URL_NOTICE,
+	URL_RECYCLE,
 	URL_PLOGGING,
 	URL_POST,
 	URL_SIGNUP,
@@ -14,6 +15,7 @@ export default function Footer() {
 	const { pathname } = useLocation();
 	if (pathname === URL_SIGNUP) return null;
 	if (pathname === URL_LOGIN) return null;
+	if (pathname === URL_INTRODUCTION) return null;
 	const mediaQuery = useMediaQuery('(min-width: 1090px)');
 	const memberList = [
 		{
@@ -97,7 +99,7 @@ export default function Footer() {
 					<Link to={URL_MAP}>Map</Link>
 					<Link to={URL_POST}>Community</Link>
 					<Link to={URL_PLOGGING}>Plogging</Link>
-					<Link to={URL_NOTICE}>Notice</Link>
+					<Link to={URL_RECYCLE}>Recycle</Link>
 				</SectionList>
 			</SectionWrapper>
 			<SectionWrapper className="wrapper4">
@@ -139,6 +141,7 @@ const FooterWrapper = styled.footer`
 	gap: 20px;
 	background-color: var(--footer-color);
 	padding: 40px 10px;
+	margin-top: 80px;
 	.wrapper1 {
 		flex: 0 250px auto;
 	}

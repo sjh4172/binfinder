@@ -53,7 +53,7 @@ function Login() {
 					loginSuccess({
 						email: res.data.email,
 						memberId: res.data.memberId,
-						usename: res.data.username,
+						username: res.data.username,
 					}),
 				);
 				// setIsLogin(true);
