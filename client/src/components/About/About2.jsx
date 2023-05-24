@@ -94,25 +94,31 @@ const AboutComponentContainer = styled.section`
 	}
 	@media (max-width: 910px) {
 		flex-direction: column;
-		padding: 100px 30px 100px 50px;
-		justify-content: center;
-		align-items: center;
+		padding: 100px 10px 50px 10px;
+		h2 {
+			font-size: var(--title);
+		}
+		h3 {
+			font-size: var(--large);
+		}
+		.contentWrapper {
+			margin-right: 0px;
+		}
 		.img {
-			width: 300px;
-			height: 300px;
-			background-position: center;
+			width: 100%;
+			height: 100%;
+			background-position: bottom;
+			border-radius: 10px;
 		}
 		.imgWrapper {
 			height: 500px;
 			top: 0px;
+			margin-left: auto;
 		}
-		@media (max-width: 775px) {
-			.img {
+		@media (max-width: 460px) {
+			.imgWrapper {
 				display: none;
 			}
-		}
-		.contentWrapper {
-			margin-right: 20px;
 		}
 	}
 `;
