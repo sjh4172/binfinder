@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { useEffect, useCallback } from 'react';
-import axios from 'axios';
+import TrashCanData from '../api/mapAPI';
 
 function TrashCansFetcher({
 	mapUrl,
@@ -13,7 +13,7 @@ function TrashCansFetcher({
 	const fetchTrashCans = useCallback(async () => {
 		try {
 			setIsLoading(true);
-			const response = await axios.get(`${mapUrl}/api/v1/trash-cans`);
+			const response = await TrashCanData();
 			const { latitude, longitude } = await getCurrentPosition();
 			const filteredTrashCans = response.data.filter((trashCan) => {
 				const lat = latitude; // 현재위치 경도
