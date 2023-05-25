@@ -9,7 +9,6 @@ import { URL_WRITEPOST } from '../routesURL';
 import { getPostList } from '../api/communityAPI';
 import Modal from '../components/Modal';
 import { Button } from '../styles/Buttons';
-import backgroundImg from '../image/communityBG.png';
 
 function Community() {
 	const [searchParams, setSearchParams] = useSearchParams();
