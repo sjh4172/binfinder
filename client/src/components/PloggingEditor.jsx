@@ -27,10 +27,13 @@ const EditorContainer = styled.div`
 	input {
 		outline: none;
 		border: none;
-		margin-bottom: 20px;
 		color: var(--main-color);
 		font-weight: 800;
 		font-size: var(--title);
+		border-bottom: 1px solid var(--line-color);
+		margin-bottom: 30px;
+		padding-bottom: 15px;
+		width: 100%;
 	}
 
 	input::placeholder {

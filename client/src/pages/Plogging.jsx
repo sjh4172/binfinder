@@ -35,23 +35,23 @@ function PloggingCommunity() {
 
 	return (
 		<CommunityPageContainer>
-			<Title className="cummunityTitle">Community</Title>
+			<Title className="cummunityTitle">Plogging</Title>
+			{isAuthenticated && (
+				<Link to={URL_WRITEPLOGGING} className="postWrite">
+					글 작성
+				</Link>
+			)}
+			{isAuthenticated || (
+				<Button
+					type="button"
+					className="postWrite"
+					onClick={() => setIsModalOpen(true)}
+				>
+					글 작성
+				</Button>
+			)}
 			<div className="flex">
 				<PloggingList data={data} />
-				{isAuthenticated && (
-					<Link to={URL_WRITEPLOGGING} className="postWrite">
-						글 작성
-					</Link>
-				)}
-				{isAuthenticated || (
-					<Button
-						type="button"
-						className="postWrite"
-						onClick={() => setIsModalOpen(true)}
-					>
-						글 작성
-					</Button>
-				)}
 				{totalPage >= 0 && (
 					<Pagination
 						currentPage={currentPage}
@@ -92,26 +92,37 @@ const CommunityPageContainer = styled.section`
 		margin-right: auto;
 	}
 	.postWrite {
-		height: 30px;
-		width: 100px;
-		padding: 3px;
-		margin: 20px 30px 20px auto;
-		background-color: var(--main-color);
-		color: var(--text-white-color);
-		box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.25),
-			inset 0px 2px 0px rgba(255, 255, 255, 0.25);
-		border-radius: 5px;
-		font-size: var(--base);
-		font-weight: 700;
-		align-items: center;
-		display: flex;
-		justify-content: center;
+		--text: gray;
+		--font-size: 16px;
+		--duration: 0.44s;
+		--move-hover: -4px;
+		padding: 15px 40px;
+		margin: 0px auto 20px auto;
+		width: 200px;
+		text-align: center;
+		--font-shadow: var(--font-size);
+		padding: 16px 32px;
+		font-family: 'GFS Neohellenic';
+		font-weight: 500;
+		line-height: var(--font-size);
+		border-radius: 24px;
+		display: block;
+		outline: none;
+		text-decoration: none;
+		font-size: var(--font-size);
+		letter-spacing: 0.5px;
+		border: 1px solid gray;
+		background: var(--background);
+		color: var(--text);
+		box-shadow: var(--shadow);
+		transform: translateY(var(--y)) translateZ(0);
+		transition: transform var(--duration) ease, box-shadow var(--duration) ease;
 	}
+
 	.postWrite:hover {
-		background-color: var(--sub3-color);
-		color: var(--text-black-color);
-		box-shadow: 0px 2px 0px rgba(255, 255, 255, 0.25),
-			inset 0px 2px 0px rgba(0, 0, 0, 0.25);
+		background: #e7e7e7;
+		--y: var(--move-hover);
+		--shadow: var(--shadow-hover);
 	}
 	.cummunityTitle {
 		width: 100%;
@@ -120,15 +131,12 @@ const CommunityPageContainer = styled.section`
 		color: white;
 		text-shadow: 2px 1px 1px rgba(0, 0, 0, 0.25);
 		margin-bottom: 80px;
+		margin-bottom: 30px;
 	}
 	@media (max-width: 768px) {
 		top: 70px;
 		padding: 10px;
-		.postWrite {
-			width: 80px;
-			height: 30px;
-			font-size: var(--base);
-		}
+
 		.cummunityTitle {
 			margin-top: 30px;
 			margin-bottom: 10px;

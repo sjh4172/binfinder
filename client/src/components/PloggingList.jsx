@@ -22,7 +22,6 @@ function PloggingList({ data }) {
 					<th className="none">좋아요</th>
 				</tr>
 			</thead>
-			<Line />
 			{data && (
 				<tbody>
 					{data.map((el) => (
@@ -90,7 +89,6 @@ function PloggingList({ data }) {
 			{(!data || data.length === 0) && (
 				<p className="empty">게시물이 없습니다.</p>
 			)}
-			<Line />
 			{ismodalOpen && (
 				<Modal
 					message="회원만 읽을 수 있습니다."
@@ -104,16 +102,18 @@ function PloggingList({ data }) {
 
 const Table = styled.table`
 	width: 100%;
-	max-width: 1024px;
 	font-size: var(--large);
 	table-layout: fixed;
 	min-height: 371px;
 	// 테이블 항목
-	thead {
+	thead > tr {
 		font-size: 19px;
 		font-weight: 800;
 		color: var(--main-color);
 		line-height: 35px;
+		background-color: #80808021;
+		border: 0px !important;
+		margin: 0px 0px 20px 0px;
 	}
 
 	// 기본뷰 테이블 열 비율
@@ -121,6 +121,8 @@ const Table = styled.table`
 		display: flex;
 		padding: 15px 10px;
 		align-items: center;
+		border: 1px solid black;
+		margin: 0px 20px 20px 20px;
 	}
 
 	tr th:nth-child(1) {
@@ -142,7 +144,7 @@ const Table = styled.table`
 	//하트랑 댓글 색상
 	span {
 		font-weight: 800;
-		font-size: 30px;
+		font-size: 20px;
 	}
 
 	p:last-child {
@@ -169,14 +171,12 @@ const Table = styled.table`
 	.titleWraper {
 		display: flex;
 		font-size: var(--sub-title);
-		font-weight: 800;
 		align-items: center;
 		> * {
 			margin: 10px 0px 10px 40px;
 		}
 	}
 	.titleWraper:hover {
-		transform: translateY(-5px);
 		color: var(--main-color);
 	}
 
@@ -212,14 +212,6 @@ const Table = styled.table`
 			}
 		}
 	}
-`;
-
-const Line = styled.div`
-	height: 1px;
-	width: 95%;
-	background-color: #d9d9d9;
-	margin-left: auto;
-	margin-right: auto;
 `;
 
 export default PloggingList;

@@ -102,7 +102,7 @@ const EditPageContainer = styled.section`
 
 	.bt {
 		font-size: var(--base);
-		height: 35px;
+		padding: 15px 30px;
 	}
 
 	.cummunityTitle {
@@ -126,7 +126,8 @@ const EditPageContainer = styled.section`
 			padding: 20px;
 		}
 		.bt {
-			width: 80px;
+			width: 140px;
+			text-align: center;
 		}
 	}
 `;

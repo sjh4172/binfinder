@@ -81,17 +81,19 @@ function PlogginDetail() {
 					<Title className="title">{data && data.p_title}</Title>
 					<MyProfile username={data && data.username} marginNone />
 					<PloggingPost setIsPModalOpen={openModalPost} data={data} />
-					<Button
-						type="button"
-						className="bt list"
-						onClick={() => navigate(URL_PLOGGING)}
-					>
-						목록 보기
-					</Button>
-					<Button type="button" className="bt" onClick={() => likeUpDown()}>
-						{data && isLike && `♥ ${totalLike}`}
-						{data && (isLike || `♡ ${totalLike}`)}
-					</Button>
+					<div className="buttonWrapper">
+						<Button
+							type="button"
+							className="bt list"
+							onClick={() => navigate(URL_PLOGGING)}
+						>
+							목록 보기
+						</Button>
+						<Button type="button" className="bt" onClick={() => likeUpDown()}>
+							{data && isLike && `♥ ${totalLike}`}
+							{data && (isLike || `♡ ${totalLike}`)}
+						</Button>
+					</div>
 				</section>
 				<section>
 					<h1 className="visually-hidden">댓글</h1>
@@ -174,10 +176,23 @@ const DetailPageContainer = styled.section`
 	}
 	.bt {
 		margin: 30px 30px 30px 0px;
+		padding: 15px 30px;
+		width: 150px;
+		text-align: center;
 		font-size: var(--base);
-		height: 35px;
+	}
+	.heart {
+		color: var(--main-color);
+		border-color: var(--main-color);
 	}
 
+	.heart:hover {
+		background: #5cabda40;
+	}
+
+	.buttonWrapper {
+		display: flex;
+	}
 	label {
 		font-size: 0px;
 	}
@@ -194,14 +209,12 @@ const DetailPageContainer = styled.section`
 	}
 
 	.wbt {
-		margin: 10px 0px 20px calc(100% - 100px);
+		margin-left: auto;
+		margin-right: 0px;
 	}
 	@media (max-width: 768px) {
 		padding: 10px;
 		top: 70px;
-		.wbt {
-			margin: 10px 0px 20px calc(100% - 60px);
-		}
 		.list {
 			width: 80px;
 		}
@@ -213,8 +226,17 @@ const DetailPageContainer = styled.section`
 		.backGround {
 			padding: 20px;
 		}
-	}
+		.bt {
+			width: 140px;
+			margin-right: 10px;
+		}
+
+		.wbt {
+			margin-left: auto;
+			margin-right: 0px;
+		}
 `;
+
 const TotalComment = styled.p`
 	margin-bottom: 20px;
 	font-size: var(--title);

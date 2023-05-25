@@ -46,6 +46,7 @@ const PostDetail = styled.div`
 	color: var(--line-color);
 	font-size: var(--small);
 	margin-top: 15px;
+	padding-bottom: 10px;
 	span,
 	time {
 		margin-right: 15px;
@@ -70,13 +71,14 @@ const PostDetail = styled.div`
 `;
 
 const PostContent = styled.div`
-	font-size: var(--base);
-	padding: 10px 0px;
+	font-size: var(--large);
+	padding: 20px 0px 25px 0px;
 	text-align: justify;
 	line-height: 1.5;
 	white-space: pre-wrap;
 	word-wrap: break-word; // 자동줄바꿈
-
+	border-bottom: 1px solid var(--line-color);
+	border-top: 1px solid var(--line-color);
 	strong {
 		font-weight: 800;
 	}
