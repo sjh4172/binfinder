@@ -40,7 +40,7 @@ function MainPage() {
 					/>
 				</div>
 			</Section>
-			<Section>
+			<Section className="section2Container">
 				<div>
 					<p2>Application Topic</p2>
 					<h2>
@@ -53,7 +53,7 @@ function MainPage() {
 								alt="쓰레기통이미지"
 							/>
 							<h3>TrashCan</h3>
-							<p>
+							<p className="topic">
 								나와 가까운 쓰레기통 위치를 확인해 보세요. 상세 정보에는 해당
 								쓰레기통의 종류(재활용/일반쓰러기)와 로드뷰, 마지막으로
 								좋아요/싫어요 기능을 제공합니다.
@@ -68,7 +68,7 @@ function MainPage() {
 								alt="화합이미지"
 							/>
 							<h3>Board</h3>
-							<p>
+							<p className="topic">
 								일반 커뮤니티 게시판입니다. 다른 사용자들과 제로웨이스트 등의
 								의견을 나눠보세요! 쓰레기통 위치를 이용한 플로깅 멤버를 모집하고
 								해당 루트를 등록하는 블로깅 게시만도 있으니 참고해보세요.
@@ -83,7 +83,7 @@ function MainPage() {
 								alt="재활용쓰레기통이미지"
 							/>
 							<h3>How To Recycle</h3>
-							<p>
+							<p className="topic">
 								쓰레기를 버리는 것에 가장 중효한 기능인 재활용과 일반쓰레기를
 								분류하는 방법이 담겨있는 페이지입니다! 해당 정보를 확인해
 								환경보호를 실천해보세요.
@@ -95,7 +95,7 @@ function MainPage() {
 					</div>
 				</div>
 			</Section>
-			<Section color="#daf6ff">
+			<Section color="#daf6ff" className="section3Container">
 				<div className="section3">
 					<p3>Meet our team</p3>
 					<h4>에배레스트 팀원들을 소개합니다.</h4>
@@ -198,12 +198,19 @@ export default MainPage;
 const MainContainer = styled.section`
 	position: relative;
 	top: 80px;
+	.section2Container {
+		padding: 50px 100px;
+	}
+	.section3Container {
+		padding: 60px 100px;
+	}
+
 	@media (max-width: 768px) {
 		top: 70px;
 	}
 `;
 const Section = styled.section`
-	width: 100vw;
+	width: 100%;
 	height: 90vh;
 	background: ${(props) => props.color};
 	background: ${(props) => `linear-gradient(${props.linear})`};
@@ -237,6 +244,8 @@ const Section = styled.section`
 	}
 	.section3 {
 		max-width: 1400px;
+		margin-left: auto;
+		margin-right: auto;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -304,6 +313,10 @@ const Section = styled.section`
 		font-size: 16px;
 		text-align: center;
 		padding-top: 15px;
+	}
+	.topic {
+		height: 140px;
+		margin-bottom: 0px;
 	}
 	span {
 		font-size: 18px;

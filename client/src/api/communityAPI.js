@@ -10,19 +10,19 @@ const getHeaders = () => {
 	return headers;
 };
 
-const getPostList = (page = '?page=0') => {
+const getPostList = (page = '?page=0', api = 'boards') => {
 	const headers = getHeaders();
 	if (headers.Authorization) {
-		return axios(`${apiUrl}/api/boards${page}&count=20`, {
+		return axios(`${apiUrl}/api/${api}${page}&count=20`, {
 			headers,
 		});
 	}
-	return axios(`${apiUrl}/api/boards${page}&count=20`);
+	return axios(`${apiUrl}/api/${api}${page}&count=20`);
 };
 
-const getPost = (postId) => {
+const getPost = (postId, api = 'boards') => {
 	const headers = getHeaders();
-	return axios(`${apiUrl}/api/boards/${postId}`, {
+	return axios(`${apiUrl}/api/${api}/${postId}`, {
 		headers,
 	});
 };

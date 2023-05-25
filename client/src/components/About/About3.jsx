@@ -103,7 +103,7 @@ const AboutComponentContainer = styled.section`
 	}
 	@media (max-width: 910px) {
 		flex-direction: column;
-		padding: 100px 50px 100px 50px;
+		padding: 150px 50px 150px 50px;
 		justify-content: center;
 		align-items: center;
 		.img {
@@ -112,17 +112,21 @@ const AboutComponentContainer = styled.section`
 			background-position: center;
 		}
 		.imgWrapper {
-			height: 500px;
-			top: 0px;
+			display: none;
 		}
 		p,
 		h3,
 		ul {
 			margin-bottom: 20px;
 		}
-		@media (max-width: 775px) {
-			.img {
-				display: none;
+		@media (max-width: 440px) {
+			padding: 100px 50px 100px 50px;
+
+			h2 {
+				font-size: var(--title);
+			}
+			h3 {
+				font-size: var(--large);
 			}
 		}
 	}

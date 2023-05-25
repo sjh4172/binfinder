@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -9,12 +9,11 @@ import { URL_WRITEPOST } from '../routesURL';
 import { getPostList } from '../api/communityAPI';
 import Modal from '../components/Modal';
 import { Button } from '../styles/Buttons';
-import backgroundImg from '../image/communityBG.png';
 
 function Community() {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [currentPage, setCurrentPage] = useState(0);
-	const [totalPage, setTotalPage] = useState(19);
+	const [totalPage, setTotalPage] = useState(1);
 	const location = useLocation();
 	const [data, setData] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,39 +34,41 @@ function Community() {
 
 	return (
 		<CommunityPageContainer>
-			<Title className="cummunityTitle">Community</Title>
-			<div className="flex">
-				<CommunityList data={data} />
-				{isAuthenticated && (
-					<Link to={URL_WRITEPOST} className="postWrite">
-						글 작성
-					</Link>
-				)}
-				{isAuthenticated || (
-					<Button
-						type="button"
-						className="postWrite"
-						onClick={() => setIsModalOpen(true)}
-					>
-						글 작성
-					</Button>
-				)}
-				{totalPage >= 0 && (
-					<Pagination
-						currentPage={currentPage}
-						setCurrentPage={setCurrentPage}
-						totalPage={totalPage}
-						setSearchParams={setSearchParams}
-					/>
-				)}
-				{isModalOpen && (
-					<Modal
-						message="회원만 작성 가능합니다."
-						cancel={false}
-						handleConfirm={handleConfirm}
-					/>
-				)}
+			<div>
+				<div className="flex">
+					<Title>Community</Title>
+					{isAuthenticated && (
+						<Link to={URL_WRITEPOST} className="postWrite">
+							글 작성
+						</Link>
+					)}
+					{isAuthenticated || (
+						<Button
+							type="button"
+							className="postWrite"
+							onClick={() => setIsModalOpen(true)}
+						>
+							글 작성
+						</Button>
+					)}
+				</div>
 			</div>
+			<CommunityList data={data} />
+			{totalPage >= 0 && (
+				<Pagination
+					currentPage={currentPage}
+					setCurrentPage={setCurrentPage}
+					totalPage={totalPage}
+					setSearchParams={setSearchParams}
+				/>
+			)}
+			{isModalOpen && (
+				<Modal
+					message="회원만 작성 가능합니다."
+					cancel={false}
+					handleConfirm={handleConfirm}
+				/>
+			)}
 		</CommunityPageContainer>
 	);
 }
@@ -77,57 +78,54 @@ const CommunityPageContainer = styled.section`
 	top: 80px;
 	padding: 80px;
 	width: 100%;
-	background-image: url(${backgroundImg});
-	background-repeat: no-repeat;
-	background-size: cover;
+	max-width: 1750px;
+	margin-left: auto;
+	margin-right: auto;
 	.flex {
 		display: flex;
-		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		background-color: white;
-		max-width: 1200px;
 		border-radius: 5px;
-		margin-left: auto;
-		margin-right: auto;
 	}
 	.postWrite {
-		height: 30px;
-		width: 100px;
-		padding: 3px;
-		margin: 20px 30px 20px auto;
-		background-color: var(--main-color);
-		color: var(--text-white-color);
-		box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.25),
-			inset 0px 2px 0px rgba(255, 255, 255, 0.25);
-		border-radius: 5px;
+		--text: gray;
+		--font-size: 16px;
+		--duration: 0.44s;
+		--move-hover: -4px;
+		--font-shadow: var(--font-size);
+		padding: 15px 40px;
+		margin: 20px 0px 20px auto;
+		border: 1px solid var(--main-color);
+		color: var(--main-color);
+		border-radius: 24px;
 		font-size: var(--base);
 		font-weight: 700;
 		align-items: center;
 		display: flex;
 		justify-content: center;
+		transform: translateY(var(--y)) translateZ(0);
+		transition: transform var(--duration) ease, box-shadow var(--duration) ease;
 	}
 	.postWrite:hover {
-		background-color: var(--sub3-color);
-		color: var(--text-black-color);
-		box-shadow: 0px 2px 0px rgba(255, 255, 255, 0.25),
-			inset 0px 2px 0px rgba(0, 0, 0, 0.25);
+		background: #5cabda40;
+		--y: var(--move-hover);
+		--shadow: var(--shadow-hover);
+		span {
+			color: black;
+			--m: calc(var(--font-size) * -1);
+			transform: translateY(calc(var(--font-size) * -1));
+		}
 	}
-	.cummunityTitle {
-		width: 100%;
-		text-align: center;
-		font-size: 70px;
-		color: white;
-		text-shadow: 2px 1px 1px rgba(0, 0, 0, 0.25);
-		margin-bottom: 80px;
-	}
+
 	@media (max-width: 768px) {
 		top: 70px;
 		padding: 10px;
 		.postWrite {
-			width: 80px;
+			width: 130px;
 			height: 30px;
 			font-size: var(--base);
+			padding: 20px 30px;
 		}
 		.cummunityTitle {
 			margin-top: 30px;

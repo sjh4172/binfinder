@@ -60,6 +60,7 @@ const Button = styled.button`
 	width: 30px;
 	height: 30px;
 	color: ${(props) => (props.active ? 'white' : 'black')};
+	border-radius: 50%;
 
 	:hover {
 		color: ${(props) => (props.active ? 'white' : '#37A0DB')};

@@ -18,6 +18,9 @@ import Sidebar from './components/Sidebar';
 import Prepare from './pages/Prepare';
 import NotFound from './pages/NotFound';
 import MainPage from './pages/MianPage';
+import PloggingCommunity from './pages/Plogging';
+import PloggingEdit from './pages/PlogginfEdit';
+import PloggingDetail from './pages/PloggingDetail';
 import {
 	URL_MAP,
 	URL_LOGIN,
@@ -31,6 +34,8 @@ import {
 	URL_INTRODUCTION,
 	URL_RECYCLE,
 	URL_MAIN,
+	URL_PLOGGINGDETAIL,
+	URL_WRITEPLOGGING,
 } from './routesURL';
 import useMediaQuery from './hooks/useMediaQuery';
 import { store, persistor } from './store/UserSlice';
@@ -67,7 +72,9 @@ function App() {
 					<Route path={URL_POSTDETAIL} element={<CommunityDetail />} />
 					<Route path="/comments/:commentId" element={<CommunityDetail />} />
 					<Route path={URL_WRITEPOST} element={<CommunityEdit />} />
-					<Route path={URL_PLOGGING} element={<Prepare />} />
+					<Route path={URL_PLOGGING} element={<PloggingCommunity />} />
+					<Route path={URL_PLOGGINGDETAIL} element={<PloggingDetail />} />
+					<Route path={URL_WRITEPLOGGING} element={<PloggingEdit />} />
 					<Route path={URL_RECYCLE} element={<Recycle />} />
 					<Route path={URL_INTRODUCTION} element={<About />} />
 					<Route path={URL_MAIN} element={<MainPage />} />
