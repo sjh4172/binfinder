@@ -10,7 +10,7 @@ function Recycle() {
 	);
 }
 const BackgroundColor = styled.div`
-	background-color: #cacaca;
+	margin-bottom: 30px;
 `;
 
 export default Recycle;

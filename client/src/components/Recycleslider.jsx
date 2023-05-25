@@ -45,11 +45,18 @@ export default function Slider() {
 }
 
 const SlideContainer = styled.div`
+	position: relative;
+	top: 80px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 75vh;
-	margin: 10% 25% 40% 25%;
+	/* height: 100%; */
+	margin: 0% 25% 0% 25%;
+	/* background-color: #cacaca; */
+	height: 100%;
+	.thumb {
+		display: none;
+	}
 	@media (max-width: 768px) {
 		margin: 100px 50px;
 		height: 70vh;
