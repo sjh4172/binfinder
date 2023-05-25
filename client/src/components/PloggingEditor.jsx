@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Editor from './Editor';
 
-function CommunityEditor({ contentBind, titleBind }) {
+function PloggingEditor({ contentBind, titleBind }) {
 	return (
 		<EditorContainer>
 			<label htmlFor="title">
@@ -27,13 +27,13 @@ const EditorContainer = styled.div`
 	input {
 		outline: none;
 		border: none;
-		width: 100%;
-		margin-bottom: 30px;
-		padding-bottom: 15px;
 		color: var(--main-color);
 		font-weight: 800;
 		font-size: var(--title);
 		border-bottom: 1px solid var(--line-color);
+		margin-bottom: 30px;
+		padding-bottom: 15px;
+		width: 100%;
 	}
 
 	input::placeholder {
@@ -46,4 +46,4 @@ const EditorContainer = styled.div`
 	}
 `;
 
-export default CommunityEditor;
+export default PloggingEditor;

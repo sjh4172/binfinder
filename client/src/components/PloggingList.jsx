@@ -2,11 +2,11 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
-import { URL_POST } from '../routesURL';
+import { URL_PLOGGING } from '../routesURL';
 import useDate from '../hooks/useDate';
 import Modal from './Modal';
 
-function CommunityList({ data }) {
+function PloggingList({ data }) {
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 	const [ismodalOpen, setIsModalOpen] = useState(false);
 	const handleConfirm = () => {
@@ -25,20 +25,26 @@ function CommunityList({ data }) {
 			{data && (
 				<tbody>
 					{data.map((el) => (
-						<tr key={el.b_id}>
-							<th title={el.b_title} className="title">
-								{isAuthenticated && (
-									<Link to={`${URL_POST}/${el.b_id}`}>{el.b_title}</Link>
-								)}
-								{isAuthenticated || (
-									<button
-										type="button"
-										className="memberModalOpen"
-										onClick={() => setIsModalOpen(true)}
-									>
-										{el.b_title}
-									</button>
-								)}
+						<tr key={el.p_id}>
+							<th title={el.p_title} className="title">
+								<div className="titleWraper">
+									<img
+										src={`https://api.dicebear.com/6.x/thumbs/svg?seed=${el.username}&scale=90&size=60&shapeColor=0a5b83,1c799f,69d2e7,f1f4dc&backgroundColor=0a5b83,69d2e7,f1f4dc`}
+										alt="Profile"
+									/>
+									{isAuthenticated && (
+										<Link to={`${URL_PLOGGING}/${el.p_id}`}>{el.p_title}</Link>
+									)}
+									{isAuthenticated || (
+										<button
+											type="button"
+											className="memberModalOpen titleWraper"
+											onClick={() => setIsModalOpen(true)}
+										>
+											{el.p_title}
+										</button>
+									)}
+								</div>
 							</th>
 							<th className="none">{el.username}</th>
 							<th className="none">
@@ -96,23 +102,27 @@ function CommunityList({ data }) {
 
 const Table = styled.table`
 	width: 100%;
-	font-size: var(--base);
+	font-size: var(--large);
 	table-layout: fixed;
 	min-height: 371px;
-	border: 1px soild black;
-
 	// 테이블 항목
-	thead {
-		border-top: 1px solid black;
-		border-bottom: 1px solid black;
+	thead > tr {
+		font-size: 19px;
 		font-weight: 800;
+		color: var(--main-color);
+		line-height: 35px;
 		background-color: #80808021;
+		border: 0px !important;
+		margin: 0px 0px 20px 0px;
 	}
 
 	// 기본뷰 테이블 열 비율
 	tr {
 		display: flex;
-		padding: 12px 0px;
+		padding: 15px 10px;
+		align-items: center;
+		border: 1px solid black;
+		margin: 0px 20px 20px 20px;
 	}
 
 	tr th:nth-child(1) {
@@ -122,7 +132,7 @@ const Table = styled.table`
 		overflow: hidden;
 	}
 	tr th:nth-child(2) {
-		flex: 2;
+		flex: 3;
 	}
 	tr th:nth-child(3) {
 		flex: 2;
@@ -131,20 +141,14 @@ const Table = styled.table`
 		flex: 2;
 	}
 
-	// 데이블 행 커서 및 밑줄
-	tbody tr {
-		border-bottom: 1px solid #d9d9d9;
-	}
-
-	// 테이블 행 hover
-	tbody tr:hover {
-		color: #575757;
-	}
-
 	//하트랑 댓글 색상
 	span {
-		color: var(--main-color);
 		font-weight: 800;
+		font-size: 20px;
+	}
+
+	p:last-child {
+		font-size: var(--large) !important;
 	}
 
 	.memberModalOpen {
@@ -157,12 +161,27 @@ const Table = styled.table`
 		text-align: center;
 		color: #b3b3b3;
 		padding: 154px 0px;
-		border-bottom: 1px solid #d9d9d9;
 	}
 
 	// 반응형
 	.bottom {
 		display: none;
+	}
+
+	.titleWraper {
+		display: flex;
+		font-size: var(--sub-title);
+		align-items: center;
+		> * {
+			margin: 10px 0px 10px 40px;
+		}
+	}
+	.titleWraper:hover {
+		color: var(--main-color);
+	}
+
+	img {
+		border-radius: 50%;
 	}
 	@media (max-width: 768px) {
 		.none {
@@ -179,12 +198,20 @@ const Table = styled.table`
 			margin-top: 10px;
 			display: flex;
 			justify-content: right;
+			align-items: center;
+			margin-left: auto;
+			margin-right: 20px;
 		}
 		.bottom th {
 			flex: 0 1 auto !important;
 			margin-left: 15px;
 		}
+		.titleWraper {
+			> * {
+				margin: 10px 0px 10px 20px;
+			}
+		}
 	}
 `;
 
-export default CommunityList;
+export default PloggingList;

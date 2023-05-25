@@ -5,12 +5,12 @@ import PloggingEditor from '../components/PloggingEditor';
 import { Button, WarningButton } from '../styles/Buttons';
 import { postCommunity } from '../api/communityAPI';
 import useInput from '../hooks/useInput';
-import { URL_POST } from '../routesURL';
+import { URL_PLOGGING } from '../routesURL';
 import Modal from '../components/Modal';
 import Title from '../styles/Title';
 import backgroundImg from '../image/communityBG.png';
 
-function CommunityEdit() {
+function PloggingEdit() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const [titleBind] = useInput(location.state && location.state.p_title);
@@ -30,21 +30,21 @@ function CommunityEdit() {
 			setIsModalOpen(true);
 		} else if (location.state) {
 			postCommunity(
-				`/boards/${location.state.b_id}`,
+				`/plogs/${location.state.p_id}`,
 				{
-					b_title: titleBind.value,
-					b_content: contentBind.value,
+					p_title: titleBind.value,
+					p_content: contentBind.value,
 				},
 				'patch',
 			);
-			navigate(`${URL_POST}/${location.state.b_id}`);
+			navigate(`${URL_PLOGGING}/${location.state.p_id}`);
 			navigate(0);
 		} else {
-			postCommunity('/boards', {
-				b_title: titleBind.value,
-				b_content: contentBind.value,
+			postCommunity('/plogs', {
+				p_title: titleBind.value,
+				p_content: contentBind.value,
 			});
-			navigate(URL_POST);
+			navigate(URL_PLOGGING);
 			navigate(0);
 			// TODO: 응답에서 postid 받으면 navigate 작성글로 변경
 		}
@@ -55,6 +55,7 @@ function CommunityEdit() {
 
 	return (
 		<EditPageContainer>
+			<Title className="cummunityTitle">Community</Title>
 			<div className="backGround">
 				<PloggingEditor contentBind={contentBind} titleBind={titleBind} />
 				<div className="flex">
@@ -79,17 +80,19 @@ function CommunityEdit() {
 
 const EditPageContainer = styled.section`
 	position: relative;
-	top: 50px;
+	top: 80px;
 	width: 100%;
 	padding: 80px;
+	background-image: url(${backgroundImg});
+	background-repeat: no-repeat;
+	background-size: cover;
 	.backGround {
 		background-color: white;
 		border-radius: 5px;
 		max-width: 1000px;
 		margin-left: auto;
 		margin-right: auto;
-		padding: 50px 100px;
-		border: 1px solid var(--line-color);
+		padding: 30px 40px;
 	}
 	.flex {
 		display: flex;
@@ -129,4 +132,4 @@ const EditPageContainer = styled.section`
 	}
 `;
 
-export default CommunityEdit;
+export default PloggingEdit;

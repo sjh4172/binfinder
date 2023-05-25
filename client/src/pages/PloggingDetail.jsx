@@ -3,18 +3,18 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Title from '../styles/Title';
-import CommunityPost from '../components/CommunityPost';
-import CommunityComment from '../components/CommunityComment';
+import PloggingPost from '../components/PloggingPost';
+import PloggingComment from '../components/PloggingComment';
 import { Button, WarningButton } from '../styles/Buttons';
 import MyProfile from '../components/MyProfile';
 import Modal from '../components/Modal';
 import useModal from '../hooks/useModal';
 import { getPost, deleteCommunity, postCommunity } from '../api/communityAPI';
-import { URL_POST } from '../routesURL';
+import { URL_PLOGGING } from '../routesURL';
 import useInput from '../hooks/useInput';
 import backgroundImg from '../image/communityBG.png';
 
-function CommunityDetail() {
+function PlogginDetail() {
 	const navigate = useNavigate();
 	const [isOpenModalPost, openModalPost, closeModalPost] = useModal(false);
 	const [isOpenModalComment, openModalComment, closeModalComment] =
@@ -29,7 +29,7 @@ function CommunityDetail() {
 	const memberId = useSelector((state) => state.auth.memberId);
 
 	useEffect(() => {
-		getPost(postId).then((res) => {
+		getPost(postId, 'plogs').then((res) => {
 			setData(res.data);
 			setIsLike(res.data.checkLike);
 			setTotalLike(res.data.likes);
@@ -38,22 +38,22 @@ function CommunityDetail() {
 
 	const handleDelecteConfirmPost = () => {
 		closeModalPost();
-		deleteCommunity(`/boards/${data.b_id}`);
-		navigate(URL_POST);
+		deleteCommunity(`/plogs/${data.p_id}`);
+		navigate(URL_PLOGGING);
 		navigate(0);
 	};
 
 	const handleDelecteConfirmComment = () => {
 		closeModalComment();
-		deleteCommunity(`/comments/${commentId}`);
+		deleteCommunity(`/pcomments/${commentId}`);
 		navigate(0);
 	};
 
 	const postComment = (value) => {
 		if (value !== '') {
-			postCommunity(`/comments`, {
-				b_id: data.b_id,
-				c_content: value,
+			postCommunity(`/pcomments`, {
+				p_id: data.p_id,
+				plogComment: value,
 			});
 			navigate(0);
 		}
@@ -62,12 +62,12 @@ function CommunityDetail() {
 	const likeUpDown = () => {
 		const Authorization = localStorage.getItem('accessToken');
 		if (isLike && Authorization) {
-			postCommunity(`/boards/unlike/${data.b_id}/${memberId}`, null).then(
+			postCommunity(`/plogs/unlike/${data.p_id}/${memberId}`, null).then(
 				(res) => setTotalLike(res.data.likes),
 			);
 			setIsLike(!isLike);
 		} else if (Authorization) {
-			postCommunity(`/boards/like/${data.b_id}/${memberId}`, null).then((res) =>
+			postCommunity(`/plogs/like/${data.p_id}/${memberId}`, null).then((res) =>
 				setTotalLike(res.data.likes),
 			);
 			setIsLike(!isLike);
@@ -75,24 +75,21 @@ function CommunityDetail() {
 	};
 	return (
 		<DetailPageContainer>
+			<Title className="cummunityTitle">Community</Title>
 			<div className="backGround">
 				<section>
-					<Title className="title">{data && data.b_title}</Title>
+					<Title className="title">{data && data.p_title}</Title>
 					<MyProfile username={data && data.username} marginNone />
-					<CommunityPost setIsPModalOpen={openModalPost} data={data} />
+					<PloggingPost setIsPModalOpen={openModalPost} data={data} />
 					<div className="buttonWrapper">
 						<Button
 							type="button"
-							className="bt"
-							onClick={() => navigate(URL_POST)}
+							className="bt list"
+							onClick={() => navigate(URL_PLOGGING)}
 						>
 							목록 보기
 						</Button>
-						<Button
-							type="button"
-							className="bt heart"
-							onClick={() => likeUpDown()}
-						>
+						<Button type="button" className="bt" onClick={() => likeUpDown()}>
 							{data && isLike && `♥ ${totalLike}`}
 							{data && (isLike || `♡ ${totalLike}`)}
 						</Button>
@@ -120,8 +117,8 @@ function CommunityDetail() {
 					{data && (
 						<ul>
 							{data.comments.map((el) => (
-								<li key={el.c_id}>
-									<CommunityComment
+								<li key={el.plogCommentId}>
+									<PloggingComment
 										setIsCModalOpen={openModalComment}
 										commentData={el}
 										setCommentId={setCommentId}
@@ -152,9 +149,12 @@ function CommunityDetail() {
 
 const DetailPageContainer = styled.section`
 	position: relative;
-
+	top: 80px;
 	width: 100%;
-	padding: 50px;
+	padding: 80px;
+	background-image: url(${backgroundImg});
+	background-repeat: no-repeat;
+	background-size: cover;
 	.backGround {
 		background-color: white;
 		border-radius: 5px;
@@ -215,13 +215,6 @@ const DetailPageContainer = styled.section`
 	@media (max-width: 768px) {
 		padding: 10px;
 		top: 70px;
-		.bt {
-			padding: 15px 20px;
-		}
-		.wbt {
-			margin-left: auto;
-			margin-right: 0px;
-		}
 		.list {
 			width: 80px;
 		}
@@ -233,8 +226,17 @@ const DetailPageContainer = styled.section`
 		.backGround {
 			padding: 20px;
 		}
-	}
+		.bt {
+			width: 140px;
+			margin-right: 10px;
+		}
+
+		.wbt {
+			margin-left: auto;
+			margin-right: 0px;
+		}
 `;
+
 const TotalComment = styled.p`
 	margin-bottom: 20px;
 	font-size: var(--title);
@@ -244,4 +246,4 @@ const TotalComment = styled.p`
 		font-size: var(--sub-title);
 	}
 `;
-export default CommunityDetail;
+export default PlogginDetail;

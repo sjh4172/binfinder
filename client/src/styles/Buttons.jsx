@@ -83,9 +83,10 @@ const Button = styled.div`
 `;
 
 const WarningButton = styled(Button)`
-	background-color: var(--sub1-color);
+	color: var(--sub1-color);
+	border-color: var(--sub1-color);
 	&:hover {
-		background-color: var(--sub2-color);
+		background-color: #2048da68;
 	}
 `;
 

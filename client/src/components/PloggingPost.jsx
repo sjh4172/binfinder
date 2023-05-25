@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { URL_WRITEPOST } from '../routesURL';
+import { URL_WRITEPLOGGING } from '../routesURL';
 import useDate from '../hooks/useDate';
 
-function CommunityPost({ setIsPModalOpen, data }) {
+function PloggingPost({ setIsPModalOpen, data }) {
 	const navigate = useNavigate();
 	const memberId = useSelector((state) => state.auth.memberId);
 
@@ -21,7 +21,9 @@ function CommunityPost({ setIsPModalOpen, data }) {
 					<div className="buttonWrapper">
 						<button
 							type="button"
-							onClick={() => navigate(URL_WRITEPOST, { state: { ...data } })}
+							onClick={() =>
+								navigate(URL_WRITEPLOGGING, { state: { ...data } })
+							}
 						>
 							수정
 						</button>
@@ -32,7 +34,7 @@ function CommunityPost({ setIsPModalOpen, data }) {
 				)}
 			</PostDetail>
 			{data && (
-				<PostContent dangerouslySetInnerHTML={{ __html: data.b_content }} />
+				<PostContent dangerouslySetInnerHTML={{ __html: data.p_content }} />
 			)}
 		</>
 	);
@@ -85,4 +87,4 @@ const PostContent = styled.div`
 	}
 `;
 
-export default CommunityPost;
+export default PloggingPost;
