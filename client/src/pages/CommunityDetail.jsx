@@ -215,6 +215,9 @@ const DetailPageContainer = styled.section`
 	@media (max-width: 768px) {
 		padding: 10px;
 		top: 70px;
+		.bt {
+			padding: 15px 20px;
+		}
 		.wbt {
 			margin-left: auto;
 			margin-right: 0px;

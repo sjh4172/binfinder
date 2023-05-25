@@ -99,12 +99,14 @@ const Table = styled.table`
 	font-size: var(--base);
 	table-layout: fixed;
 	min-height: 371px;
+	border: 1px soild black;
 
 	// 테이블 항목
 	thead {
 		border-top: 1px solid black;
 		border-bottom: 1px solid black;
 		font-weight: 800;
+		background-color: #80808021;
 	}
 
 	// 기본뷰 테이블 열 비율
