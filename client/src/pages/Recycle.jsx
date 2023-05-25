@@ -1,13 +1,16 @@
 import React from 'react';
+import styled from 'styled-components';
 import Slider from '../components/Recycleslider';
 
 function Recycle() {
 	return (
-		<div>
-			<h1>슬라이드 쇼</h1>
+		<BackgroundColor>
 			<Slider />
-		</div>
+		</BackgroundColor>
 	);
 }
+const BackgroundColor = styled.div`
+	background-color: #cacaca;
+`;
 
 export default Recycle;
