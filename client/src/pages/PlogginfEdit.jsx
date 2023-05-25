@@ -55,7 +55,7 @@ function PloggingEdit() {
 
 	return (
 		<EditPageContainer>
-			<Title className="cummunityTitle">Community</Title>
+			<Title className="cummunityTitle">Plogging</Title>
 			<div className="backGround">
 				<PloggingEditor contentBind={contentBind} titleBind={titleBind} />
 				<div className="flex">

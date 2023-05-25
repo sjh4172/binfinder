@@ -9,12 +9,11 @@ import { URL_WRITEPOST } from '../routesURL';
 import { getPostList } from '../api/communityAPI';
 import Modal from '../components/Modal';
 import { Button } from '../styles/Buttons';
-import backgroundImg from '../image/communityBG.png';
 
 function Community() {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [currentPage, setCurrentPage] = useState(0);
-	const [totalPage, setTotalPage] = useState(19);
+	const [totalPage, setTotalPage] = useState(1);
 	const location = useLocation();
 	const [data, setData] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
