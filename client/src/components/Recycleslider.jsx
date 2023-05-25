@@ -47,11 +47,11 @@ const SlideContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 70vh;
+	height: 75vh;
 	margin: 10% 25% 40% 25%;
 	@media (max-width: 768px) {
 		margin: 100px 50px;
-		height: 60vh;
+		height: 70vh;
 		max-width: 100%;
 	}
 `;
