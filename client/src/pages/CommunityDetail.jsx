@@ -12,6 +12,7 @@ import useModal from '../hooks/useModal';
 import { getPost, deleteCommunity, postCommunity } from '../api/communityAPI';
 import { URL_POST } from '../routesURL';
 import useInput from '../hooks/useInput';
+import backgroundImg from '../image/communityBG.png';
 
 function CommunityDetail() {
 	const navigate = useNavigate();
@@ -39,6 +40,7 @@ function CommunityDetail() {
 		closeModalPost();
 		deleteCommunity(`/boards/${data.b_id}`);
 		navigate(URL_POST);
+		navigate(0);
 	};
 
 	const handleDelecteConfirmComment = () => {
@@ -69,96 +71,128 @@ function CommunityDetail() {
 				setTotalLike(res.data.likes),
 			);
 			setIsLike(!isLike);
-		} else {
-			// alert('회원만 가능한 기능입니다.');
 		}
 	};
 	return (
 		<DetailPageContainer>
-			<section>
-				<Title className="title">{data && data.b_title}</Title>
-				<MyProfile username={data && data.username} marginNone />
-				<CommunityPost setIsPModalOpen={openModalPost} data={data} />
-				<Button
-					type="button"
-					className="bt list"
-					onClick={() => navigate(URL_POST)}
-				>
-					목록 보기
-				</Button>
-				<Button type="button" className="bt" onClick={() => likeUpDown()}>
-					{data && isLike && `♥ ${totalLike}`}
-					{data && (isLike || `♡ ${totalLike}`)}
-				</Button>
-			</section>
-			<section>
-				<h1 className="visually-hidden">댓글</h1>
-				{data && (
-					<TotalComment>{`${data.comments.length}개의 댓글`}</TotalComment>
-				)}
-				<label htmlFor="comment">
-					댓글을 입력하세요
-					<textarea
-						name="comment"
-						placeholder="댓글을 입력하세요"
-						{...textareaBind}
+			<div className="backGround">
+				<section>
+					<Title className="title">{data && data.b_title}</Title>
+					<MyProfile username={data && data.username} marginNone />
+					<CommunityPost setIsPModalOpen={openModalPost} data={data} />
+					<div className="buttonWrapper">
+						<Button
+							type="button"
+							className="bt"
+							onClick={() => navigate(URL_POST)}
+						>
+							목록 보기
+						</Button>
+						<Button
+							type="button"
+							className="bt heart"
+							onClick={() => likeUpDown()}
+						>
+							{data && isLike && `♥ ${totalLike}`}
+							{data && (isLike || `♡ ${totalLike}`)}
+						</Button>
+					</div>
+				</section>
+				<section>
+					<h1 className="visually-hidden">댓글</h1>
+					{data && (
+						<TotalComment>{`${data.comments.length}개의 댓글`}</TotalComment>
+					)}
+					<label htmlFor="comment">
+						댓글을 입력하세요
+						<textarea
+							name="comment"
+							placeholder="댓글을 입력하세요"
+							{...textareaBind}
+						/>
+					</label>
+					<WarningButton
+						className="wbt bt"
+						onClick={() => postComment(textareaBind.value)}
+					>
+						작성
+					</WarningButton>
+					{data && (
+						<ul>
+							{data.comments.map((el) => (
+								<li key={el.c_id}>
+									<CommunityComment
+										setIsCModalOpen={openModalComment}
+										commentData={el}
+										setCommentId={setCommentId}
+									/>
+								</li>
+							))}
+						</ul>
+					)}
+				</section>
+				{isOpenModalPost && (
+					<Modal
+						message="게시글 및 댓글이 삭제 됩니다.<br>정말 삭제하시겠습니까?"
+						handleConfirm={handleDelecteConfirmPost}
+						handleCancel={closeModalPost}
 					/>
-				</label>
-				<WarningButton
-					className="wbt bt"
-					onClick={() => postComment(textareaBind.value)}
-				>
-					작성
-				</WarningButton>
-				{data && (
-					<ul>
-						{data.comments.map((el) => (
-							<li key={el.c_id}>
-								<CommunityComment
-									setIsCModalOpen={openModalComment}
-									commentData={el}
-									setCommentId={setCommentId}
-								/>
-							</li>
-						))}
-					</ul>
 				)}
-			</section>
-			{isOpenModalPost && (
-				<Modal
-					message="게시글 및 댓글이 삭제 됩니다.<br>정말 삭제하시겠습니까?"
-					handleConfirm={handleDelecteConfirmPost}
-					handleCancel={closeModalPost}
-				/>
-			)}
-			{isOpenModalComment && (
-				<Modal
-					message="댓글이 삭제 됩니다.<br>정말 삭제하시겠습니까?"
-					handleConfirm={handleDelecteConfirmComment}
-					handleCancel={closeModalComment}
-				/>
-			)}
+				{isOpenModalComment && (
+					<Modal
+						message="댓글이 삭제 됩니다.<br>정말 삭제하시겠습니까?"
+						handleConfirm={handleDelecteConfirmComment}
+						handleCancel={closeModalComment}
+					/>
+				)}
+			</div>
 		</DetailPageContainer>
 	);
 }
 
 const DetailPageContainer = styled.section`
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: var(--header-hight);
-	max-width: 1024px;
-	padding: 50px 0px 100px 0px;
-	width: 80vw;
+	position: relative;
 
+	width: 100%;
+	padding: 50px;
+	.backGround {
+		background-color: white;
+		border-radius: 5px;
+		padding: 80px 100px;
+		max-width: 1200px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.cummunityTitle {
+		width: 100%;
+		text-align: center;
+		font-size: 70px;
+		color: white;
+		text-shadow: 2px 1px 1px rgba(0, 0, 0, 0.25);
+		margin-bottom: 80px;
+	}
 	.title {
 		margin-bottom: 20px;
 	}
 	.bt {
 		margin: 30px 30px 30px 0px;
+		padding: 15px 30px;
+		width: 150px;
+		text-align: center;
 		font-size: var(--base);
-		height: 35px;
+	}
+	.heart {
+		color: var(--main-color);
+		border-color: var(--main-color);
 	}
 
+	.heart:hover {
+		background: #5cabda40;
+	}
+
+	.buttonWrapper {
+		display: flex;
+	}
 	label {
 		font-size: 0px;
 	}
@@ -175,15 +209,29 @@ const DetailPageContainer = styled.section`
 	}
 
 	.wbt {
-		margin: 10px 0px 20px calc(100% - 100px);
+		margin-left: auto;
+		margin-right: 0px;
 	}
 	@media (max-width: 768px) {
-		padding-top: 30px;
+		padding: 10px;
+		top: 70px;
+		.bt {
+			padding: 15px 20px;
+		}
 		.wbt {
-			margin: 10px 0px 20px calc(100% - 60px);
+			margin-left: auto;
+			margin-right: 0px;
 		}
 		.list {
 			width: 80px;
+		}
+		.cummunityTitle {
+			margin-top: 30px;
+			margin-bottom: 10px;
+			font-size: 50px;
+		}
+		.backGround {
+			padding: 20px;
 		}
 	}
 `;

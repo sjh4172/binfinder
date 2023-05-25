@@ -1,24 +1,26 @@
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import CommunityEditor from '../components/CommunityEditor';
+import PloggingEditor from '../components/PloggingEditor';
 import { Button, WarningButton } from '../styles/Buttons';
 import { postCommunity } from '../api/communityAPI';
 import useInput from '../hooks/useInput';
 import { URL_POST } from '../routesURL';
 import Modal from '../components/Modal';
+import Title from '../styles/Title';
+import backgroundImg from '../image/communityBG.png';
 
 function CommunityEdit() {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const [titleBind] = useInput(location.state && location.state.b_title);
+	const [titleBind] = useInput(location.state && location.state.p_title);
 	const [contentBind] = useInput(
-		location.state && location.state.b_content,
+		location.state && location.state.p_content,
 		true,
 	);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [message, setMessage] = useState('');
-	console.log(contentBind.value);
+
 	const writePost = () => {
 		if (!titleBind.value) {
 			setMessage('제목을 작성해주세요.');
@@ -53,29 +55,42 @@ function CommunityEdit() {
 
 	return (
 		<EditPageContainer>
-			<CommunityEditor contentBind={contentBind} titleBind={titleBind} />
-			<div className="flex">
-				<Button type="button" className="bt" onClick={() => navigate(-1)}>
-					작성 취소
-				</Button>
-				<WarningButton className="bt" onClick={() => writePost()}>
-					작성 완료
-				</WarningButton>
+			<div className="backGround">
+				<PloggingEditor contentBind={contentBind} titleBind={titleBind} />
+				<div className="flex">
+					<Button type="button" className="bt" onClick={() => navigate(-1)}>
+						작성 취소
+					</Button>
+					<WarningButton className="bt" onClick={() => writePost()}>
+						작성 완료
+					</WarningButton>
+				</div>
+				{isModalOpen && (
+					<Modal
+						message={message}
+						handleConfirm={handleConfirm}
+						cancel={false}
+					/>
+				)}
 			</div>
-			{isModalOpen && (
-				<Modal message={message} handleConfirm={handleConfirm} cancel={false} />
-			)}
 		</EditPageContainer>
 	);
 }
 
 const EditPageContainer = styled.section`
-	max-width: 1024px;
-	width: 80vw;
-	margin-left: auto;
-	margin-right: auto;
-	padding-top: calc(var(--header-hight) + 50px);
-	height: calc(100vh - 228px);
+	position: relative;
+	top: 50px;
+	width: 100%;
+	padding: 80px;
+	.backGround {
+		background-color: white;
+		border-radius: 5px;
+		max-width: 1000px;
+		margin-left: auto;
+		margin-right: auto;
+		padding: 50px 100px;
+		border: 1px solid var(--line-color);
+	}
 	.flex {
 		display: flex;
 		justify-content: space-between;
@@ -84,13 +99,32 @@ const EditPageContainer = styled.section`
 
 	.bt {
 		font-size: var(--base);
-		height: 35px;
+		padding: 15px 30px;
+	}
+
+	.cummunityTitle {
+		width: 100%;
+		text-align: center;
+		font-size: 70px;
+		color: white;
+		text-shadow: 2px 1px 1px rgba(0, 0, 0, 0.25);
+		margin-bottom: 80px;
 	}
 
 	@media (max-width: 768px) {
-		padding-top: calc(var(--header-hight) + 30px);
+		padding: 10px;
+		top: 70px;
+		.cummunityTitle {
+			margin-top: 30px;
+			margin-bottom: 10px;
+			font-size: 50px;
+		}
+		.backGround {
+			padding: 20px;
+		}
 		.bt {
-			width: 80px;
+			width: 140px;
+			text-align: center;
 		}
 	}
 `;

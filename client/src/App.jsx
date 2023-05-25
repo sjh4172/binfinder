@@ -12,11 +12,15 @@ import EditUserInfo from './pages/EditUserInfo';
 import Community from './pages/Community';
 import CommunityDetail from './pages/CommunityDetail';
 import CommunityEdit from './pages/CommunityEdit';
-import Header from './components/Header';
+import Header2 from './components/Header2';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
 import Prepare from './pages/Prepare';
 import NotFound from './pages/NotFound';
+import MainPage from './pages/MianPage';
+import PloggingCommunity from './pages/Plogging';
+import PloggingEdit from './pages/PlogginfEdit';
+import PloggingDetail from './pages/PloggingDetail';
 import {
 	URL_MAP,
 	URL_LOGIN,
@@ -27,11 +31,15 @@ import {
 	URL_POSTDETAIL,
 	URL_WRITEPOST,
 	URL_PLOGGING,
-	URL_NOTICE,
 	URL_INTRODUCTION,
+	URL_RECYCLE,
+	URL_MAIN,
+	URL_PLOGGINGDETAIL,
+	URL_WRITEPLOGGING,
 } from './routesURL';
 import useMediaQuery from './hooks/useMediaQuery';
 import { store, persistor } from './store/UserSlice';
+import Recycle from './pages/Recycle';
 import About from './pages/AboutPage';
 
 function App() {
@@ -43,7 +51,7 @@ function App() {
 		<Provider store={store}>
 			<PersistGate loading={null} persistor={persistor}>
 				<GlobalStyles />
-				<Header
+				<Header2
 					isSidebarOpen={isSidebarOpen}
 					setIsSidebarOpen={setIsSidebarOpen}
 					setIsSidebarOpeFirst={setIsSidebarOpeFirst}
@@ -64,9 +72,12 @@ function App() {
 					<Route path={URL_POSTDETAIL} element={<CommunityDetail />} />
 					<Route path="/comments/:commentId" element={<CommunityDetail />} />
 					<Route path={URL_WRITEPOST} element={<CommunityEdit />} />
-					<Route path={URL_PLOGGING} element={<Prepare />} />
-					<Route path={URL_NOTICE} element={<Prepare />} />
+					<Route path={URL_PLOGGING} element={<PloggingCommunity />} />
+					<Route path={URL_PLOGGINGDETAIL} element={<PloggingDetail />} />
+					<Route path={URL_WRITEPLOGGING} element={<PloggingEdit />} />
+					<Route path={URL_RECYCLE} element={<Recycle />} />
 					<Route path={URL_INTRODUCTION} element={<About />} />
+					<Route path={URL_MAIN} element={<MainPage />} />
 					<Route path="*" element={<NotFound />} />
 				</Routes>
 				{!isMobile && <Footer />}

@@ -96,22 +96,23 @@ function CommunityList({ data }) {
 
 const Table = styled.table`
 	width: 100%;
-	max-width: 1024px;
 	font-size: var(--base);
 	table-layout: fixed;
 	min-height: 371px;
+	border: 1px soild black;
 
 	// 테이블 항목
 	thead {
 		border-top: 1px solid black;
 		border-bottom: 1px solid black;
 		font-weight: 800;
+		background-color: #80808021;
 	}
 
 	// 기본뷰 테이블 열 비율
 	tr {
 		display: flex;
-		padding: 15px 0px;
+		padding: 12px 0px;
 	}
 
 	tr th:nth-child(1) {

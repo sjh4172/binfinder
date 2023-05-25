@@ -92,6 +92,35 @@ const AboutComponentContainer = styled.section`
 		font-weight: 800;
 		font-size: var(--sub-title);
 	}
+	@media (max-width: 910px) {
+		flex-direction: column;
+		padding: 100px 10px 50px 10px;
+		h2 {
+			font-size: var(--title);
+		}
+		h3 {
+			font-size: var(--large);
+		}
+		.contentWrapper {
+			margin-right: 0px;
+		}
+		.img {
+			width: 100%;
+			height: 100%;
+			background-position: bottom;
+			border-radius: 10px;
+		}
+		.imgWrapper {
+			height: 500px;
+			top: 0px;
+			margin-left: auto;
+		}
+		@media (max-width: 460px) {
+			.imgWrapper {
+				display: none;
+			}
+		}
+	}
 `;
 
 export default AboutComponent2;

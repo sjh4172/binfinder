@@ -139,6 +139,15 @@ const AboutComponentContainer = styled.section`
 	ul > a {
 		margin: 30px 50px;
 	}
+	@media (max-width: 950px) {
+		.github {
+			width: 65px;
+			height: 65px;
+		}
+		ul > a {
+			margin: 30px 0px;
+		}
+	}
 `;
 
 export default AboutComponent4;

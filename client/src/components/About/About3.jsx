@@ -101,6 +101,31 @@ const AboutComponentContainer = styled.section`
 		font-family: 'GFS Neohellenic', sans-serif;
 		font-weight: 800;
 	}
+	@media (max-width: 910px) {
+		flex-direction: column;
+		padding: 100px 50px 100px 50px;
+		justify-content: center;
+		align-items: center;
+		.img {
+			width: 300px;
+			height: 300px;
+			background-position: center;
+		}
+		.imgWrapper {
+			height: 500px;
+			top: 0px;
+		}
+		p,
+		h3,
+		ul {
+			margin-bottom: 20px;
+		}
+		@media (max-width: 775px) {
+			.img {
+				display: none;
+			}
+		}
+	}
 `;
 
 export default AboutComponent3;
