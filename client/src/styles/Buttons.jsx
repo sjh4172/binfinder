@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import styled, { keyframes } from 'styled-components';
-import MOBILE_MAX_WIDTH from '../mediaQuery';
+import MOBILE_MAX_WIDTH, { MAX_WIDTH } from '../mediaQuery';
 
 const moveAnimation = keyframes`
   0% {
@@ -17,7 +17,7 @@ const Button = styled.div`
 	--move-hover: -4px;
 	--font-shadow: var(--font-size);
 	padding: 16px 32px;
-	font-family: 'GFS Neohellenic';
+	font-family:'Cormorant Unicase'
 	font-weight: 500;
 	line-height: var(--font-size);
 	border-radius: 24px;
@@ -57,6 +57,13 @@ const Button = styled.div`
 	}
 
 	&:hover {
+		background-color: #d9d9d9;
+		color: var(--text-black-color);
+		box-shadow: 0px 2px 0px rgba(255, 255, 255, 0.25),
+			inset 0px 2px 0px rgba(0, 0, 0, 0.25);
+	}
+
+	&:hover {
 		background: #e7e7e7;
 		--y: var(--move-hover);
 		--shadow: var(--shadow-hover);
@@ -92,13 +99,16 @@ const WarningButton = styled(Button)`
 
 const HeaderButton = styled(Button)`
 	@media (max-width: ${MOBILE_MAX_WIDTH}px) {
-		width: 10px;
-		height: 10px;
-		div {
-			span {
-				font-size: 10px; /* 모바일에서 작은 글씨 크기로 설정 */
-			}
-		}
+		width: 4px;
+		height: 4px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 12px; /* 모바일에서 작은 글씨 크기로 설정 */
+	}
+	@media (max-width: ${MAX_WIDTH}px) {
+		display: flex;
+		font-size: 12px;
 	}
 `;
 

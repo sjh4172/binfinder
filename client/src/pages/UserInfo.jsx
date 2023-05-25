@@ -13,7 +13,6 @@ function UserInfo() {
 	const [email, setEmail] = useState('');
 
 	const { memberId } = useSelector((state) => state.auth);
-	console.log(memberId);
 
 	useEffect(() => {
 		const fetchUserData = async () => {
@@ -70,7 +69,7 @@ function UserInfo() {
 						<Detail>이메일: {email}</Detail>
 						<EditUserInfoButton>
 							프로필 수정
-							<Icon to="/editmypage">
+							<Icon to="/edituserinfo">
 								<img
 									src={`${process.env.PUBLIC_URL}/assets/mdi_pencil.png`}
 									alt="editprofile button.png"
@@ -119,9 +118,10 @@ const MyPageContainer = styled.div`
 		justify-content: center;
 		align-items: center;
 		width: 393px;
-		height: 782px;
+		height: 732px;
 		font-size: 14px;
 		font-weight: 700;
+		margin-top: 0;
 	}
 `;
 /* 마이페이지 타이틀 */
