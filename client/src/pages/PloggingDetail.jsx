@@ -75,7 +75,7 @@ function PlogginDetail() {
 	};
 	return (
 		<DetailPageContainer>
-			<Title className="cummunityTitle">Community</Title>
+			<Title className="cummunityTitle">Plogging</Title>
 			<div className="backGround">
 				<section>
 					<Title className="title">{data && data.p_title}</Title>

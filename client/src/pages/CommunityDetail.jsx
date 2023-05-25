@@ -12,7 +12,6 @@ import useModal from '../hooks/useModal';
 import { getPost, deleteCommunity, postCommunity } from '../api/communityAPI';
 import { URL_POST } from '../routesURL';
 import useInput from '../hooks/useInput';
-import backgroundImg from '../image/communityBG.png';
 
 function CommunityDetail() {
 	const navigate = useNavigate();

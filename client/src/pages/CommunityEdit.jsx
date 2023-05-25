@@ -7,8 +7,6 @@ import { postCommunity } from '../api/communityAPI';
 import useInput from '../hooks/useInput';
 import { URL_POST } from '../routesURL';
 import Modal from '../components/Modal';
-import Title from '../styles/Title';
-import backgroundImg from '../image/communityBG.png';
 
 function CommunityEdit() {
 	const navigate = useNavigate();
