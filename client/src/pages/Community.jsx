@@ -81,6 +81,7 @@ const CommunityPageContainer = styled.section`
 	max-width: 1750px;
 	margin-left: auto;
 	margin-right: auto;
+	margin-bottom: 50px;
 	.flex {
 		display: flex;
 		justify-content: center;
