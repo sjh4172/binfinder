@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -13,7 +13,7 @@ import { Button } from '../styles/Buttons';
 function Community() {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [currentPage, setCurrentPage] = useState(0);
-	const [totalPage, setTotalPage] = useState(19);
+	const [totalPage, setTotalPage] = useState(1);
 	const location = useLocation();
 	const [data, setData] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,7 +22,7 @@ function Community() {
 	useEffect(() => {
 		if (location.search) {
 			getPostList(location.search).then((res) => {
-				setData(res.data);
+				setData(res.data.reverse());
 				setTotalPage(res.headers.get('X-Total-Pages'));
 			});
 		}
@@ -31,24 +31,27 @@ function Community() {
 	const handleConfirm = () => {
 		setIsModalOpen(false);
 	};
+
 	return (
 		<CommunityPageContainer>
-			<div className="flex">
-				<Title>게시판</Title>
-				{isAuthenticated && (
-					<Link to={URL_WRITEPOST} className="postWrite">
-						글 작성
-					</Link>
-				)}
-				{isAuthenticated || (
-					<Button
-						type="button"
-						className="postWrite"
-						onClick={() => setIsModalOpen(true)}
-					>
-						글 작성
-					</Button>
-				)}
+			<div>
+				<div className="flex">
+					<Title>Community</Title>
+					{isAuthenticated && (
+						<Link to={URL_WRITEPOST} className="postWrite">
+							글 작성
+						</Link>
+					)}
+					{isAuthenticated || (
+						<Button
+							type="button"
+							className="postWrite"
+							onClick={() => setIsModalOpen(true)}
+						>
+							글 작성
+						</Button>
+					)}
+				</div>
 			</div>
 			<CommunityList data={data} />
 			{totalPage >= 0 && (
@@ -71,48 +74,67 @@ function Community() {
 }
 
 const CommunityPageContainer = styled.section`
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+	position: relative;
+	top: 80px;
+	padding: 80px;
+	width: 100%;
+	max-width: 1750px;
 	margin-left: auto;
 	margin-right: auto;
-	padding-top: calc(var(--header-hight) + 50px);
-	width: 80vw;
-	max-width: 1000px;
-	height: calc(100% - 228px);
+	margin-bottom: 50px;
 	.flex {
 		display: flex;
-		justify-content: space-between;
-		margin-bottom: 20px;
-		align-items: end;
+		justify-content: center;
+		align-items: center;
+		background-color: white;
+		border-radius: 5px;
 	}
 	.postWrite {
-		height: 30px;
-		width: 100px;
-		padding: 3px;
-		background-color: var(--main-color);
-		color: var(--text-white-color);
-		box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.25),
-			inset 0px 2px 0px rgba(255, 255, 255, 0.25);
-		border-radius: 5px;
+		--text: gray;
+		--font-size: 16px;
+		--duration: 0.44s;
+		--move-hover: -4px;
+		--font-shadow: var(--font-size);
+		padding: 15px 40px;
+		margin: 20px 0px 20px auto;
+		border: 1px solid var(--main-color);
+		color: var(--main-color);
+		border-radius: 24px;
 		font-size: var(--base);
 		font-weight: 700;
 		align-items: center;
 		display: flex;
 		justify-content: center;
+		transform: translateY(var(--y)) translateZ(0);
+		transition: transform var(--duration) ease, box-shadow var(--duration) ease;
 	}
 	.postWrite:hover {
-		background-color: var(--sub3-color);
-		color: var(--text-black-color);
-		box-shadow: 0px 2px 0px rgba(255, 255, 255, 0.25),
-			inset 0px 2px 0px rgba(0, 0, 0, 0.25);
+		background: #5cabda40;
+		--y: var(--move-hover);
+		--shadow: var(--shadow-hover);
+		span {
+			color: black;
+			--m: calc(var(--font-size) * -1);
+			transform: translateY(calc(var(--font-size) * -1));
+		}
 	}
+
 	@media (max-width: 768px) {
-		padding-top: 30px;
+		top: 70px;
+		padding: 10px;
 		.postWrite {
-			width: 80px;
+			width: 130px;
 			height: 30px;
 			font-size: var(--base);
+			padding: 20px 30px;
+		}
+		.cummunityTitle {
+			margin-top: 30px;
+			margin-bottom: 10px;
+			font-size: 50px;
+		}
+		.title {
+			margin-right: auto;
 		}
 	}
 `;

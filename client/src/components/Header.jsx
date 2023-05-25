@@ -1,25 +1,35 @@
 import styled from 'styled-components';
-import { FiMenu } from 'react-icons/fi';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useMediaQuery from '../hooks/useMediaQuery';
 import { HeaderButton } from '../styles/Buttons';
 import { Z_INDEX_STYLED_HEADER } from '../zIndex';
-import MOBILE_MAX_WIDTH from '../mediaQuery';
-import { URL_LOGIN, URL_MAP, URL_MYPAGE, URL_SIGNUP } from '../routesURL';
+import MOBILE_MAX_WIDTH, { MAX_WIDTH } from '../mediaQuery';
+
+import {
+	URL_LOGIN,
+	URL_MAP,
+	URL_MYPAGE,
+	URL_SIGNUP,
+	URL_POST,
+	URL_PLOGGING,
+	URL_INTRODUCTION,
+	URL_RECYCLE,
+	URL_MAIN,
+} from '../routesURL';
 import { KEY_ACCESS_TOKEN, KEY_REFRESH_TOKEN } from '../Constant';
 import { loginFailure } from '../store/UserSlice';
 
-export default function Header({
-	isSidebarOpen,
-	setIsSidebarOpen,
-	setIsSidebarOpeFirst,
-}) {
+export default function Header() {
 	const dispatch = useDispatch();
 	const isMobile = useMediaQuery();
+	const [activeMenu, setActiveMenu] = useState(null);
 	const { isAuthenticated, username } = useSelector((state) => state.auth);
+	const handleMenuClick = (menuName) => {
+		setActiveMenu(menuName);
+	};
 	const handleLogout = () => {
 		localStorage.removeItem(KEY_ACCESS_TOKEN);
 		localStorage.removeItem(KEY_REFRESH_TOKEN);
@@ -27,10 +37,7 @@ export default function Header({
 
 		dispatch(loginFailure());
 	};
-	const toggleSideBar = () => {
-		setIsSidebarOpen(!isSidebarOpen);
-		setIsSidebarOpeFirst(false);
-	};
+
 	useEffect(() => {
 		const accessToken = localStorage.getItem(KEY_ACCESS_TOKEN);
 		const refreshToken = localStorage.getItem(KEY_REFRESH_TOKEN);
@@ -43,23 +50,105 @@ export default function Header({
 	return (
 		<StyledHeader>
 			<HeaderWrapper>
-				<Menu>
-					<MenuIcon onClick={toggleSideBar} />
-				</Menu>
-				<LogoWrapper to={URL_MAP}>
+				<LogoWrapper to={URL_MAIN}>
 					<LogoImage
-						src={`${process.env.PUBLIC_URL}/assets/logo.png`}
+						src={`${process.env.PUBLIC_URL}/assets/HeaderLogo.png`}
 						alt="로고 이미지"
 					/>
-					{!isMobile && <LogoText>BINFINDER</LogoText>}
+					<LogoText>BINFINDER</LogoText>
 				</LogoWrapper>
+				<MenuWrapper>
+					{!isMobile && (
+						<Menu
+							to={URL_INTRODUCTION}
+							className={activeMenu === URL_INTRODUCTION ? 'active' : ''}
+							onClick={() => handleMenuClick(URL_INTRODUCTION)}
+						>
+							ABOUT
+						</Menu>
+					)}
+					{!isMobile && (
+						<Menu
+							to={URL_MAP}
+							className={activeMenu === URL_MAP ? 'active' : ''}
+							onClick={() => handleMenuClick(URL_MAP)}
+						>
+							TRASHCAN
+						</Menu>
+					)}
+
+					{!isMobile && (
+						<Menu
+							to={URL_PLOGGING}
+							className={activeMenu === URL_PLOGGING ? 'active' : ''}
+							onClick={() => handleMenuClick(URL_PLOGGING)}
+						>
+							PLOGGING
+						</Menu>
+					)}
+
+					{!isMobile && (
+						<Menu
+							to={URL_RECYCLE}
+							className={activeMenu === URL_RECYCLE ? 'active' : ''}
+							onClick={() => handleMenuClick(URL_RECYCLE)}
+						>
+							HOW 2 RECYCLE
+						</Menu>
+					)}
+
+					{!isMobile && (
+						<Menu
+							to={URL_POST}
+							className={activeMenu === URL_POST ? 'active' : ''}
+							onClick={() => handleMenuClick(URL_POST)}
+						>
+							COMMUNITY
+						</Menu>
+					)}
+
+					{isAuthenticated && !isMobile && (
+						<Menu
+							to={URL_MYPAGE}
+							className={activeMenu === URL_MYPAGE ? 'active' : ''}
+							onClick={() => handleMenuClick(URL_MYPAGE)}
+						>
+							MYPAGE
+						</Menu>
+					)}
+				</MenuWrapper>
 				{!isAuthenticated ? (
 					<ButtonWrapper>
-						<HeaderButton type="button">
-							<Link to={URL_SIGNUP}>Sign up</Link>
+						<HeaderButton
+							type="button"
+							className={activeMenu === URL_SIGNUP ? 'active' : ''}
+							onClick={() => handleMenuClick(URL_SIGNUP)}
+						>
+							<Link to={URL_SIGNUP}>
+								<div>
+									<span>S</span>
+									<span>i</span>
+									<span>g</span>
+									<span>n</span>
+									<span>U</span>
+									<span>p</span>
+								</div>
+							</Link>
 						</HeaderButton>
-						<HeaderButton type="button">
-							<Link to={URL_LOGIN}>Log in</Link>
+						<HeaderButton
+							type="button"
+							className={activeMenu === URL_LOGIN ? 'active' : ''}
+							onClick={() => handleMenuClick(URL_LOGIN)}
+						>
+							<Link to={URL_LOGIN}>
+								<div>
+									<span>L</span>
+									<span>o</span>
+									<span>g</span>
+									<span>I</span>
+									<span>n</span>
+								</div>
+							</Link>
 						</HeaderButton>
 					</ButtonWrapper>
 				) : (
@@ -79,20 +168,19 @@ export default function Header({
 		</StyledHeader>
 	);
 }
+
 const StyledHeader = styled.header`
 	display: flex;
 	align-items: center;
+	background: white;
 	justify-content: center;
 	height: 80px;
 	width: 100%;
 	padding: 0 20px;
-	background-color: var(--bg-color);
-	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
 	position: fixed;
 	top: 0;
 	left: 0;
 	z-index: ${Z_INDEX_STYLED_HEADER};
-
 	@media (max-width: ${MOBILE_MAX_WIDTH}px) {
 		height: 70px;
 	}
@@ -106,45 +194,61 @@ const HeaderWrapper = styled.div`
 	height: 100%;
 `;
 
-const Menu = styled.button`
-	display: flex;
-	flex: 1;
-	justify-content: flex-start;
-	border: none;
-	background-color: transparent;
-	outline: none;
-`;
-
-const MenuIcon = styled(FiMenu)`
-	cursor: pointer;
-	font-size: var(--title);
+const LogoImage = styled.img`
+	width: 40px;
+	height: 40px;
 `;
 
 const LogoWrapper = styled(Link)`
 	display: flex;
 	flex: 2;
-	text-align: center;
-	align-items: center;
 	justify-content: center;
-	gap: 10px;
-`;
-
-const LogoImage = styled.img`
-	width: 60px;
-	height: 60px;
+	align-items: center;
 `;
 
 const LogoText = styled.div`
-	font-size: 35px;
+	font-size: 20px;
 	font-weight: 800;
 	/* letter-spacing: 0.1em; */
 	color: var(--footer-color);
 	font-family: 'GFS Neohellenic', sans-serif;
+	margin-left: 4px;
 `;
 
-const ButtonWrapper = styled.div`
-	flex: 1;
+const MenuWrapper = styled.div`
 	display: flex;
+	flex: 4;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 16px;
+`;
+const Menu = styled(Link)`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-family: 'Cormorant Unicase';
+	color: gray;
+	:hover {
+		color: black;
+	}
+	&.active {
+		color: #37a0db;
+	}
+	@media (max-width: ${MOBILE_MAX_WIDTH}px) {
+		width: 20px;
+		height: 20px;
+		img {
+			width: 20px;
+			height: 20px;
+		}
+	}
+	@media (max-width: ${MAX_WIDTH}px) {
+		font-size: 12px;
+	}
+`;
+const ButtonWrapper = styled.div`
+	display: flex;
+	flex: 2;
 	justify-content: flex-end;
 	> * {
 		margin-left: 10px;

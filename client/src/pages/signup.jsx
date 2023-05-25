@@ -119,7 +119,7 @@ const SignupContainer = styled.div`
 	font-weight: 700;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 80px;
+	margin-top: var(--header-hight);
 	@media (max-width: 768px) {
 		display: flex;
 		justify-content: center;
@@ -128,6 +128,7 @@ const SignupContainer = styled.div`
 		height: 782px;
 		font-size: 14px;
 		font-weight: 700;
+		margin-top: 0;
 	}
 	/* 회원가입 전체 폼 */
 	.SignupForm {

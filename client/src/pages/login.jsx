@@ -143,6 +143,7 @@ const LoginContainer = styled.div`
 	margin-right: auto;
 	margin-top: var(--header-hight);
 	@media (max-width: 768px) {
+		margin-top: 0;
 		display: flex;
 		justify-content: center;
 		align-items: center;

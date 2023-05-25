@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-console */
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
@@ -13,7 +14,8 @@ function EditUserInfo() {
 	const navigate = useNavigate();
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	// const [isListHover, setIsListHover] = useState(false);
+	const [usernameErrorMessage, setUsernameErrorMessage] = useState('');
+	const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 	const [isOpenModal, openModal, closeModal] = useModal(false);
 	const { memberId } = useSelector((state) => state.auth);
 
@@ -25,6 +27,7 @@ function EditUserInfo() {
 				);
 				const userData = response.data;
 				setUsername(userData.username);
+				setPassword(userData.password);
 			} catch (error) {
 				console.error(error);
 			}
@@ -34,12 +37,24 @@ function EditUserInfo() {
 	}, [memberId]);
 
 	const handleEditUser = async () => {
+		if (!username) {
+			setUsernameErrorMessage('닉네임을 입력해주세요.');
+		}
+
+		if (!password) {
+			setPasswordErrorMessage('비밀번호를 입력해주세요.');
+		}
+
+		if (username === userData.username) {
+			setUsernameErrorMessage('닉네임이 같습니다.');
+		}
+
 		try {
 			const response = await axios.patch(
 				`${process.env.REACT_APP_API_URL}/api/members/${memberId}`,
 				{
-					username,
-					password,
+					username: username || undefined,
+					password: password || undefined,
 				},
 			);
 			if (response.status === 200) {
@@ -57,12 +72,12 @@ function EditUserInfo() {
 			const response = await axios.delete(
 				`${process.env.REACT_APP_API_URL}/api/members/${memberId}`,
 			);
+
 			if (response.status === 204) {
 				// 회원탈퇴 성공한 경우
 				dispatch(loginFailure());
 				navigate(URL_MAP);
 			} else {
-				// 회원탈퇴 실패한 경우
 				console.error('Failed to withdraw user');
 			}
 		} catch (error) {
@@ -78,22 +93,7 @@ function EditUserInfo() {
 		<EditMyPageContainer>
 			<EditMyPageTitle>회원정보 수정</EditMyPageTitle>
 			<EditMyPageForm>
-				<Logo
-				// onMouseOver={() => setIsListHover(true)}
-				// onMouseOut={() => setIsListHover(false)}
-				>
-					{/* {isListHover && (
-						<img
-							src={`${process.env.PUBLIC_URL}/assets/Ellipse 5.png`}
-							alt="HoverKakaodefaultprofile.png "
-						/>
-					)}
-					{!isListHover && (
-						<img
-							src={`${process.env.PUBLIC_URL}/assets/Ellipse.png`}
-							alt="default profile.png"
-						/>
-					)} */}
+				<Logo>
 					<img
 						src={`https://api.dicebear.com/6.x/thumbs/svg?seed=${username}&scale=90&size=60&shapeColor=0a5b83,1c799f,69d2e7,f1f4dc&backgroundColor=0a5b83,69d2e7,f1f4dc`}
 						alt="Profile"
@@ -108,6 +108,9 @@ function EditUserInfo() {
 							placeholder="수정할 닉네임을 입력해주세요."
 						/>
 					</InputContainer>
+					{usernameErrorMessage && (
+						<ErrorMessage>{usernameErrorMessage}</ErrorMessage>
+					)}
 					<InputContainer>
 						<InputTitle>비밀번호:</InputTitle>
 						<Input
@@ -117,6 +120,9 @@ function EditUserInfo() {
 							placeholder="수정할 비밀번호를 입력해주세요."
 						/>
 					</InputContainer>
+					{passwordErrorMessage && (
+						<ErrorMessage>{passwordErrorMessage}</ErrorMessage>
+					)}
 				</InputTitleContainer>
 				<ButtonForm>
 					<WithdrawalButton onClick={openModal}>회원탈퇴</WithdrawalButton>
@@ -126,7 +132,7 @@ function EditUserInfo() {
 					</ButtonContainer>
 				</ButtonForm>
 			</EditMyPageForm>
-			{isOpenModal && ( // 모달 렌더링
+			{isOpenModal && (
 				<ModalOverlay>
 					<Modal>
 						<ModalContent>
@@ -293,7 +299,7 @@ const InputContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-bottom: 20px;
+	margin-bottom: 8px;
 `;
 /* 수정페이지 인풋 타이틀 */
 const InputTitle = styled.div`
@@ -394,6 +400,21 @@ const Button = styled.button`
 		height: 40px;
 		font-size: 14px;
 		font-weight: 700;
+	}
+`;
+const ErrorMessage = styled.div`
+	width: 150px;
+	height: 10px;
+	font-size: 14px;
+	font-weight: 700;
+	color: red;
+	float: left;
+	margin-left: 28px;
+	margin-bottom: 12px;
+	@media (max-width: 768px) {
+		width: 160px;
+		height: 10px;
+		font-size: 10px;
 	}
 `;
 export default EditUserInfo;
