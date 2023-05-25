@@ -83,6 +83,7 @@ const EditPageContainer = styled.section`
 	top: 80px;
 	width: 100%;
 	padding: 80px;
+	margin-bottom: 80px;
 	background-image: url(${backgroundImg});
 	background-repeat: no-repeat;
 	background-size: cover;

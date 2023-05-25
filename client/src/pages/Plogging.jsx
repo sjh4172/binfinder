@@ -76,6 +76,7 @@ const CommunityPageContainer = styled.section`
 	position: relative;
 	top: 80px;
 	padding: 80px;
+	margin-bottom: 80px;
 	width: 100%;
 	background-image: url(${backgroundImg});
 	background-repeat: no-repeat;

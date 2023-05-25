@@ -34,6 +34,7 @@ export default function Footer() {
 	if (pathname === URL_SIGNUP) return null;
 	if (pathname === URL_LOGIN) return null;
 	if (pathname === URL_INTRODUCTION) return null;
+	if (pathname === URL_MAP) return null;
 
 	const memberList = [
 		{
@@ -220,7 +221,7 @@ const FooterWrapper = styled.footer`
 	gap: 20px;
 	background-color: var(--footer-color);
 	padding: 40px 10px;
-	margin-top: 80px;
+	/* margin-top: 80px; */
 	.wrapper1 {
 		flex: 0 250px auto;
 	}
