@@ -94,17 +94,22 @@ const AboutComponentContainer = styled.section`
 	}
 	@media (max-width: 910px) {
 		flex-direction: column;
-		padding: 100px 10px 50px 10px;
-		h2 {
+		padding: 150px 50px 150px 50px;
+
+		.imgWrapper {
+			display: none;
+		}
+		.contentWrapper {
+			margin-right: 0px;
+		}
+		/* h2 {
 			font-size: var(--title);
 		}
 		h3 {
 			font-size: var(--large);
 		}
-		.contentWrapper {
-			margin-right: 0px;
-		}
-		.img {
+
+		/* .img {
 			width: 100%;
 			height: 100%;
 			background-position: bottom;
@@ -114,10 +119,14 @@ const AboutComponentContainer = styled.section`
 			height: 500px;
 			top: 0px;
 			margin-left: auto;
-		}
-		@media (max-width: 460px) {
-			.imgWrapper {
-				display: none;
+		} */
+		@media (max-width: 450px) {
+			padding: 100px 30px 100px 30px;
+			h2 {
+				font-size: var(--title);
+			}
+			h3 {
+				font-size: var(--large);
 			}
 		}
 	}

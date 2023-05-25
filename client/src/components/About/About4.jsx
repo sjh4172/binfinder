@@ -148,6 +148,21 @@ const AboutComponentContainer = styled.section`
 			margin: 30px 0px;
 		}
 	}
+	@media (max-width: 950px) {
+		h2 {
+			font-size: var(--title);
+		}
+		h3 {
+			font-size: var(--large);
+		}
+		.github {
+			width: 30px;
+			height: 30px;
+		}
+		ul > a {
+			margin: 0px 5px;
+		}
+	}
 `;
 
 export default AboutComponent4;
