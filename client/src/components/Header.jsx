@@ -17,6 +17,7 @@ import {
 	URL_PLOGGING,
 	URL_INTRODUCTION,
 	URL_RECYCLE,
+	URL_MAIN,
 } from '../routesURL';
 import { KEY_ACCESS_TOKEN, KEY_REFRESH_TOKEN } from '../Constant';
 import { loginFailure } from '../store/UserSlice';
@@ -49,7 +50,7 @@ export default function Header() {
 	return (
 		<StyledHeader>
 			<HeaderWrapper>
-				<LogoWrapper to={URL_MAP}>
+				<LogoWrapper to={URL_MAIN}>
 					<LogoImage
 						src={`${process.env.PUBLIC_URL}/assets/HeaderLogo.png`}
 						alt="로고 이미지"
